@@ -2,9 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Egy Calculator</title>
+  
+  <!-- ===== PWA META TAGS ===== -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#08111f" />
+  
+  <!-- ===== PWA MANIFEST (inline als JSON) ===== -->
+  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVneSBDYWxjdWxhdG9yIiwKICAic2hvcnRfbmFtZSI6ICJFZ3kgQ2FsYyIsCiAgImRlc2NyaXB0aW9uIjogIkNhbGN1bGF0b3IgZm9yIE5vdmEvRWd5IGVxdWlwbWVudCB1cGdyYWRlcyIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDgxMTFmIiwKICAidGhlbWVfY29sb3IiOiAiIzA4MTExZiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nNjQnIGZpbGw9JyMwODExMWYnLz48dGV4dCB4PScyNTYnIHk9JzI4MCcgZm9udC1mYW1pbHk9J3NhbnMtc2VyaWYnIGZvbnQtc2l6ZT0nMjUwJyBmaWxsPScjN2M5Y2ZmJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJz5FPC90ZXh0Pjwvc3ZnPg=="LAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9" />
+  
   <style>
+    /* ===== ALLE STYLES (wie bisher) ===== */
     :root{
       --bg:#08111f;
       --card:rgba(17,24,39,.82);
@@ -67,12 +77,16 @@
       color:var(--warn);
     }
 
-    .lead .note{
+    .note-badge{
       display:inline-block;
-      font-size:13px;
-      color:var(--muted);
-      margin-top:4px;
-      opacity:0.8;
+      font-size:11px;
+      font-weight:500;
+      color:var(--warn);
+      background:rgba(251,191,36,.08);
+      border:1px solid rgba(251,191,36,.15);
+      border-radius:999px;
+      padding:2px 12px;
+      margin-top:6px;
     }
 
     .pill{
@@ -172,13 +186,6 @@
       margin:0;
       font-size:14px;
       letter-spacing:-0.01em;
-    }
-
-    .group-header h3 .subtitle{
-      font-size:10px;
-      font-weight:400;
-      color:var(--muted);
-      margin-left:6px;
     }
 
     .group-actions{
@@ -321,18 +328,6 @@
     .item-name{
       font-weight:500;
       font-size:13px;
-    }
-
-    .item-name .set-tag{
-      font-size:10px;
-      font-weight:400;
-      color:var(--muted);
-      margin-left:4px;
-    }
-
-    .item-name .upgrade-arrow{
-      color:var(--warn);
-      margin:0 4px;
     }
 
     .item-prices{
@@ -645,18 +640,6 @@
       margin-left:8px;
     }
 
-    .note-badge{
-      display:inline-block;
-      font-size:11px;
-      font-weight:500;
-      color:var(--warn);
-      background: rgba(251,191,36,.08);
-      border:1px solid rgba(251,191,36,.15);
-      border-radius:999px;
-      padding:2px 12px;
-      margin-top:6px;
-    }
-
     @media (max-width: 980px){
       .grid{ grid-template-columns:1fr; }
       .hero{ flex-direction:column; align-items:flex-start; }
@@ -692,9 +675,64 @@
     .group-items::-webkit-scrollbar-thumb:hover {
       background: rgba(255,255,255,.20);
     }
+
+    /* ===== PWA: Installations-Banner ===== */
+    .install-banner{
+      display:none;
+      position:fixed;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(18,26,49,.95);
+      border:1px solid rgba(124,156,255,.25);
+      border-radius:14px;
+      padding:14px 20px;
+      backdrop-filter:blur(20px);
+      box-shadow:0 12px 40px rgba(0,0,0,.5);
+      z-index:1000;
+      align-items:center;
+      gap:14px;
+      max-width:90%;
+      font-size:13px;
+    }
+
+    .install-banner.show{ display:flex; }
+    .install-banner .btn-install{
+      background:linear-gradient(180deg, rgba(124,156,255,.25), rgba(124,156,255,.12));
+      border:1px solid rgba(124,156,255,.30);
+      border-radius:8px;
+      padding:8px 16px;
+      color:var(--text);
+      font-weight:700;
+      cursor:pointer;
+      font-size:12px;
+      white-space:nowrap;
+    }
+
+    .install-banner .btn-install:hover{ transform:translateY(-1px); }
+    .install-banner .btn-close{
+      background:none;
+      border:none;
+      color:var(--muted);
+      cursor:pointer;
+      font-size:18px;
+      padding:0 4px;
+    }
+
+    @media (max-width: 600px){
+      .install-banner{ flex-wrap:wrap; justify-content:center; text-align:center; padding:12px 16px; }
+    }
   </style>
 </head>
 <body>
+  <!-- ===== PWA INSTALL BANNER ===== -->
+  <div class="install-banner" id="installBanner">
+    <span>📱</span>
+    <span>Install <strong>Egy Calculator</strong> as app</span>
+    <button class="btn-install" id="installBtn">Install</button>
+    <button class="btn-close" id="closeBanner">✕</button>
+  </div>
+
   <div class="wrap">
     <div class="hero">
       <div>
@@ -777,9 +815,59 @@
   </div>
 
 <script>
+// ===== PWA: Service Worker Registration =====
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('data:application/javascript;base64,' + btoa(`
+    const CACHE = 'egy-calculator-v1';
+    const URLS = ['/'];
+
+    self.addEventListener('install', e => {
+      e.waitUntil(
+        caches.open(CACHE).then(c => c.addAll(URLS))
+      );
+    });
+
+    self.addEventListener('fetch', e => {
+      e.respondWith(
+        caches.match(e.request).then(r => r || fetch(e.request))
+      );
+    });
+  `)).then(() => {
+    console.log('Service Worker registered');
+  }).catch(() => {
+    console.log('Service Worker registration failed');
+  });
+}
+
+// ===== PWA: Install Prompt =====
+let deferredPrompt;
+const installBanner = document.getElementById('installBanner');
+const installBtn = document.getElementById('installBtn');
+const closeBanner = document.getElementById('closeBanner');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBanner.classList.add('show');
+});
+
+installBtn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const result = await deferredPrompt.userChoice;
+    if (result.outcome === 'accepted') {
+      installBanner.classList.remove('show');
+    }
+    deferredPrompt = null;
+  }
+});
+
+closeBanner.addEventListener('click', () => {
+  installBanner.classList.remove('show');
+});
+
 // ===== DATA STRUCTURE =====
 const itemData = {
-  // ===== NOVA/EGY A =====
   'a-weapon':   { id:'a-weapon',   cat:'Nova/Egy A', group:'weapon_shield', name:'Weapon', gold:2000000, sc:100, lsc:10000 },
   'a-shield':   { id:'a-shield',   cat:'Nova/Egy A', group:'weapon_shield', name:'Shield', gold:2000000, sc:100, lsc:10000 },
   'a-head':     { id:'a-head',     cat:'Nova/Egy A', group:'armor', name:'Head', setTag:'Destruction', gold:1000000, sc:50, lsc:1000 },
@@ -793,7 +881,6 @@ const itemData = {
   'a-ring1':    { id:'a-ring1',    cat:'Nova/Egy A', group:'accessory', name:'1. Ring', setTag:'Myth', gold:1000000, sc:100, lsc:2000 },
   'a-ring2':    { id:'a-ring2',    cat:'Nova/Egy A', group:'accessory', name:'2. Ring', setTag:'Myth', gold:1000000, sc:100, lsc:2000 },
 
-  // ===== NOVA/EGY B =====
   'b-head':     { id:'b-head',     cat:'Nova/Egy B', group:'armor', name:'Head', setTag:'Immortal', gold:2000000, sc:100, lsc:2000, gc:25, lgc:2000 },
   'b-chest':    { id:'b-chest',    cat:'Nova/Egy B', group:'armor', name:'Chest', setTag:'Immortal', gold:2000000, sc:100, lsc:2000, gc:25, lgc:2000 },
   'b-legs':     { id:'b-legs',     cat:'Nova/Egy B', group:'armor', name:'Legs', setTag:'Immortal', gold:2000000, sc:100, lsc:2000, gc:25, lgc:2000 },
@@ -805,7 +892,6 @@ const itemData = {
   'b-ring1':    { id:'b-ring1',    cat:'Nova/Egy B', group:'accessory', name:'1. Ring', setTag:'Legend', gold:2000000, sc:200, lsc:4000, gc:50, lgc:2000 },
   'b-ring2':    { id:'b-ring2',    cat:'Nova/Egy B', group:'accessory', name:'2. Ring', setTag:'Legend', gold:2000000, sc:200, lsc:4000, gc:50, lgc:2000 },
 
-  // ===== UPGRADE =====
   'u-head':     { id:'u-head',     cat:'Upgrade Nova/Egy A → B', group:'armor', name:'Head', setTag:'Upgrade', upgradeFrom:'Destruction', upgradeTo:'Immortal', gold:2000000, sc:50, lsc:1000, gc:25, lgc:2000 },
   'u-chest':    { id:'u-chest',    cat:'Upgrade Nova/Egy A → B', group:'armor', name:'Chest', setTag:'Upgrade', upgradeFrom:'Destruction', upgradeTo:'Immortal', gold:2000000, sc:50, lsc:1000, gc:25, lgc:2000 },
   'u-legs':     { id:'u-legs',     cat:'Upgrade Nova/Egy A → B', group:'armor', name:'Legs', setTag:'Upgrade', upgradeFrom:'Destruction', upgradeTo:'Immortal', gold:2000000, sc:50, lsc:1000, gc:25, lgc:2000 },
