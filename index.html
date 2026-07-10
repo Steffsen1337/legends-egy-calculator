@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Egy Calculator</title>
+  <style>
+    :root{
+      --bg:#08111f;
+      --card:rgba(17,24,39,.82);
+      --card2:rgba(15,23,42,.88);
+      --line:rgba(255,255,255,.08);
+      --text:#e8eefc;
+      --muted:#9aa8c7;
+      --accent:#7c9cff;
+      --accent2:#67e8f9;
+      --warn:#fbbf24;
+      --danger:#f87171;
+      --success:#6ee7b7;
+      --shadow:0 18px 60px rgba(0,0,0,.35);
+      --radius:22px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ margin:0; padding:0; }
+    body{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(124,156,255,.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(103,232,249,.10), transparent 24%),
+        linear-gradient(180deg, #050914 0%, var(--bg) 55%, #060a13 100%);
+      min-height:100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .wrap{
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 28px 18px 42px;
+    }
+
+    .hero{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:16px;
+      margin-bottom:20px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(28px, 4vw, 46px);
+      letter-spacing:-0.04em;
+      line-height:1.02;
+    }
+
+    .lead{
+      margin:10px 0 0;
+      color:var(--muted);
+      max-width: 980px;
+      line-height:1.5;
+    }
+
+    .lead .highlight{
+      color:var(--warn);
+    }
+
+    .lead .note{
+      display:inline-block;
+      font-size:13px;
+      color:var(--muted);
+      margin-top:4px;
+      opacity:0.8;
+    }
+
+    .pill{
+      padding:12px 16px;
+      border-radius:999px;
+      border:1px solid rgba(124,156,255,.22);
+      background: linear-gradient(180deg, rgba(18,26,49,.85), rgba(18,26,49,.45));
+      color:var(--muted);
+      box-shadow:var(--shadow);
+      white-space:nowrap;
+      font-size:14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(18,26,49,.84), rgba(12,18,35,.84));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(14px);
+    }
+
+    .panel-head{
+      padding:18px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+    }
+
+    .panel-head h2{
+      margin:0;
+      font-size:18px;
+      letter-spacing:-0.02em;
+    }
+
+    .sub{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .panel-body{ padding:18px; }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .tab{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--muted);
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      font-weight:600;
+      transition:.18s ease;
+    }
+
+    .tab.active{
+      background: linear-gradient(180deg, rgba(124,156,255,.22), rgba(103,232,249,.10));
+      color:var(--text);
+      border-color: rgba(124,156,255,.26);
+    }
+
+    .group{
+      margin-bottom:20px;
+      background: rgba(255,255,255,.03);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.06);
+      overflow:hidden;
+    }
+
+    .group-header{
+      padding:10px 14px;
+      background: rgba(255,255,255,.04);
+      border-bottom:1px solid rgba(255,255,255,.06);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .group-header h3{
+      margin:0;
+      font-size:14px;
+      letter-spacing:-0.01em;
+    }
+
+    .group-header h3 .subtitle{
+      font-size:10px;
+      font-weight:400;
+      color:var(--muted);
+      margin-left:6px;
+    }
+
+    .group-actions{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
+    .group-actions button{
+      appearance:none;
+      border:none;
+      border-radius:999px;
+      padding:4px 12px;
+      font-size:11px;
+      font-weight:600;
+      cursor:pointer;
+      transition: transform .14s ease, opacity .14s ease;
+      background: linear-gradient(180deg, rgba(124,156,255,.20), rgba(124,156,255,.10));
+      border:1px solid rgba(124,156,255,.20);
+      color:var(--text);
+    }
+
+    .group-actions button:hover{ transform: translateY(-1px); }
+    .group-actions button.ghost{
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+    }
+
+    .group-actions button.complete{
+      background: linear-gradient(180deg, rgba(110,231,183,.20), rgba(110,231,183,.08));
+      border-color: rgba(110,231,183,.25);
+      color:var(--success);
+    }
+
+    .group-actions button.select-all{
+      background: linear-gradient(180deg, rgba(124,156,255,.15), rgba(124,156,255,.08));
+      border-color: rgba(124,156,255,.15);
+      color:var(--accent2);
+    }
+
+    .progress-wrapper{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex:1;
+      min-width:100px;
+    }
+
+    .progress-bar{
+      flex:1;
+      height:3px;
+      background: rgba(255,255,255,.08);
+      border-radius:999px;
+      overflow:hidden;
+      min-width:40px;
+    }
+
+    .progress-fill{
+      height:100%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      border-radius:999px;
+      transition:width .3s ease;
+    }
+
+    .progress-text{
+      font-size:11px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    .group-items{
+      padding:6px 10px 10px;
+      display:grid;
+      gap:4px;
+    }
+
+    .item-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:6px 10px;
+      border-radius:10px;
+      background: rgba(255,255,255,.02);
+      border:1px solid rgba(255,255,255,.04);
+      cursor:pointer;
+      transition: background .15s ease, border-color .15s ease;
+    }
+
+    .item-row:hover{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.10);
+    }
+
+    .item-row.selected{
+      background: rgba(124,156,255,.08);
+      border-color: rgba(124,156,255,.20);
+    }
+
+    .item-row input[type="checkbox"]{
+      appearance:none;
+      width:16px;
+      height:16px;
+      border-radius:4px;
+      border:2px solid rgba(255,255,255,.15);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+      flex-shrink:0;
+      position:relative;
+      transition: all .15s ease;
+      pointer-events: auto;
+    }
+
+    .item-row input[type="checkbox"]:checked{
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .item-row input[type="checkbox"]:checked::after{
+      content:'✓';
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      color:#fff;
+      font-size:11px;
+      font-weight:700;
+    }
+
+    .item-info{
+      flex:1;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      pointer-events: none;
+    }
+
+    .item-name{
+      font-weight:500;
+      font-size:13px;
+    }
+
+    .item-name .set-tag{
+      font-size:10px;
+      font-weight:400;
+      color:var(--muted);
+      margin-left:4px;
+    }
+
+    .item-name .upgrade-arrow{
+      color:var(--warn);
+      margin:0 4px;
+    }
+
+    .item-prices{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .item-prices .price{
+      display:flex;
+      align-items:center;
+      gap:3px;
+    }
+
+    .item-prices .price.gold-price{
+      font-weight:700;
+      color:#ffd966;
+    }
+
+    .coin{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      font-size:8px;
+      font-weight:700;
+      line-height:1;
+      border:1px solid rgba(255,255,255,.16);
+      flex:0 0 auto;
+    }
+
+    .coin.gold{ background: linear-gradient(180deg,#ffd966,#d4a017); color:#2a1b00; border-color: rgba(255,214,102,.35); }
+    .coin.sc{ background: linear-gradient(180deg,#eef2f7,#aab4c3); color:#1d2430; border-color: rgba(255,255,255,.24); }
+    .coin.lsc{ background: linear-gradient(180deg,#dfe8f3,#8da0b8); color:#16202f; border-color: rgba(223,232,243,.28); }
+    .coin.gc{ background: linear-gradient(180deg,#ffe27a,#f5b700); color:#2d2200; border-color: rgba(255,224,102,.34); }
+    .coin.lgc{ background: linear-gradient(180deg,#f1d48e,#c98a10); color:#281800; border-color: rgba(241,212,142,.32); }
+
+    .right{
+      display:grid;
+      gap:12px;
+    }
+
+    .summary{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(23,33,60,.92), rgba(14,22,42,.92));
+      padding:16px;
+    }
+
+    .summary h2{
+      margin:0 0 10px 0;
+      font-size:15px;
+      letter-spacing:-0.02em;
+    }
+
+    .total-main{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 14px;
+      background: rgba(255,215,0,.06);
+      border:1px solid rgba(255,215,0,.12);
+      border-radius:12px;
+      margin-bottom:12px;
+    }
+
+    .total-main .coin{
+      width:28px;
+      height:28px;
+      font-size:14px;
+      flex:0 0 auto;
+    }
+
+    .total-main .amount{
+      font-size:24px;
+      font-weight:900;
+      letter-spacing:-0.03em;
+      color:#ffd966;
+    }
+
+    .total-main .label{
+      color:var(--muted);
+      font-size:12px;
+      margin-left:auto;
+    }
+
+    .total-currencies{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:6px;
+    }
+
+    .currency-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:10px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.05);
+    }
+
+    .currency-item .coin{
+      width:20px;
+      height:20px;
+      font-size:10px;
+      flex:0 0 auto;
+    }
+
+    .currency-item .value{
+      font-weight:700;
+      font-size:15px;
+      margin-left:auto;
+    }
+
+    .currency-item .currency-label{
+      color:var(--muted);
+      font-size:11px;
+      font-weight:500;
+    }
+
+    .selected-list{
+      margin-top:10px;
+      display:grid;
+      gap:8px;
+      max-height:350px;
+      overflow:auto;
+      padding-right:4px;
+    }
+
+    .selected-item{
+      display:flex;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      transition: all .2s ease;
+      align-items:center;
+    }
+
+    .selected-item:hover{
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.12);
+    }
+
+    .selected-item .item-icon{
+      width:30px;
+      height:30px;
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:15px;
+      flex-shrink:0;
+      background: rgba(124,156,255,.12);
+      border:1px solid rgba(124,156,255,.15);
+    }
+
+    .selected-item .item-details{
+      flex:1;
+      min-width:0;
+    }
+
+    .selected-item .item-details .name{
+      font-weight:600;
+      font-size:13px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
+    .selected-item .item-details .name .badge{
+      font-size:9px;
+      font-weight:600;
+      padding:1px 8px;
+      border-radius:999px;
+      background: rgba(124,156,255,.15);
+      color:var(--accent2);
+      border:1px solid rgba(124,156,255,.15);
+    }
+
+    .selected-item .item-details .meta{
+      color:var(--muted);
+      font-size:10px;
+      margin-top:2px;
+    }
+
+    .selected-item .item-prices-compact{
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      margin-top:2px;
+    }
+
+    .selected-item .item-prices-compact .price-tag{
+      display:flex;
+      align-items:center;
+      gap:3px;
+      font-size:11px;
+      font-weight:600;
+      padding:1px 6px;
+      border-radius:4px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.06);
+    }
+
+    .selected-item .item-prices-compact .price-tag .coin{
+      width:12px;
+      height:12px;
+      font-size:7px;
+    }
+
+    .selected-item .item-actions{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:4px;
+      flex-shrink:0;
+    }
+
+    .selected-item .item-actions .remove-btn{
+      margin:0;
+      padding:4px 10px;
+      font-size:10px;
+      border-radius:6px;
+      background: rgba(248,113,113,.08);
+      border:1px solid rgba(248,113,113,.15);
+      color:var(--danger);
+      cursor:pointer;
+      transition: all .15s ease;
+      font-weight:600;
+      appearance:none;
+    }
+
+    .selected-item .item-actions .remove-btn:hover{
+      background: rgba(248,113,113,.18);
+      border-color: rgba(248,113,113,.30);
+      transform: translateY(-1px);
+    }
+
+    .selected-item .item-actions .group-label{
+      font-size:9px;
+      color:var(--muted);
+      opacity:.6;
+      text-transform:uppercase;
+      letter-spacing:.03em;
+    }
+
+    .actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .actions button{
+      appearance:none;
+      border:none;
+      border-radius:10px;
+      padding:9px 12px;
+      font-size:12px;
+      font-weight:700;
+      color:var(--text);
+      background: linear-gradient(180deg, rgba(124,156,255,.22), rgba(124,156,255,.12));
+      border:1px solid rgba(124,156,255,.25);
+      cursor:pointer;
+      transition: transform .14s ease, opacity .14s ease;
+    }
+
+    .actions button:hover{ transform: translateY(-1px); }
+    .actions button.ghost{
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+    }
+
+    .info-box{
+      padding:10px 14px;
+      border-radius:10px;
+      background: rgba(251,191,36,.06);
+      border:1px solid rgba(251,191,36,.12);
+      color:var(--warn);
+      font-size:12px;
+      margin-bottom:14px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      line-height:1.5;
+    }
+
+    .info-box .icon{
+      font-size:16px;
+      flex-shrink:0;
+    }
+
+    .info-box strong{
+      color:#ffe2a4;
+    }
+
+    .keyboard-hint{
+      font-size:10px;
+      color:var(--muted);
+      opacity:.4;
+      margin-left:8px;
+    }
+
+    .note-badge{
+      display:inline-block;
+      font-size:11px;
+      font-weight:500;
+      color:var(--warn);
+      background: rgba(251,191,36,.08);
+      border:1px solid rgba(251,191,36,.15);
+      border-radius:999px;
+      padding:2px 12px;
+      margin-top:6px;
+    }
+
+    @media (max-width: 980px){
+      .grid{ grid-template-columns:1fr; }
+      .hero{ flex-direction:column; align-items:flex-start; }
+      .pill{ white-space:normal; }
+      .total-currencies{ grid-template-columns:1fr 1fr; }
+    }
+
+    @media (max-width: 600px){
+      .total-currencies{ grid-template-columns:1fr; }
+      .total-main .amount{ font-size:20px; }
+      .selected-item{ flex-wrap:wrap; }
+      .selected-item .item-actions{ flex-direction:row; width:100%; justify-content:space-between; }
+    }
+
+    .selected-list::-webkit-scrollbar,
+    .group-items::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .selected-list::-webkit-scrollbar-track,
+    .group-items::-webkit-scrollbar-track {
+      background: rgba(255,255,255,.03);
+      border-radius: 999px;
+    }
+
+    .selected-list::-webkit-scrollbar-thumb,
+    .group-items::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,.10);
+      border-radius: 999px;
+    }
+
+    .selected-list::-webkit-scrollbar-thumb:hover,
+    .group-items::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,.20);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <h1>Egy Calculator</h1>
+        <p class="lead">
+          Choose between <strong>Nova/Egy A</strong>, <strong>Nova/Egy B</strong>, and <strong>Upgrade Nova/Egy A → Nova/Egy B</strong>.
+        </p>
+        <span class="note-badge">⚠️ Weapon & Shield (Egy B) only via FGW / LHWT</span>
+      </div>
+      <div class="pill" id="selCount">0 selected</div>
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Selection <span class="keyboard-hint">⌘A = Select All · ESC = Reset</span></h2>
+            <div class="sub">Grouped items – packages automatically select all associated parts.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="tabs">
+            <button class="tab active" data-tab="Nova/Egy A">Nova/Egy A</button>
+            <button class="tab" data-tab="Nova/Egy B">Nova/Egy B</button>
+            <button class="tab" data-tab="Upgrade Nova/Egy A → B">Upgrade Nova/Egy A → B</button>
+          </div>
+
+          <div id="groupsContainer"></div>
+
+          <div class="actions">
+            <button id="clear" class="ghost">✕ Reset</button>
+            <button id="export" class="ghost">📊 Export CSV</button>
+            <button id="selectAllTabs" class="ghost">☑ Select All</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="summary">
+          <h2>💰 Total Sum</h2>
+          
+          <div class="total-main">
+            <span class="coin gold">G</span>
+            <span class="amount" id="totalGold">0</span>
+            <span class="label">Total Gold</span>
+          </div>
+
+          <div class="total-currencies">
+            <div class="currency-item">
+              <span class="coin sc">SC</span>
+              <span class="currency-label">Silver Coins</span>
+              <span class="value" id="totalSC">0</span>
+            </div>
+            <div class="currency-item">
+              <span class="coin lsc">LSC</span>
+              <span class="currency-label">Legend Silver Coins</span>
+              <span class="value" id="totalLSC">0</span>
+            </div>
+            <div class="currency-item">
+              <span class="coin gc">GC</span>
+              <span class="currency-label">Gold Coins</span>
+              <span class="value" id="totalGC">0</span>
+            </div>
+            <div class="currency-item">
+              <span class="coin lgc">LGC</span>
+              <span class="currency-label">Legend Gold Coins</span>
+              <span class="value" id="totalLGC">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary">
+          <h2>📋 Selected Items</h2>
+          <div class="selected-list" id="selectedList">
+            <div class="small">Nothing selected yet.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ===== DATA STRUCTURE =====
+const itemData = {
+  // ===== NOVA/EGY A =====
+  'a-weapon':   { id:'a-weapon',   cat:'Nova/Egy A', group:'weapon_shield', name:'Weapon', gold:2000000, sc:100, lsc:10000 },
+  'a-shield':   { id:'a-shield',   cat:'Nova/Egy A', group:'weapon_shield', name:'Shield', gold:2000000, sc:100, lsc:10000 },
+  'a-head':     { id:'a-head',     cat:'Nova/Egy A', group:'armor', name:'Head', setTag:'Destruction', gold:1000000, sc:50, lsc:1000 },
+  'a-chest':    { id:'a-chest',    cat:'Nova/Egy A', group:'armor', name:'Chest', setTag:'Destruction', gold:1000000, sc:50, lsc:1000 },
+  'a-legs':     { id:'a-legs',     cat:'Nova/Egy A', group:'armor', name:'Legs', setTag:'Destruction', gold:1000000, sc:50, lsc:1000 },
+  'a-shoulder': { id:'a-shoulder', cat:'Nova/Egy A', group:'armor', name:'Shoulder', setTag:'Destruction', gold:1000000, sc:50, lsc:1000 },
+  'a-hands':    { id:'a-hands',    cat:'Nova/Egy A', group:'armor', name:'Hands', setTag:'Destruction', gold:1000000, sc:50, lsc:1000 },
+  'a-foot':     { id:'a-foot',     cat:'Nova/Egy A', group:'armor', name:'Foot', setTag:'Destruction', gold:1000000, sc:50, lsc:1000 },
+  'a-earring':  { id:'a-earring',  cat:'Nova/Egy A', group:'accessory', name:'Earring', setTag:'Myth', gold:1500000, sc:100, lsc:4000 },
+  'a-necklace': { id:'a-necklace', cat:'Nova/Egy A', group:'accessory', name:'Necklace', setTag:'Myth', gold:2000000, sc:100, lsc:6000 },
+  'a-ring1':    { id:'a-ring1',    cat:'Nova/Egy A', group:'accessory', name:'1. Ring', setTag:'Myth', gold:1000000, sc:100, lsc:2000 },
+  'a-ring2':    { id:'a-ring2',    cat:'Nova/Egy A', group:'accessory', name:'2. Ring', setTag:'Myth', gold:1000000, sc:100, lsc:2000 },
+
+  // ===== NOVA/EGY B =====
+  'b-head':     { id:'b-head',     cat:'Nova/Egy B', group:'armor', name:'Head', setTag:'Immortal', gold:2000000, sc:100, lsc:2000, gc:25, lgc:2000 },
+  'b-chest':    { id:'b-chest',    cat:'Nova/Egy B', group:'armor', name:'Chest', setTag:'Immortal', gold:2000000, sc:100, lsc:2000, gc:25, lgc:2000 },
+  'b-legs':     { id:'b-legs',     cat:'Nova/Egy B', group:'armor', name:'Legs', setTag:'Immortal', gold:2000000, sc:100, lsc:2000, gc:25, lgc:2000 },
+  'b-shoulder': { id:'b-shoulder', cat:'Nova/Egy B', group:'armor', name:'Shoulder', setTag:'Immortal', gold:2000000, sc:100, lsc:2000, gc:25, lgc:2000 },
+  'b-hands':    { id:'b-hands',    cat:'Nova/Egy B', group:'armor', name:'Hands', setTag:'Immortal', gold:2000000, sc:100, lsc:2000, gc:25, lgc:2000 },
+  'b-foot':     { id:'b-foot',     cat:'Nova/Egy B', group:'armor', name:'Foot', setTag:'Immortal', gold:2000000, sc:100, lsc:2000, gc:25, lgc:2000 },
+  'b-earring':  { id:'b-earring',  cat:'Nova/Egy B', group:'accessory', name:'Earring', setTag:'Legend', gold:2000000, sc:200, lsc:8000, gc:50, lgc:4000 },
+  'b-necklace': { id:'b-necklace', cat:'Nova/Egy B', group:'accessory', name:'Necklace', setTag:'Legend', gold:2000000, sc:200, lsc:12000, gc:50, lgc:6000 },
+  'b-ring1':    { id:'b-ring1',    cat:'Nova/Egy B', group:'accessory', name:'1. Ring', setTag:'Legend', gold:2000000, sc:200, lsc:4000, gc:50, lgc:2000 },
+  'b-ring2':    { id:'b-ring2',    cat:'Nova/Egy B', group:'accessory', name:'2. Ring', setTag:'Legend', gold:2000000, sc:200, lsc:4000, gc:50, lgc:2000 },
+
+  // ===== UPGRADE =====
+  'u-head':     { id:'u-head',     cat:'Upgrade Nova/Egy A → B', group:'armor', name:'Head', setTag:'Upgrade', upgradeFrom:'Destruction', upgradeTo:'Immortal', gold:2000000, sc:50, lsc:1000, gc:25, lgc:2000 },
+  'u-chest':    { id:'u-chest',    cat:'Upgrade Nova/Egy A → B', group:'armor', name:'Chest', setTag:'Upgrade', upgradeFrom:'Destruction', upgradeTo:'Immortal', gold:2000000, sc:50, lsc:1000, gc:25, lgc:2000 },
+  'u-legs':     { id:'u-legs',     cat:'Upgrade Nova/Egy A → B', group:'armor', name:'Legs', setTag:'Upgrade', upgradeFrom:'Destruction', upgradeTo:'Immortal', gold:2000000, sc:50, lsc:1000, gc:25, lgc:2000 },
+  'u-shoulder': { id:'u-shoulder', cat:'Upgrade Nova/Egy A → B', group:'armor', name:'Shoulder', setTag:'Upgrade', upgradeFrom:'Destruction', upgradeTo:'Immortal', gold:2000000, sc:50, lsc:1000, gc:25, lgc:2000 },
+  'u-hands':    { id:'u-hands',    cat:'Upgrade Nova/Egy A → B', group:'armor', name:'Hands', setTag:'Upgrade', upgradeFrom:'Destruction', upgradeTo:'Immortal', gold:2000000, sc:50, lsc:1000, gc:25, lgc:2000 },
+  'u-foot':     { id:'u-foot',     cat:'Upgrade Nova/Egy A → B', group:'armor', name:'Foot', setTag:'Upgrade', upgradeFrom:'Destruction', upgradeTo:'Immortal', gold:2000000, sc:50, lsc:1000, gc:25, lgc:2000 },
+  'u-earring':  { id:'u-earring',  cat:'Upgrade Nova/Egy A → B', group:'accessory', name:'Earring', setTag:'Upgrade', upgradeFrom:'Myth', upgradeTo:'Legend', gold:2000000, sc:100, lsc:4000, gc:50, lgc:4000 },
+  'u-necklace': { id:'u-necklace', cat:'Upgrade Nova/Egy A → B', group:'accessory', name:'Necklace', setTag:'Upgrade', upgradeFrom:'Myth', upgradeTo:'Legend', gold:2000000, sc:100, lsc:6000, gc:50, lgc:6000 },
+  'u-ring1':    { id:'u-ring1',    cat:'Upgrade Nova/Egy A → B', group:'accessory', name:'1. Ring', setTag:'Upgrade', upgradeFrom:'Myth', upgradeTo:'Legend', gold:2000000, sc:100, lsc:2000, gc:50, lgc:2000 },
+  'u-ring2':    { id:'u-ring2',    cat:'Upgrade Nova/Egy A → B', group:'accessory', name:'2. Ring', setTag:'Upgrade', upgradeFrom:'Myth', upgradeTo:'Legend', gold:2000000, sc:100, lsc:2000, gc:50, lgc:2000 },
+};
+
+const packages = {
+  'a-weapon_shield': { id:'a-weapon_shield', cat:'Nova/Egy A', name:'Weapon + Shield', items: ['a-weapon','a-shield'] },
+  'a-set': { id:'a-set', cat:'Nova/Egy A', name:'Set', items: ['a-head','a-chest','a-legs','a-shoulder','a-hands','a-foot'] },
+  'a-accessory': { id:'a-accessory', cat:'Nova/Egy A', name:'Accessory', items: ['a-earring','a-necklace','a-ring1','a-ring2'] },
+  'b-set': { id:'b-set', cat:'Nova/Egy B', name:'Set', items: ['b-head','b-chest','b-legs','b-shoulder','b-hands','b-foot'] },
+  'b-accessory': { id:'b-accessory', cat:'Nova/Egy B', name:'Accessory', items: ['b-earring','b-necklace','b-ring1','b-ring2'] },
+  'u-set': { id:'u-set', cat:'Upgrade Nova/Egy A → B', name:'Set', items: ['u-head','u-chest','u-legs','u-shoulder','u-hands','u-foot'] },
+  'u-accessory': { id:'u-accessory', cat:'Upgrade Nova/Egy A → B', name:'Accessory', items: ['u-earring','u-necklace','u-ring1','u-ring2'] },
+};
+
+const groups = {
+  weapon_shield: { label:'Weapon & Shield', icon:'⚔️', subtitle:'' },
+  armor: { label:'Armor', icon:'🛡️', subtitle:'' },
+  accessory: { label:'Accessories', icon:'💎', subtitle:'' }
+};
+
+const groupIcons = {
+  weapon_shield: '⚔️',
+  armor: '🛡️',
+  accessory: '💎'
+};
+
+const state = { tab: 'Nova/Egy A', selected: new Set() };
+
+const fmt = n => new Intl.NumberFormat('en-US').format(n || 0);
+
+function getItemsForTab(tab) {
+  return Object.values(itemData).filter(i => i.cat === tab);
+}
+
+function getPackagesForTab(tab) {
+  return Object.values(packages).filter(p => p.cat === tab);
+}
+
+function getSelectedItems() {
+  return Object.values(itemData).filter(i => state.selected.has(i.id));
+}
+
+function getPackageStatus(pkg, selected) {
+  const all = pkg.items.every(id => selected.has(id));
+  const count = pkg.items.filter(id => selected.has(id)).length;
+  return { all, count, total: pkg.items.length };
+}
+
+function renderGroups() {
+  const container = document.getElementById('groupsContainer');
+  container.innerHTML = '';
+
+  const items = getItemsForTab(state.tab);
+  const pkgs = getPackagesForTab(state.tab);
+
+  if (state.tab === 'Nova/Egy B' || state.tab === 'Upgrade Nova/Egy A → B') {
+    const infoBox = document.createElement('div');
+    infoBox.className = 'info-box';
+    infoBox.innerHTML = `
+      <span class="icon">⚠️</span>
+      <span><strong>Weapon & Shield (Egy B)</strong> can only be obtained via <strong>FGW</strong> or <strong>LHWT</strong>. Direct purchase is not possible.</span>
+    `;
+    container.appendChild(infoBox);
+  }
+
+  const groupsMap = {};
+  items.forEach(item => {
+    if (!groupsMap[item.group]) groupsMap[item.group] = [];
+    groupsMap[item.group].push(item);
+  });
+
+  pkgs.forEach(pkg => {
+    const firstItem = itemData[pkg.items[0]];
+    if (firstItem) {
+      const group = firstItem.group;
+      if (!groupsMap[group]) groupsMap[group] = [];
+      if (!groupsMap[group]._packages) groupsMap[group]._packages = [];
+      groupsMap[group]._packages.push(pkg);
+    }
+  });
+
+  for (const [groupKey, groupData] of Object.entries(groupsMap)) {
+    const groupInfo = groups[groupKey] || { label: groupKey, icon: '📦', subtitle: '' };
+    const pkgList = groupData._packages || [];
+    const actualItems = groupData.filter(i => i.id);
+
+    const groupEl = document.createElement('div');
+    groupEl.className = 'group';
+
+    const selectedCount = actualItems.filter(i => state.selected.has(i.id)).length;
+    const totalCount = actualItems.length;
+    const progress = totalCount > 0 ? (selectedCount / totalCount) * 100 : 0;
+
+    const allSelected = selectedCount === totalCount && totalCount > 0;
+
+    const header = document.createElement('div');
+    header.className = 'group-header';
+    header.innerHTML = `
+      <h3>${groupInfo.icon} ${groupInfo.label}</h3>
+      <div class="progress-wrapper">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:${progress}%"></div>
+        </div>
+        <span class="progress-text">${selectedCount}/${totalCount}</span>
+      </div>
+      <div class="group-actions">
+        ${pkgList.map(pkg => {
+          const status = getPackageStatus(pkg, state.selected);
+          const label = status.all ? '✓ ' + pkg.name : pkg.name;
+          const cls = status.all ? 'complete' : '';
+          return `<button class="${cls}" data-pkg="${pkg.id}">${label}</button>`;
+        }).join('')}
+        <button class="select-all" data-select-group="${groupKey}">${allSelected ? '✕ None' : '☑ All'}</button>
+      </div>
+    `;
+    groupEl.appendChild(header);
+
+    const itemsContainer = document.createElement('div');
+    itemsContainer.className = 'group-items';
+
+    actualItems.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'item-row' + (state.selected.has(item.id) ? ' selected' : '');
+      row.dataset.itemId = item.id;
+
+      const checked = state.selected.has(item.id);
+
+      const priceParts = [];
+      if (item.gold) priceParts.push(`<span class="price gold-price"><span class="coin gold">G</span>${fmt(item.gold)}</span>`);
+      if (item.sc) priceParts.push(`<span class="price"><span class="coin sc">SC</span>${fmt(item.sc)}</span>`);
+      if (item.lsc) priceParts.push(`<span class="price"><span class="coin lsc">LSC</span>${fmt(item.lsc)}</span>`);
+      if (item.gc) priceParts.push(`<span class="price"><span class="coin gc">GC</span>${fmt(item.gc)}</span>`);
+      if (item.lgc) priceParts.push(`<span class="price"><span class="coin lgc">LGC</span>${fmt(item.lgc)}</span>`);
+
+      let displayName = item.name;
+      
+      if (item.cat === 'Upgrade Nova/Egy A → B' && item.upgradeFrom && item.upgradeTo) {
+        displayName = `${item.name} (${item.upgradeFrom} → ${item.upgradeTo})`;
+      } else if (item.setTag && item.setTag !== 'Upgrade') {
+        displayName = `${item.name} (${item.setTag})`;
+      }
+
+      row.innerHTML = `
+        <input type="checkbox" ${checked ? 'checked' : ''} />
+        <div class="item-info">
+          <span class="item-name">${displayName}</span>
+          <div class="item-prices">${priceParts.join('')}</div>
+        </div>
+      `;
+
+      const checkbox = row.querySelector('input');
+      
+      checkbox.addEventListener('change', (e) => {
+        e.stopPropagation();
+        toggleItem(item.id, checkbox.checked);
+      });
+
+      row.addEventListener('click', (e) => {
+        if (e.target === checkbox) return;
+        checkbox.checked = !checkbox.checked;
+        toggleItem(item.id, checkbox.checked);
+      });
+
+      itemsContainer.appendChild(row);
+    });
+
+    groupEl.appendChild(itemsContainer);
+    container.appendChild(groupEl);
+  }
+
+  container.querySelectorAll('[data-pkg]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const pkgId = btn.dataset.pkg;
+      const pkg = packages[pkgId];
+      if (!pkg) return;
+
+      const status = getPackageStatus(pkg, state.selected);
+      if (status.all) {
+        pkg.items.forEach(id => state.selected.delete(id));
+      } else {
+        pkg.items.forEach(id => state.selected.add(id));
+      }
+      renderGroups();
+      updateUI();
+      saveState();
+    });
+  });
+
+  container.querySelectorAll('[data-select-group]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const groupKey = btn.dataset.selectGroup;
+      const items = getItemsForTab(state.tab).filter(i => i.group === groupKey);
+      const allSelected = items.every(i => state.selected.has(i.id));
+      
+      if (allSelected) {
+        items.forEach(item => state.selected.delete(item.id));
+      } else {
+        items.forEach(item => state.selected.add(item.id));
+      }
+      renderGroups();
+      updateUI();
+      saveState();
+    });
+  });
+}
+
+function toggleItem(itemId, checked) {
+  if (checked) {
+    state.selected.add(itemId);
+  } else {
+    state.selected.delete(itemId);
+  }
+  renderGroups();
+  updateUI();
+  saveState();
+}
+
+function updateUI() {
+  const sel = getSelectedItems();
+  let gold=0, sc=0, lsc=0, gc=0, lgc=0;
+
+  const list = document.getElementById('selectedList');
+  list.innerHTML = '';
+
+  if(!sel.length){
+    list.innerHTML = '<div class="small">Nothing selected yet.</div>';
+  } else {
+    sel.forEach(i => {
+      gold += i.gold || 0;
+      sc += i.sc || 0;
+      lsc += i.lsc || 0;
+      gc += i.gc || 0;
+      lgc += i.lgc || 0;
+
+      const row = document.createElement('div');
+      row.className = 'selected-item';
+      
+      let priceTags = '';
+      if (i.gold) priceTags += `<span class="price-tag"><span class="coin gold">G</span>${fmt(i.gold)}</span>`;
+      if (i.sc) priceTags += `<span class="price-tag"><span class="coin sc">SC</span>${fmt(i.sc)}</span>`;
+      if (i.lsc) priceTags += `<span class="price-tag"><span class="coin lsc">LSC</span>${fmt(i.lsc)}</span>`;
+      if (i.gc) priceTags += `<span class="price-tag"><span class="coin gc">GC</span>${fmt(i.gc)}</span>`;
+      if (i.lgc) priceTags += `<span class="price-tag"><span class="coin lgc">LGC</span>${fmt(i.lgc)}</span>`;
+      
+      let badge = i.cat;
+      if (i.cat === 'Nova/Egy A') badge = 'A';
+      else if (i.cat === 'Nova/Egy B') badge = 'B';
+      else if (i.cat === 'Upgrade Nova/Egy A → B') badge = '↑';
+      
+      let displayName = i.name;
+      if (i.cat === 'Upgrade Nova/Egy A → B' && i.upgradeFrom && i.upgradeTo) {
+        displayName = `${i.name} (${i.upgradeFrom} → ${i.upgradeTo})`;
+      } else if (i.setTag && i.setTag !== 'Upgrade') {
+        displayName = `${i.name} (${i.setTag})`;
+      }
+      
+      row.innerHTML = `
+        <div class="item-icon">${groupIcons[i.group] || '📦'}</div>
+        <div class="item-details">
+          <div class="name">
+            ${displayName}
+            <span class="badge">${badge}</span>
+          </div>
+          <div class="meta">${i.cat} · ${groups[i.group]?.label || i.group}</div>
+          <div class="item-prices-compact">${priceTags}</div>
+        </div>
+        <div class="item-actions">
+          <button class="remove-btn" data-remove="${i.id}">✕ Remove</button>
+          <span class="group-label">${groups[i.group]?.label || i.group}</span>
+        </div>
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  document.querySelectorAll('.remove-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.remove;
+      state.selected.delete(id);
+      renderGroups();
+      updateUI();
+      saveState();
+    });
+  });
+
+  document.getElementById('totalGold').textContent = fmt(gold);
+  document.getElementById('totalSC').textContent = fmt(sc);
+  document.getElementById('totalLSC').textContent = fmt(lsc);
+  document.getElementById('totalGC').textContent = fmt(gc);
+  document.getElementById('totalLGC').textContent = fmt(lgc);
+
+  document.getElementById('selCount').textContent = `${sel.length} selected`;
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('egy_calculator_selected', JSON.stringify([...state.selected]));
+    localStorage.setItem('egy_calculator_tab', state.tab);
+  } catch (e) {}
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('egy_calculator_selected');
+    const savedTab = localStorage.getItem('egy_calculator_tab');
+    if (saved) {
+      const ids = JSON.parse(saved);
+      ids.forEach(id => state.selected.add(id));
+    }
+    if (savedTab && ['Nova/Egy A', 'Nova/Egy B', 'Upgrade Nova/Egy A → B'].includes(savedTab)) {
+      state.tab = savedTab;
+    }
+    return true;
+  } catch (e) { return false; }
+}
+
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
+    e.preventDefault();
+    const items = getItemsForTab(state.tab);
+    items.forEach(item => state.selected.add(item.id));
+    renderGroups();
+    updateUI();
+    saveState();
+  }
+  
+  if (e.key === 'Escape') {
+    state.selected.clear();
+    renderGroups();
+    updateUI();
+    saveState();
+  }
+});
+
+function setTab(tab){
+  state.tab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  renderGroups();
+  updateUI();
+  saveState();
+}
+
+document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click', () => setTab(btn.dataset.tab)));
+
+document.getElementById('clear').addEventListener('click', () => {
+  state.selected.clear();
+  renderGroups();
+  updateUI();
+  saveState();
+});
+
+document.getElementById('selectAllTabs').addEventListener('click', () => {
+  const items = getItemsForTab(state.tab);
+  const allSelected = items.every(i => state.selected.has(i.id));
+  if (allSelected) {
+    items.forEach(item => state.selected.delete(item.id));
+  } else {
+    items.forEach(item => state.selected.add(item.id));
+  }
+  renderGroups();
+  updateUI();
+  saveState();
+});
+
+document.getElementById('export').addEventListener('click', () => {
+  const sel = getSelectedItems();
+  if(!sel.length) return alert('No items selected.');
+  const header = ['Category','Group','Name','Set','Upgrade From','Upgrade To','Gold','SC','LSC','GC','LGC'];
+  const rows = sel.map(i => [
+    i.cat, i.group, i.name, i.setTag || '', i.upgradeFrom || '', i.upgradeTo || '', i.gold || 0, i.sc || 0, i.lsc || 0, i.gc || 0, i.lgc || 0
+  ].join(';'));
+  const csv = [header.join(';'), ...rows].join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'egy_calculator.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+if (!loadState()) {
+  setTab('Nova/Egy A');
+} else {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === state.tab));
+  renderGroups();
+  updateUI();
+}
+</script>
+</body>
+</html>
