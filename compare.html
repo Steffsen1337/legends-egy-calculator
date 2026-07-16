@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  
+  <!-- ===== SECURITY ===== -->
+  <!-- 
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    style-src 'self' 'unsafe-inline';
+    script-src 'self' 'unsafe-inline';
+    img-src 'self' data:;
+    manifest-src 'self';
+    worker-src 'self' blob:;
+    connect-src 'self';
+    font-src 'self';
+  ">
+  -->
+  
+  <script>
+    (function() {
+      if (window.location.protocol === 'file:') return;
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
+      if (window.location.hostname.includes('.local')) return;
+      if (location.protocol !== 'https:') {
+        location.href = 'https:' + location.href.substring(location.protocol.length);
+      }
+    })();
+  </script>
+  
+  <!-- ===== PWA META ===== -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#08111f" />
+  <meta name="description" content="Compare Nova/Egy A vs Nova/Egy B costs" />
+  
+  <title>Egy Calculator - Compare</title>
+  
+  <!-- ===== STYLES ===== -->
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/menu.css" />
+  
+  <style>
+    /* ===== COMPARE LAYOUT ===== */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .compare-col .panel-head h3 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge-a {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(124,156,255,.20);
+      color: var(--accent2);
+      border: 1px solid rgba(124,156,255,.20);
+    }
+
+    .badge-b {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(251,191,36,.20);
+      color: var(--warn);
+      border: 1px solid rgba(251,191,36,.20);
+    }
+
+    .compare-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      transition: border-color .4s ease;
+    }
+
+    .compare-item:last-child {
+      border-bottom: none;
+    }
+
+    .compare-item .label {
+      color: var(--muted);
+    }
+
+    .compare-item .value {
+      font-weight: 600;
+    }
+
+    .compare-item .value.gold {
+      color: #ffd966;
+    }
+
+    [data-theme="light"] .compare-item .value.gold {
+      color: #b8860b;
+    }
+
+    .compare-sub-item {
+      padding-left: 16px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+
+    .compare-sub-item .label {
+      opacity: 0.7;
+    }
+
+    .compare-sub-item .value {
+      font-weight: 500;
+    }
+
+    .compare-sub-item .value.gold {
+      color: #ffd966;
+    }
+
+    [data-theme="light"] .compare-sub-item .value.gold {
+      color: #b8860b;
+    }
+
+    .compare-total {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 2px solid var(--line);
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .compare-total .total-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .compare-total .total-row .value {
+      font-size: 16px;
+    }
+
+    .compare-total .total-row .value.gold {
+      color: #ffd966;
+    }
+
+    [data-theme="light"] .compare-total .total-row .value.gold {
+      color: #b8860b;
+    }
+
+    .compare-diff {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: var(--item-bg);
+      border: 1px solid var(--line);
+      text-align: center;
+      transition: background .4s ease, border-color .4s ease;
+    }
+
+    [data-theme="light"] .compare-diff {
+      border-color: rgba(0,0,0,.06);
+    }
+
+    .compare-diff .label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .compare-diff .value {
+      font-size: 28px;
+      font-weight: 900;
+      margin-top: 4px;
+    }
+
+    .compare-diff .value.positive {
+      color: var(--danger);
+    }
+
+    .compare-diff .value.negative {
+      color: var(--success);
+    }
+
+    .compare-diff .value.neutral {
+      color: var(--muted);
+    }
+
+    .compare-diff .sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .compare-diff .diff-currencies {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .compare-diff .diff-currencies .diff-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .compare-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== FIXED MENU (NUR HIER – EINMAL) ===== -->
+  <div id="menuContainer"></div>
+
+  <!-- ===== INSTALL BANNER ===== -->
+  <div class="install-banner" id="installBanner" role="alert" aria-label="App installation prompt">
+    <span>📱</span>
+    <span>Install <strong>Egy Calculator</strong> as app</span>
+    <button class="btn-install" id="installBtn" aria-label="Install app">Install</button>
+    <button class="btn-close" id="closeBanner" aria-label="Dismiss installation prompt">✕</button>
+  </div>
+
+  <!-- ===== MAIN APP ===== -->
+  <div class="wrap" role="main">
+    <!-- ===== HEADER ===== -->
+    <header class="hero" style="margin-top: 80px;">
+      <div class="hero-left">
+        <h1>Egy A vs Egy B Comparison</h1>
+        <p class="lead">
+          Compare the total costs of <strong>Nova/Egy A</strong> (including Upgrade) and <strong>Nova/Egy B</strong> side by side.
+        </p>
+        <span class="note-badge" role="note" title="Weapon & Shield (Egy B) are only available via FGW or LHWT">⚠️ Weapon & Shield (Egy B) only via FGW / LHWT</span>
+      </div>
+      <div class="hero-actions">
+        <!-- Leer – kein Counter auf der Compare-Seite -->
+      </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <div class="compare-grid">
+      <!-- ===== EGY A COLUMN ===== -->
+      <div class="compare-col panel">
+        <div class="panel-head">
+          <h3>
+            <span>Nova/Egy A + Upgrade</span>
+            <span class="badge-a">Destruction → Immortal / Myth → Legend</span>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div id="egyAItems"></div>
+          <div class="compare-total" id="egyATotalContainer">
+            <div class="total-row">
+              <span>Total Gold</span>
+              <span class="value gold" id="egyATotalGold">0</span>
+            </div>
+            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+              <span>SC</span>
+              <span id="egyATotalSC">0</span>
+            </div>
+            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+              <span>LSC</span>
+              <span id="egyATotalLSC">0</span>
+            </div>
+            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+              <span>GC</span>
+              <span id="egyATotalGC">0</span>
+            </div>
+            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+              <span>LGC</span>
+              <span id="egyATotalLGC">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== EGY B COLUMN ===== -->
+      <div class="compare-col panel">
+        <div class="panel-head">
+          <h3>
+            <span>Nova/Egy B</span>
+            <span class="badge-b">Immortal / Legend</span>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div id="egyBItems"></div>
+          <div class="compare-total" id="egyBTotalContainer">
+            <div class="total-row">
+              <span>Total Gold</span>
+              <span class="value gold" id="egyBTotalGold">0</span>
+            </div>
+            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+              <span>SC</span>
+              <span id="egyBTotalSC">0</span>
+            </div>
+            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+              <span>LSC</span>
+              <span id="egyBTotalLSC">0</span>
+            </div>
+            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+              <span>GC</span>
+              <span id="egyBTotalGC">0</span>
+            </div>
+            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+              <span>LGC</span>
+              <span id="egyBTotalLGC">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DIFFERENCE ===== -->
+    <div class="compare-diff" id="diffBox">
+      <div class="label">💰 Price Difference (Egy B - Egy A+Upgrade)</div>
+      <div class="value" id="diffValue">0</div>
+      <div class="sub" id="diffSub">Egy B is more expensive than Egy A+Upgrade</div>
+      <div class="diff-currencies" id="diffCurrencies">
+        <span class="diff-item"><span class="coin sc">SC</span> <span id="diffSC">0</span></span>
+        <span class="diff-item"><span class="coin lsc">LSC</span> <span id="diffLSC">0</span></span>
+        <span class="diff-item"><span class="coin gc">GC</span> <span id="diffGC">0</span></span>
+        <span class="diff-item"><span class="coin lgc">LGC</span> <span id="diffLGC">0</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="data/items.js"></script>
+  <script src="data/groups.js"></script>
+  <script src="menu.js"></script>
+  <script>
+    // ===== MENU RENDER (NUR HIER – EINMAL) =====
+    document.addEventListener('DOMContentLoaded', function() {
+      renderMenu('compare');
+    });
+
+    // ===== THEME =====
+    function applyTheme() {
+      let theme = 'dark';
+      try {
+        const saved = localStorage.getItem('egy_theme');
+        if (saved) theme = saved;
+      } catch (_) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+    applyTheme();
+
+    // ===== UTILITY =====
+    const formatter = new Intl.NumberFormat('de-DE');
+    const fmt = n => formatter.format(n || 0);
+
+    function getItemsByCategory(cat) {
+      return Object.values(ITEMS).filter(i => i.cat === cat);
+    }
+
+    function sumCurrencies(items) {
+      let gold = 0, sc = 0, lsc = 0, gc = 0, lgc = 0;
+      items.forEach(item => {
+        gold += item.gold || 0;
+        sc += item.sc || 0;
+        lsc += item.lsc || 0;
+        gc += item.gc || 0;
+        lgc += item.lgc || 0;
+      });
+      return { gold, sc, lsc, gc, lgc };
+    }
+
+    // ===== COMPARE LOGIC =====
+    function renderComparison() {
+      // ---- EGY A ----
+      const egyAItems = getItemsByCategory('Nova/Egy A');
+      const egyAFiltered = egyAItems.filter(i => i.group !== 'weapon_shield');
+
+      // ---- UPGRADE ----
+      const upgradeItems = getItemsByCategory('Upgrade Nova/Egy A → B');
+      const upgradeFiltered = upgradeItems.filter(i => i.group !== 'weapon_shield');
+
+      // ---- EGY B ----
+      const egyBItems = getItemsByCategory('Nova/Egy B');
+      const egyBFiltered = egyBItems.filter(i => i.group !== 'weapon_shield');
+
+      // ---- SUM UP ----
+      const egyASum = sumCurrencies(egyAFiltered);
+      const upgradeSum = sumCurrencies(upgradeFiltered);
+      const egyBSum = sumCurrencies(egyBFiltered);
+
+      // ---- TOTAL EGY A (inkl. Upgrade) ----
+      const egyATotal = {
+        gold: egyASum.gold + upgradeSum.gold,
+        sc: egyASum.sc + upgradeSum.sc,
+        lsc: egyASum.lsc + upgradeSum.lsc,
+        gc: egyASum.gc + upgradeSum.gc,
+        lgc: egyASum.lgc + upgradeSum.lgc
+      };
+
+      // ---- RENDER EGY A ITEMS ----
+      const egyAContainer = document.getElementById('egyAItems');
+      egyAContainer.innerHTML = '';
+
+      egyAFiltered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'compare-item';
+        const name = item.setTag ? `${item.name} (${item.setTag})` : item.name;
+        div.innerHTML = `
+          <span class="label">${name}</span>
+          <span class="value gold">${fmt(item.gold)}</span>
+        `;
+        egyAContainer.appendChild(div);
+      });
+
+      const sep = document.createElement('div');
+      sep.className = 'compare-item';
+      sep.style.borderBottom = '2px solid var(--line)';
+      sep.style.padding = '2px 0';
+      sep.style.margin = '4px 0';
+      sep.innerHTML = `<span style="color:var(--muted);font-size:11px;">+ Upgrade Costs</span>`;
+      egyAContainer.appendChild(sep);
+
+      upgradeFiltered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'compare-sub-item';
+        const name = item.name;
+        div.innerHTML = `
+          <span class="label">↗ ${name}</span>
+          <span class="value gold">${fmt(item.gold)}</span>
+        `;
+        egyAContainer.appendChild(div);
+      });
+
+      // ---- RENDER EGY B ITEMS ----
+      const egyBContainer = document.getElementById('egyBItems');
+      egyBContainer.innerHTML = '';
+      egyBFiltered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'compare-item';
+        const name = item.setTag ? `${item.name} (${item.setTag})` : item.name;
+        div.innerHTML = `
+          <span class="label">${name}</span>
+          <span class="value gold">${fmt(item.gold)}</span>
+        `;
+        egyBContainer.appendChild(div);
+      });
+
+      const note = document.createElement('div');
+      note.className = 'compare-item';
+      note.style.color = 'var(--warn)';
+      note.style.fontSize = '12px';
+      note.style.opacity = '0.7';
+      note.innerHTML = `
+        <span class="label">⚠️ Weapon & Shield</span>
+        <span>only via FGW / LHWT</span>
+      `;
+      egyBContainer.appendChild(note);
+
+      // ---- UPDATE TOTALS ----
+      document.getElementById('egyATotalGold').textContent = fmt(egyATotal.gold);
+      document.getElementById('egyATotalSC').textContent = fmt(egyATotal.sc);
+      document.getElementById('egyATotalLSC').textContent = fmt(egyATotal.lsc);
+      document.getElementById('egyATotalGC').textContent = fmt(egyATotal.gc);
+      document.getElementById('egyATotalLGC').textContent = fmt(egyATotal.lgc);
+
+      document.getElementById('egyBTotalGold').textContent = fmt(egyBSum.gold);
+      document.getElementById('egyBTotalSC').textContent = fmt(egyBSum.sc);
+      document.getElementById('egyBTotalLSC').textContent = fmt(egyBSum.lsc);
+      document.getElementById('egyBTotalGC').textContent = fmt(egyBSum.gc);
+      document.getElementById('egyBTotalLGC').textContent = fmt(egyBSum.lgc);
+
+      // ---- DIFFERENCE ----
+      const diffGold = egyBSum.gold - egyATotal.gold;
+      const diffSC = egyBSum.sc - egyATotal.sc;
+      const diffLSC = egyBSum.lsc - egyATotal.lsc;
+      const diffGC = egyBSum.gc - egyATotal.gc;
+      const diffLGC = egyBSum.lgc - egyATotal.lgc;
+
+      const diffEl = document.getElementById('diffValue');
+      const subEl = document.getElementById('diffSub');
+
+      diffEl.textContent = fmt(Math.abs(diffGold));
+      diffEl.className = 'value';
+      
+      if (diffGold > 0) {
+        diffEl.classList.add('positive');
+        subEl.textContent = `Egy B is ${fmt(diffGold)} more expensive than Egy A + Upgrade`;
+      } else if (diffGold < 0) {
+        diffEl.classList.add('negative');
+        subEl.textContent = `Egy B is ${fmt(Math.abs(diffGold))} cheaper than Egy A + Upgrade`;
+      } else {
+        diffEl.classList.add('neutral');
+        subEl.textContent = 'Egy B and Egy A + Upgrade cost the same';
+      }
+
+      document.getElementById('diffSC').textContent = fmt(Math.abs(diffSC));
+      document.getElementById('diffLSC').textContent = fmt(Math.abs(diffLSC));
+      document.getElementById('diffGC').textContent = fmt(Math.abs(diffGC));
+      document.getElementById('diffLGC').textContent = fmt(Math.abs(diffLGC));
+    }
+
+    renderComparison();
+  </script>
+</body>
+</html>

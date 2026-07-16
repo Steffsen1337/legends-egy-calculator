@@ -1,0 +1,323 @@
+/* ============================================================
+   FIXED MENU STYLES (bleibt immer oben)
+   ============================================================ */
+
+/* Das Menü ist fixed positioniert – bleibt immer oben */
+#menuContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 8px 18px 0 18px;
+  max-width: 1440px;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+#menuContainer .menu-wrapper {
+  pointer-events: auto;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.menu-wrapper {
+  position: relative;
+  margin-bottom: 0;
+}
+
+.menu-container {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background .4s ease, border-color .4s ease, box-shadow .4s ease;
+  overflow: hidden;
+  padding: 6px 10px 6px 6px;
+}
+
+[data-theme="light"] .menu-container {
+  background: rgba(255,255,255,.92);
+  border-color: rgba(0,0,0,.06);
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
+}
+
+/* Scroll-Effekt */
+.menu-container.scrolled {
+  box-shadow: var(--shadow);
+  border-color: rgba(124,156,255,.20);
+}
+
+[data-theme="light"] .menu-container.scrolled {
+  border-color: rgba(90,124,223,.15);
+  box-shadow: 0 8px 32px rgba(0,0,0,.10);
+}
+
+/* Subtle glow effect */
+.menu-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(124,156,255,.04), transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+
+.menu-container:hover::before {
+  opacity: 1;
+}
+
+.menu-nav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  position: relative;
+  align-items: center;
+}
+
+.menu-left {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.menu-right {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.menu-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border-radius: 12px;
+  border: none;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all .3s cubic-bezier(.4, 0, .2, 1);
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  cursor: pointer;
+  background: transparent;
+  justify-content: center;
+}
+
+.menu-link:hover {
+  color: var(--text);
+  background: var(--item-bg-hover);
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .menu-link:hover {
+  background: rgba(0,0,0,.04);
+}
+
+.menu-link.active {
+  color: var(--text);
+  background: linear-gradient(180deg, rgba(124,156,255,.12), rgba(103,232,249,.06));
+  box-shadow: 0 2px 8px rgba(124,156,255,.08);
+}
+
+[data-theme="light"] .menu-link.active {
+  background: linear-gradient(180deg, rgba(90,124,223,.08), rgba(74,138,154,.04));
+  box-shadow: 0 2px 8px rgba(90,124,223,.08);
+}
+
+.menu-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: all .3s cubic-bezier(.4, 0, .2, 1);
+}
+
+[data-theme="light"] .menu-link.active::after {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+.menu-link .menu-icon {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+}
+
+.menu-link:hover .menu-icon {
+  transform: scale(1.1) rotate(-4deg);
+}
+
+.menu-link.active .menu-icon {
+  transform: scale(1.05);
+}
+
+.menu-link .menu-label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+/* ===== THEME TOGGLE IM MENU ===== */
+.menu-theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--item-bg);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all .3s cubic-bezier(.4, 0, .2, 1);
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.menu-theme-btn:hover {
+  background: var(--item-bg-hover);
+  color: var(--text);
+  transform: translateY(-1px);
+  border-color: var(--line-hover);
+}
+
+.menu-theme-btn .theme-icon {
+  font-size: 18px;
+  line-height: 1;
+  transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+}
+
+.menu-theme-btn:hover .theme-icon {
+  transform: rotate(20deg);
+}
+
+.menu-theme-btn .theme-label {
+  font-size: 12px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  #menuContainer {
+    padding: 4px 12px 0 12px;
+  }
+  
+  .menu-container {
+    border-radius: 14px;
+    padding: 4px 8px 4px 4px;
+  }
+  
+  .menu-link {
+    padding: 6px 12px;
+    gap: 6px;
+    font-size: 13px;
+  }
+  
+  .menu-link .menu-label {
+    font-size: 12px;
+  }
+  
+  .menu-link .menu-icon {
+    font-size: 16px;
+  }
+  
+  .menu-link.active::after {
+    width: 12px;
+    height: 2px;
+    bottom: 3px;
+  }
+  
+  .menu-theme-btn {
+    padding: 6px 10px;
+    gap: 4px;
+    font-size: 12px;
+  }
+  
+  .menu-theme-btn .theme-label {
+    display: none;
+  }
+  
+  .menu-theme-btn .theme-icon {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  #menuContainer {
+    padding: 4px 8px 0 8px;
+  }
+  
+  .menu-container {
+    border-radius: 12px;
+    padding: 3px 6px 3px 3px;
+  }
+  
+  .menu-link {
+    padding: 6px 10px;
+    gap: 4px;
+    min-width: 44px;
+  }
+  
+  .menu-link .menu-label {
+    display: none;
+  }
+  
+  .menu-link .menu-icon {
+    font-size: 18px;
+  }
+  
+  .menu-link.active::after {
+    width: 10px;
+    height: 2px;
+    bottom: 2px;
+  }
+  
+  .menu-theme-btn {
+    padding: 6px 8px;
+    gap: 0;
+  }
+  
+  .menu-theme-btn .theme-label {
+    display: none;
+  }
+  
+  .menu-theme-btn .theme-icon {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 769px) {
+  .menu-link {
+    padding: 10px 22px;
+    gap: 10px;
+  }
+  
+  .menu-link .menu-label {
+    font-size: 14px;
+  }
+  
+  .menu-theme-btn {
+    padding: 8px 16px;
+    gap: 8px;
+  }
+}
