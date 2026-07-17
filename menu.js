@@ -54,12 +54,13 @@ function renderMenu(activePage) {
         const base = '/legends-egy-calculator/';
         if (page === 'compare') {
           window.history.pushState({ page: 'compare' }, '', base + 'compare');
+          if (typeof renderPage === 'function') renderPage('compare');
         } else if (page === 'events') {
-          window.history.pushState({ page: 'events' }, '', base + 'events');
+          window.location.href = base + 'events';
         } else {
           window.history.pushState({ page: 'calculator' }, '', base);
+          if (typeof renderPage === 'function') renderPage('calculator');
         }
-        if (typeof renderPage === 'function') renderPage(page);
       });
     });
   }
