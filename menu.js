@@ -41,7 +41,6 @@ function renderMenu(activePage) {
   if (container) {
     container.innerHTML = menuHTML;
 
-    // Theme Toggle
     const themeBtn = document.getElementById('menuThemeToggle');
     if (themeBtn) {
       themeBtn.addEventListener('click', function(e) {
@@ -50,7 +49,6 @@ function renderMenu(activePage) {
       });
     }
 
-    // Prevent default link clicks for SPA navigation
     container.querySelectorAll('.menu-link').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
@@ -73,7 +71,10 @@ function navigateTo(page) {
   } else {
     window.history.pushState({ page: 'calculator' }, '', base);
   }
-  renderPage(page);
+  // Render page via global function from app.js
+  if (typeof renderPage === 'function') {
+    renderPage(page);
+  }
 }
 
 // ===== THEME TOGGLE =====
@@ -93,5 +94,8 @@ function toggleThemeFromMenu() {
   
   try {
     localStorage.setItem('egy_theme', newTheme);
+    if (typeof state !== 'undefined') {
+      state.theme = newTheme;
+    }
   } catch (_) {}
 }
