@@ -10,13 +10,13 @@ function renderMenu(activePage) {
       <div class="menu-container" id="menuContainerInner">
         <nav class="menu-nav">
           <div class="menu-left">
-            <a href="/legends-egy-calculator/" class="menu-link ${activePage === 'index' ? 'active' : ''}" data-page="calculator">
+            <a href="/legends-egy-calculator/" class="menu-link ${activePage === 'index' ? 'active' : ''}">
               <span class="menu-icon">🧮</span><span class="menu-label">Calculator</span>
             </a>
-            <a href="/legends-egy-calculator/compare.html" class="menu-link ${activePage === 'compare' ? 'active' : ''}" data-page="compare">
+            <a href="/legends-egy-calculator/compare" class="menu-link ${activePage === 'compare' ? 'active' : ''}">
               <span class="menu-icon">📊</span><span class="menu-label">Compare</span>
             </a>
-            <a href="/legends-egy-calculator/events.html" class="menu-link ${activePage === 'events' ? 'active' : ''}" data-page="events">
+            <a href="/legends-egy-calculator/events" class="menu-link ${activePage === 'events' ? 'active' : ''}">
               <span class="menu-icon">📅</span><span class="menu-label">Events</span>
             </a>
           </div>
@@ -44,10 +44,7 @@ function renderMenu(activePage) {
       const label = this.querySelector('.theme-label');
       if (icon) icon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
       if (label) label.textContent = newTheme === 'dark' ? 'Dark' : 'Light';
-      try { localStorage.setItem('egy_theme', newTheme); if (typeof state !== 'undefined') state.theme = newTheme; } catch (_) {}
+      try { localStorage.setItem('egy_theme', newTheme); } catch (_) {}
     });
-
-    // Normale Links – keine JavaScript-Interception mehr
-    // Die Links sind jetzt normale <a href> Links
   }
 }
