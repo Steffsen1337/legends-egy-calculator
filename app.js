@@ -391,7 +391,6 @@ function initCalculator() {
   document.getElementById('clear')?.addEventListener('click', () => state.clear());
   document.getElementById('selectAllTabs')?.addEventListener('click', () => state.toggleAll(state.items.map(i => i.id)));
 
-  // ===== CSV EXPORT =====
   document.getElementById('export')?.addEventListener('click', () => {
     const sel = state.selectedItems;
     if (sel.length === 0) { alert('No items selected.'); return; }
@@ -437,7 +436,9 @@ function initCalculator() {
 // ===== ROUTER =====
 function getPage() {
   const path = window.location.pathname;
-  return (path.includes('/compare') || path.endsWith('/compare')) ? 'compare' : 'calculator';
+  if (path.includes('/compare') || path.endsWith('/compare')) return 'compare';
+  if (path.includes('/events') || path.endsWith('/events')) return 'events';
+  return 'calculator';
 }
 
 function renderPage(page) {
@@ -450,6 +451,9 @@ function renderPage(page) {
     compPage.innerHTML = getCompareHTML();
     if (typeof renderMenu === 'function') renderMenu('compare');
     setTimeout(renderComparison, 50);
+  } else if (page === 'events') {
+    // Events-Seite wird als eigenständige HTML-Datei geladen
+    window.location.href = '/legends-egy-calculator/events.html';
   } else {
     calcPage?.classList.remove('hidden');
     compPage?.classList.add('hidden');
@@ -563,11 +567,22 @@ function renderComparison() {
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   const initialPage = getPage();
+  
+  // Wenn Events-Seite, direkt zur HTML-Datei weiterleiten
+  if (initialPage === 'events') {
+    window.location.href = '/legends-egy-calculator/events.html';
+    return;
+  }
+  
   renderPage(initialPage);
 });
 
 window.addEventListener('popstate', () => {
   const page = getPage();
+  if (page === 'events') {
+    window.location.href = '/legends-egy-calculator/events.html';
+    return;
+  }
   renderPage(page);
 });
 
