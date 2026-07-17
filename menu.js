@@ -1,5 +1,5 @@
 // ============================================================
-//  FIXED MENU COMPONENT (bleibt immer oben)
+//  MODERN MENU COMPONENT
 // ============================================================
 
 function renderMenu(activePage) {
@@ -17,11 +17,11 @@ function renderMenu(activePage) {
       <div class="menu-container" id="menuContainerInner">
         <nav class="menu-nav" role="navigation" aria-label="Main navigation">
           <div class="menu-left">
-            <a href="index.html" class="menu-link ${activePage === 'index' ? 'active' : ''}" data-page="index">
+            <a href="/legends-egy-calculator/" class="menu-link ${activePage === 'index' ? 'active' : ''}" data-page="calculator">
               <span class="menu-icon">🧮</span>
               <span class="menu-label">Calculator</span>
             </a>
-            <a href="compare.html" class="menu-link ${activePage === 'compare' ? 'active' : ''}" data-page="compare">
+            <a href="/legends-egy-calculator/compare" class="menu-link ${activePage === 'compare' ? 'active' : ''}" data-page="compare">
               <span class="menu-icon">📊</span>
               <span class="menu-label">Compare</span>
             </a>
@@ -41,7 +41,7 @@ function renderMenu(activePage) {
   if (container) {
     container.innerHTML = menuHTML;
 
-    // ===== THEME TOGGLE IM MENU =====
+    // Theme Toggle
     const themeBtn = document.getElementById('menuThemeToggle');
     if (themeBtn) {
       themeBtn.addEventListener('click', function(e) {
@@ -50,34 +50,33 @@ function renderMenu(activePage) {
       });
     }
 
-    // ===== SCROLL LISTENER für Schatten-Effekt =====
-    const menuEl = document.getElementById('menuContainerInner');
-    if (menuEl) {
-      // Initial prüfen
-      checkScroll(menuEl);
-      
-      let ticking = false;
-      window.addEventListener('scroll', () => {
-        if (!ticking) {
-          window.requestAnimationFrame(() => {
-            checkScroll(menuEl);
-            ticking = false;
-          });
-          ticking = true;
+    // Prevent default link clicks for SPA navigation
+    container.querySelectorAll('.menu-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const page = this.dataset.page;
+        if (page === 'compare') {
+          navigateTo('compare');
+        } else {
+          navigateTo('calculator');
         }
       });
-    }
+    });
   }
 }
 
-// ===== Hilfsfunktion für Schatten-Effekt beim Scrollen =====
-function checkScroll(menuEl) {
-  if (!menuEl) return;
-  const isScrolled = window.scrollY > 20;
-  menuEl.classList.toggle('scrolled', isScrolled);
+// ===== NAVIGATION HELPER =====
+function navigateTo(page) {
+  const base = '/legends-egy-calculator/';
+  if (page === 'compare') {
+    window.history.pushState({ page: 'compare' }, '', base + 'compare');
+  } else {
+    window.history.pushState({ page: 'calculator' }, '', base);
+  }
+  renderPage(page);
 }
 
-// ===== Theme Toggle Funktion =====
+// ===== THEME TOGGLE =====
 function toggleThemeFromMenu() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -94,8 +93,5 @@ function toggleThemeFromMenu() {
   
   try {
     localStorage.setItem('egy_theme', newTheme);
-    if (typeof state !== 'undefined') {
-      state.theme = newTheme;
-    }
   } catch (_) {}
 }
