@@ -13,10 +13,10 @@ function renderMenu(activePage) {
             <a href="/legends-egy-calculator/" class="menu-link ${activePage === 'index' ? 'active' : ''}" data-page="calculator">
               <span class="menu-icon">🧮</span><span class="menu-label">Calculator</span>
             </a>
-            <a href="/legends-egy-calculator/compare" class="menu-link ${activePage === 'compare' ? 'active' : ''}" data-page="compare">
+            <a href="/legends-egy-calculator/compare.html" class="menu-link ${activePage === 'compare' ? 'active' : ''}" data-page="compare">
               <span class="menu-icon">📊</span><span class="menu-label">Compare</span>
             </a>
-            <a href="/legends-egy-calculator/events" class="menu-link ${activePage === 'events' ? 'active' : ''}" data-page="events">
+            <a href="/legends-egy-calculator/events.html" class="menu-link ${activePage === 'events' ? 'active' : ''}" data-page="events">
               <span class="menu-icon">📅</span><span class="menu-label">Events</span>
             </a>
           </div>
@@ -47,21 +47,7 @@ function renderMenu(activePage) {
       try { localStorage.setItem('egy_theme', newTheme); if (typeof state !== 'undefined') state.theme = newTheme; } catch (_) {}
     });
 
-    container.querySelectorAll('.menu-link').forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const page = this.dataset.page;
-        const base = '/legends-egy-calculator/';
-        if (page === 'compare') {
-          window.history.pushState({ page: 'compare' }, '', base + 'compare');
-          if (typeof renderPage === 'function') renderPage('compare');
-        } else if (page === 'events') {
-          window.location.href = base + 'events';
-        } else {
-          window.history.pushState({ page: 'calculator' }, '', base);
-          if (typeof renderPage === 'function') renderPage('calculator');
-        }
-      });
-    });
+    // Normale Links – keine JavaScript-Interception mehr
+    // Die Links sind jetzt normale <a href> Links
   }
 }

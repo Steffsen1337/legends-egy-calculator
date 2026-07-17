@@ -1,8 +1,8 @@
 // ============================================================
-//  APP.JS
+//  APP.JS - NUR FÜR CALCULATOR
 // ============================================================
 
-// ===== TEMPLATES =====
+// ===== TEMPLATE =====
 function getCalculatorHTML() {
   return `
     <header class="hero">
@@ -61,58 +61,6 @@ function getCalculatorHTML() {
           <div class="selected-list" id="selectedList"><div class="small">Nothing selected yet.</div></div>
         </section>
       </aside>
-    </div>
-  `;
-}
-
-function getCompareHTML() {
-  return `
-    <header class="hero">
-      <div class="hero-left">
-        <h1>Egy A vs Egy B Comparison</h1>
-        <p class="lead">Compare the total costs of <strong>Nova/Egy A</strong> (including Upgrade) and <strong>Nova/Egy B</strong> side by side.</p>
-        <span class="note-badge">⚠️ Weapon & Shield (Egy B) only via FGW / LHWT</span>
-      </div>
-      <div class="hero-actions"></div>
-    </header>
-    <div class="compare-grid">
-      <div class="compare-col panel">
-        <div class="panel-head"><h3><span>Nova/Egy A + Upgrade</span><span class="badge-a">Destruction → Immortal / Myth → Legend</span></h3></div>
-        <div class="panel-body">
-          <div id="egyAItems"></div>
-          <div class="compare-total">
-            <div class="total-row"><span>Total Gold</span><span class="value gold" id="egyATotalGold">0</span></div>
-            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);"><span>SC</span><span id="egyATotalSC">0</span></div>
-            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);"><span>LSC</span><span id="egyATotalLSC">0</span></div>
-            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);"><span>GC</span><span id="egyATotalGC">0</span></div>
-            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);"><span>LGC</span><span id="egyATotalLGC">0</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="compare-col panel">
-        <div class="panel-head"><h3><span>Nova/Egy B</span><span class="badge-b">Immortal / Legend</span></h3></div>
-        <div class="panel-body">
-          <div id="egyBItems"></div>
-          <div class="compare-total">
-            <div class="total-row"><span>Total Gold</span><span class="value gold" id="egyBTotalGold">0</span></div>
-            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);"><span>SC</span><span id="egyBTotalSC">0</span></div>
-            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);"><span>LSC</span><span id="egyBTotalLSC">0</span></div>
-            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);"><span>GC</span><span id="egyBTotalGC">0</span></div>
-            <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);"><span>LGC</span><span id="egyBTotalLGC">0</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="compare-diff">
-      <div class="label">💰 Price Difference (Egy B - Egy A+Upgrade)</div>
-      <div class="value" id="diffValue">0</div>
-      <div class="sub" id="diffSub">Egy B is more expensive than Egy A+Upgrade</div>
-      <div class="diff-currencies">
-        <span class="diff-item"><span class="coin sc">SC</span> <span id="diffSC">0</span></span>
-        <span class="diff-item"><span class="coin lsc">LSC</span> <span id="diffLSC">0</span></span>
-        <span class="diff-item"><span class="coin gc">GC</span> <span id="diffGC">0</span></span>
-        <span class="diff-item"><span class="coin lgc">LGC</span> <span id="diffLGC">0</span></span>
-      </div>
     </div>
   `;
 }
@@ -429,179 +377,19 @@ function initCalculator() {
     t.setAttribute('aria-selected', isActive ? 'true' : 'false');
   });
 
+  const container = document.getElementById('appContent');
+  if (container) {
+    container.innerHTML = getCalculatorHTML();
+  }
+
   renderGroups();
   updateUI();
 }
 
-// ===== ROUTER =====
-function getPage() {
-  const path = window.location.pathname;
-  if (path.includes('/compare') || path.endsWith('/compare')) return 'compare';
-  if (path.includes('/events') || path.endsWith('/events')) return 'events';
-  return 'calculator';
-}
-
-function renderPage(page) {
-  const calcPage = document.getElementById('pageCalculator');
-  const compPage = document.getElementById('pageCompare');
-
-  if (page === 'compare') {
-    calcPage?.classList.add('hidden');
-    compPage?.classList.remove('hidden');
-    compPage.innerHTML = getCompareHTML();
-    if (typeof renderMenu === 'function') renderMenu('compare');
-    setTimeout(renderComparison, 50);
-  } else if (page === 'events') {
-    // Events-Seite wird als eigenständige HTML-Datei geladen
-    window.location.href = '/legends-egy-calculator/events.html';
-  } else {
-    calcPage?.classList.remove('hidden');
-    compPage?.classList.add('hidden');
-    calcPage.innerHTML = getCalculatorHTML();
-    if (typeof renderMenu === 'function') renderMenu('index');
-    setTimeout(initCalculator, 50);
+// ===== START =====
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMenu === 'function') {
+    renderMenu('index');
   }
-}
-
-// ===== COMPARE LOGIC =====
-function renderComparison() {
-  const egyAItems = Object.values(ITEMS).filter(i => i.cat === 'Nova/Egy A' && i.group !== 'weapon_shield');
-  const upgradeItems = Object.values(ITEMS).filter(i => i.cat === 'Upgrade Nova/Egy A → B' && i.group !== 'weapon_shield');
-  const egyBItems = Object.values(ITEMS).filter(i => i.cat === 'Nova/Egy B' && i.group !== 'weapon_shield');
-
-  const sum = (items) => {
-    let gold = 0, sc = 0, lsc = 0, gc = 0, lgc = 0;
-    items.forEach(item => { gold += item.gold || 0; sc += item.sc || 0; lsc += item.lsc || 0; gc += item.gc || 0; lgc += item.lgc || 0; });
-    return { gold, sc, lsc, gc, lgc };
-  };
-
-  const egyASum = sum(egyAItems);
-  const upgradeSum = sum(upgradeItems);
-  const egyBSum = sum(egyBItems);
-
-  const egyATotal = {
-    gold: egyASum.gold + upgradeSum.gold,
-    sc: egyASum.sc + upgradeSum.sc,
-    lsc: egyASum.lsc + upgradeSum.lsc,
-    gc: egyASum.gc + upgradeSum.gc,
-    lgc: egyASum.lgc + upgradeSum.lgc
-  };
-
-  const egyAContainer = document.getElementById('egyAItems');
-  if (egyAContainer) {
-    egyAContainer.innerHTML = '';
-    egyAItems.forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'compare-item';
-      div.innerHTML = `<span class="label">${item.setTag ? `${item.name} (${item.setTag})` : item.name}</span><span class="value gold">${fmt(item.gold)}</span>`;
-      egyAContainer.appendChild(div);
-    });
-
-    const sep = document.createElement('div');
-    sep.className = 'compare-item';
-    sep.style.borderBottom = '2px solid var(--line)';
-    sep.style.padding = '2px 0';
-    sep.style.margin = '4px 0';
-    sep.innerHTML = `<span style="color:var(--muted);font-size:11px;">+ Upgrade Costs</span>`;
-    egyAContainer.appendChild(sep);
-
-    upgradeItems.forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'compare-sub-item';
-      div.innerHTML = `<span class="label">↗ ${item.name}</span><span class="value gold">${fmt(item.gold)}</span>`;
-      egyAContainer.appendChild(div);
-    });
-  }
-
-  const egyBContainer = document.getElementById('egyBItems');
-  if (egyBContainer) {
-    egyBContainer.innerHTML = '';
-    egyBItems.forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'compare-item';
-      div.innerHTML = `<span class="label">${item.setTag ? `${item.name} (${item.setTag})` : item.name}</span><span class="value gold">${fmt(item.gold)}</span>`;
-      egyBContainer.appendChild(div);
-    });
-
-    const note = document.createElement('div');
-    note.className = 'compare-item';
-    note.style.color = 'var(--warn)';
-    note.style.fontSize = '12px';
-    note.style.opacity = '0.7';
-    note.innerHTML = `<span class="label">⚠️ Weapon & Shield</span><span>only via FGW / LHWT</span>`;
-    egyBContainer.appendChild(note);
-  }
-
-  ['egyATotalGold', 'egyATotalSC', 'egyATotalLSC', 'egyATotalGC', 'egyATotalLGC'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = fmt(Object.values(egyATotal)[i]);
-  });
-
-  ['egyBTotalGold', 'egyBTotalSC', 'egyBTotalLSC', 'egyBTotalGC', 'egyBTotalLGC'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = fmt(Object.values(egyBSum)[i]);
-  });
-
-  const diffGold = egyBSum.gold - egyATotal.gold;
-  const diffSC = egyBSum.sc - egyATotal.sc;
-  const diffLSC = egyBSum.lsc - egyATotal.lsc;
-  const diffGC = egyBSum.gc - egyATotal.gc;
-  const diffLGC = egyBSum.lgc - egyATotal.lgc;
-
-  const diffEl = document.getElementById('diffValue');
-  const subEl = document.getElementById('diffSub');
-  if (diffEl) {
-    diffEl.textContent = fmt(Math.abs(diffGold));
-    diffEl.className = 'value';
-    if (diffGold > 0) { diffEl.classList.add('positive'); if (subEl) subEl.textContent = `Egy B is ${fmt(diffGold)} more expensive than Egy A + Upgrade`; }
-    else if (diffGold < 0) { diffEl.classList.add('negative'); if (subEl) subEl.textContent = `Egy B is ${fmt(Math.abs(diffGold))} cheaper than Egy A + Upgrade`; }
-    else { diffEl.classList.add('neutral'); if (subEl) subEl.textContent = 'Egy B and Egy A + Upgrade cost the same'; }
-  }
-
-  ['diffSC', 'diffLSC', 'diffGC', 'diffLGC'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = fmt(Math.abs([diffSC, diffLSC, diffGC, diffLGC][i]));
-  });
-}
-
-// ===== INIT =====
-document.addEventListener('DOMContentLoaded', () => {
-  const initialPage = getPage();
-  
-  // Wenn Events-Seite, direkt zur HTML-Datei weiterleiten
-  if (initialPage === 'events') {
-    window.location.href = '/legends-egy-calculator/events.html';
-    return;
-  }
-  
-  renderPage(initialPage);
-});
-
-window.addEventListener('popstate', () => {
-  const page = getPage();
-  if (page === 'events') {
-    window.location.href = '/legends-egy-calculator/events.html';
-    return;
-  }
-  renderPage(page);
-});
-
-// Install Banner
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('installBanner')?.classList.add('show');
-});
-
-document.getElementById('installBtn')?.addEventListener('click', async () => {
-  if (deferredPrompt) {
-    const result = await deferredPrompt.userChoice;
-    if (result.outcome === 'accepted') document.getElementById('installBanner')?.classList.remove('show');
-    deferredPrompt = null;
-  }
-});
-
-document.getElementById('closeBanner')?.addEventListener('click', () => {
-  document.getElementById('installBanner')?.classList.remove('show');
+  initCalculator();
 });
