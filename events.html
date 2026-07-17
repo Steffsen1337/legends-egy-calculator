@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  
+  <script>
+    (function() {
+      if (window.location.protocol === 'file:') return;
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
+      if (window.location.hostname.includes('.local')) return;
+      if (location.protocol !== 'https:') {
+        location.href = 'https:' + location.href.substring(location.protocol.length);
+      }
+    })();
+  </script>
+  
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#08111f" />
+  <meta name="description" content="Event timer for Legends Online" />
+  
+  <title>Egy Events</title>
+  
+  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVneSBDYWxjdWxhdG9yIiwKICAic2hvcnRfbmFtZSI6ICJFZ3kgQ2FsYyIsCiAgImRlc2NyaXB0aW9uIjogIkNhbGN1bGF0b3IgZm9yIE5vdmEvRWd5IGVxdWlwbWVudCB1cGdyYWRlcyIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDgxMTFmIiwKICAidGhlbWVfY29sb3IiOiAiIzA4MTExZiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nNjQnIGZpbGw9JyMwODExMWYnLz48dGV4dCB4PScyNTYnIHk9JzI4MCcgZm9udC1mYW1pbHk9J3NhbnMtc2VyaWYnIGZbnQtc2l6ZT0nMjUwJyBmaWxsPScjN2M5Y2ZmJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJz5FPC90ZXh0Pjwvc3ZnPg=="LAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9" />
+  
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/menu.css" />
+  
+  <style>
+    /* ===== FIX: Abstand für das fixed Menü ===== */
+    .wrap {
+      padding-top: 100px !important;
+    }
+
+    .events-container {
+      margin-top: 20px;
+    }
+
+    .server-time {
+      text-align: center;
+      padding: 16px;
+      margin-bottom: 20px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      transition: background .4s ease, border-color .4s ease;
+    }
+
+    .server-time .label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .server-time .time {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--accent2);
+      margin-top: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .event-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: background .4s ease, border-color .4s ease;
+    }
+
+    [data-theme="light"] .event-card {
+      border-color: rgba(0,0,0,.06);
+    }
+
+    .event-card .event-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .event-card .event-name .icon {
+      font-size: 20px;
+    }
+
+    .event-card .event-times {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .event-card .event-times .time-badge {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--item-bg);
+      border: 1px solid var(--line);
+      transition: background .4s ease, border-color .4s ease;
+    }
+
+    .event-card .event-times .time-badge.soon {
+      background: rgba(251,191,36,.20);
+      border-color: rgba(251,191,36,.30);
+      color: var(--warn);
+      animation: pulse-soon 2s ease-in-out infinite;
+    }
+
+    .event-card .event-times .time-badge.active {
+      background: rgba(110,231,183,.20);
+      border-color: rgba(110,231,183,.30);
+      color: var(--success);
+      animation: pulse-active 1.5s ease-in-out infinite;
+    }
+
+    .event-card .event-times .time-badge.passed {
+      opacity: 0.35;
+    }
+
+    .event-card .event-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      opacity: 0.7;
+    }
+
+    .event-card .countdown {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .event-card .countdown .highlight {
+      color: var(--warn);
+      font-weight: 600;
+    }
+
+    @keyframes pulse-soon {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    @keyframes pulse-active {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(0.98); }
+    }
+
+    @media (max-width: 768px) {
+      .events-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      
+      .server-time .time {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="menuContainer"></div>
+
+  <div class="wrap" role="main">
+    <header class="hero">
+      <div class="hero-left">
+        <h1>Event Timer</h1>
+        <p class="lead">Server time and event countdowns for <strong>Legends Online</strong>.</p>
+      </div>
+      <div class="hero-actions"></div>
+    </header>
+
+    <div class="events-container" id="eventsContainer">
+      <!-- Server Time -->
+      <div class="server-time">
+        <div class="label">🕐 Server Time (UTC/GMT+3)</div>
+        <div class="time" id="serverTime">--:--:--</div>
+      </div>
+
+      <!-- Events Grid -->
+      <div class="events-grid" id="eventsGrid"></div>
+    </div>
+  </div>
+
+  <script src="menu.js"></script>
+  <script>
+    // ============================================================
+    //  EVENTS DATA
+    // ============================================================
+    const EVENTS = [
+      {
+        name: 'Capture The Flag',
+        icon: '🏴',
+        times: ['01:00', '05:00', '09:00', '13:00', '17:00', '21:00'],
+        note: ''
+      },
+      {
+        name: 'Battle Arena (Score)',
+        icon: '⚔️',
+        times: ['04:00', '08:00', '16:00'],
+        note: ''
+      },
+      {
+        name: 'Battle Arena (Flag)',
+        icon: '⚔️',
+        times: ['12:00', '20:00'],
+        note: ''
+      },
+      {
+        name: 'Survival Arena',
+        icon: '🏟️',
+        times: ['23:00', '11:00'],
+        note: ''
+      },
+      {
+        name: 'Special Goods Time',
+        icon: '🛒',
+        times: ['09:30', '15:30', '21:30'],
+        note: ''
+      },
+      {
+        name: 'Last Man Standing',
+        icon: '👑',
+        times: ['23:30', '11:30'],
+        note: ''
+      },
+      {
+        name: 'War of Leagues',
+        icon: '⚔️',
+        times: ['19:30'],
+        note: ''
+      },
+      {
+        name: 'Selketh & Neith',
+        icon: '👹',
+        times: ['06:30', '12:30', '18:30'],
+        note: 'Not available on Sundays'
+      },
+      {
+        name: 'Isis & Anubis',
+        icon: '👹',
+        times: ['07:30', '14:30', '20:30'],
+        note: 'Not available on Sundays'
+      },
+      {
+        name: 'Tower Defense',
+        icon: '🗼',
+        times: ['17:30'],
+        note: 'Friday, Saturday, Sunday only'
+      },
+      {
+        name: 'Beakyung The White Viper',
+        icon: '🐍',
+        times: ['21:30'],
+        note: 'Friday only'
+      },
+      {
+        name: 'The Roc',
+        icon: '🦅',
+        times: ['21:30'],
+        note: 'Saturday only'
+      },
+      {
+        name: 'Haroesis & Seth',
+        icon: '👹',
+        times: ['18:30'],
+        note: 'Sunday only'
+      },
+      {
+        name: 'Guild Wars',
+        icon: '⚔️',
+        times: ['20:30'],
+        note: 'Sunday only'
+      },
+      {
+        name: 'Fortress War',
+        icon: '🏰',
+        times: ['21:30'],
+        note: 'Sunday only'
+      }
+    ];
+
+    // ============================================================
+    //  HELPERS
+    // ============================================================
+    const TIMEZONE_OFFSET = 3; // UTC+3
+    const HOUR_MS = 3600000;
+    const MINUTE_MS = 60000;
+
+    function getServerTime() {
+      const now = new Date();
+      const utc = now.getTime() + now.getTimezoneOffset() * MINUTE_MS;
+      return new Date(utc + TIMEZONE_OFFSET * HOUR_MS);
+    }
+
+    function getServerTimeStr() {
+      const t = getServerTime();
+      return t.toTimeString().slice(0, 8);
+    }
+
+    function getCurrentHour() {
+      const t = getServerTime();
+      return t.getHours();
+    }
+
+    function getCurrentMinute() {
+      const t = getServerTime();
+      return t.getMinutes();
+    }
+
+    function getCurrentDay() {
+      const t = getServerTime();
+      return t.getDay(); // 0 = Sunday
+    }
+
+    function getCurrentTimeMinutes() {
+      return getCurrentHour() * 60 + getCurrentMinute();
+    }
+
+    function parseTimeToMinutes(timeStr) {
+      const [h, m] = timeStr.split(':').map(Number);
+      return h * 60 + m;
+    }
+
+    function getRemainingTime(timeStr) {
+      const target = parseTimeToMinutes(timeStr);
+      const current = getCurrentTimeMinutes();
+      let diff = target - current;
+      if (diff < 0) diff += 1440; // nächster Tag
+      const hours = Math.floor(diff / 60);
+      const minutes = diff % 60;
+      return { hours, minutes, total: diff };
+    }
+
+    function formatRemaining(hours, minutes) {
+      if (hours === 0 && minutes === 0) return '🔴 NOW!';
+      if (hours === 0) return `${minutes}m`;
+      if (hours < 24) return `${hours}h ${minutes}m`;
+      return `${Math.floor(hours / 24)}d ${hours % 24}h`;
+    }
+
+    function getTimeStatus(timeStr) {
+      const target = parseTimeToMinutes(timeStr);
+      const current = getCurrentTimeMinutes();
+      const diff = target - current;
+      
+      if (diff >= 0 && diff <= 5) return 'active';
+      if (diff >= 0 && diff <= 30) return 'soon';
+      if (diff < 0) return 'passed';
+      return 'normal';
+    }
+
+    function isEventAvailable(event) {
+      const day = getCurrentDay();
+      const note = event.note || '';
+      
+      if (day === 0 && note.includes('Sunday')) return false;
+      if (note.includes('Friday only') && day !== 5) return false;
+      if (note.includes('Saturday only') && day !== 6) return false;
+      if (note.includes('Sunday only') && day !== 0) return false;
+      if (note.includes('Friday, Saturday, Sunday') && ![5, 6, 0].includes(day)) return false;
+      
+      return true;
+    }
+
+    // ============================================================
+    //  RENDER
+    // ============================================================
+    function renderEvents() {
+      const grid = document.getElementById('eventsGrid');
+      grid.innerHTML = '';
+
+      EVENTS.forEach(event => {
+        const card = document.createElement('div');
+        card.className = 'event-card';
+
+        const available = isEventAvailable(event);
+        
+        let nameHTML = `<span class="icon">${event.icon}</span> ${event.name}`;
+        if (!available) {
+          nameHTML += ` <span style="font-size:11px;color:var(--muted);opacity:0.5;">(Not available today)</span>`;
+        }
+
+        let timesHTML = '';
+        event.times.forEach(time => {
+          const status = getTimeStatus(time);
+          let cls = 'time-badge';
+          if (status === 'active') cls += ' active';
+          else if (status === 'soon') cls += ' soon';
+          else if (status === 'passed') cls += ' passed';
+          
+          const remaining = getRemainingTime(time);
+          let label = time;
+          if (status === 'active') label = `🔴 ${time} (NOW!)`;
+          else if (status === 'soon') label = `${time} (in ${formatRemaining(remaining.hours, remaining.minutes)})`;
+          
+          timesHTML += `<span class="${cls}">${label}</span>`;
+        });
+
+        card.innerHTML = `
+          <div class="event-name">${nameHTML}</div>
+          <div class="event-times">${timesHTML}</div>
+          ${event.note ? `<div class="event-note">${event.note}</div>` : ''}
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function updateServerTime() {
+      document.getElementById('serverTime').textContent = getServerTimeStr();
+    }
+
+    // ============================================================
+    //  MENU & INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof renderMenu === 'function') {
+        renderMenu('events');
+      }
+      
+      updateServerTime();
+      renderEvents();
+      
+      // ===== LIVE-UHR: Jede Sekunde aktualisieren =====
+      setInterval(() => {
+        updateServerTime();
+      }, 1000);
+      
+      // Events nur jede Minute neu rendern (Performance)
+      setInterval(() => {
+        renderEvents();
+      }, 60000);
+    });
+  </script>
+</body>
+</html>
