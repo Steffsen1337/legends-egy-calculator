@@ -43,9 +43,207 @@
   <!-- ===== STYLES ===== -->
   <link rel="stylesheet" href="styles/main.css" />
   <link rel="stylesheet" href="styles/menu.css" />
+  
+  <style>
+    /* ===== COMPARE SPECIFIC STYLES ===== */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .compare-col .panel-head h3 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge-a {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(124,156,255,.20);
+      color: var(--accent2);
+      border: 1px solid rgba(124,156,255,.20);
+    }
+
+    .badge-b {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(251,191,36,.20);
+      color: var(--warn);
+      border: 1px solid rgba(251,191,36,.20);
+    }
+
+    .compare-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      transition: border-color .4s ease;
+    }
+
+    .compare-item:last-child {
+      border-bottom: none;
+    }
+
+    .compare-item .label {
+      color: var(--muted);
+    }
+
+    .compare-item .value {
+      font-weight: 600;
+    }
+
+    .compare-item .value.gold {
+      color: #ffd966;
+    }
+
+    [data-theme="light"] .compare-item .value.gold {
+      color: #b8860b;
+    }
+
+    .compare-sub-item {
+      padding-left: 16px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+
+    .compare-sub-item .label {
+      opacity: 0.7;
+    }
+
+    .compare-sub-item .value {
+      font-weight: 500;
+    }
+
+    .compare-sub-item .value.gold {
+      color: #ffd966;
+    }
+
+    [data-theme="light"] .compare-sub-item .value.gold {
+      color: #b8860b;
+    }
+
+    .compare-total {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 2px solid var(--line);
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .compare-total .total-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .compare-total .total-row .value {
+      font-size: 16px;
+    }
+
+    .compare-total .total-row .value.gold {
+      color: #ffd966;
+    }
+
+    [data-theme="light"] .compare-total .total-row .value.gold {
+      color: #b8860b;
+    }
+
+    .compare-diff {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: var(--item-bg);
+      border: 1px solid var(--line);
+      text-align: center;
+      transition: background .4s ease, border-color .4s ease;
+    }
+
+    [data-theme="light"] .compare-diff {
+      border-color: rgba(0,0,0,.06);
+    }
+
+    .compare-diff .label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .compare-diff .value {
+      font-size: 28px;
+      font-weight: 900;
+      margin-top: 4px;
+    }
+
+    .compare-diff .value.positive {
+      color: var(--danger);
+    }
+
+    .compare-diff .value.negative {
+      color: var(--success);
+    }
+
+    .compare-diff .value.neutral {
+      color: var(--muted);
+    }
+
+    .compare-diff .sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .compare-diff .diff-currencies {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .compare-diff .diff-currencies .diff-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .compare-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+
+    .page {
+      display: block;
+    }
+
+    .page.hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <!-- ===== FIXED MENU (außerhalb von wrap) ===== -->
+  <!-- ===== FIXED MENU ===== -->
   <div id="menuContainer"></div>
 
   <!-- ===== INSTALL BANNER ===== -->
@@ -58,101 +256,185 @@
 
   <!-- ===== MAIN APP ===== -->
   <div class="wrap" role="main">
-    <!-- ===== HEADER (mit Abstand für das fixed Menü) ===== -->
-    <header class="hero" style="margin-top: 80px;">
-      <div class="hero-left">
-        <h1>Egy Calculator</h1>
-        <p class="lead">
-          Choose between <strong>Nova/Egy A</strong>, <strong>Nova/Egy B</strong>, and <strong>Upgrade Nova/Egy A → Nova/Egy B</strong>.
-        </p>
-        <span class="note-badge" role="note" title="Weapon & Shield (Egy B) are only available via FGW or LHWT">⚠️ Weapon & Shield (Egy B) only via FGW / LHWT</span>
-      </div>
-      <div class="hero-actions">
-        <div class="pill" id="selCount" aria-live="polite">0 selected</div>
-      </div>
-    </header>
-
-    <!-- ===== CONTENT ===== -->
-    <div class="grid">
-      <!-- ===== SELECTION PANEL ===== -->
-      <section class="panel" aria-label="Item selection">
-        <div class="panel-head">
-          <div>
-            <h2>Selection <span class="keyboard-hint">⌘A = Select All · ESC = Reset</span></h2>
-            <div class="sub">Grouped items – packages automatically select all associated parts.</div>
-          </div>
+    <!-- ===== CALCULATOR PAGE ===== -->
+    <div id="pageCalculator" class="page">
+      <header class="hero">
+        <div class="hero-left">
+          <h1>Egy Calculator</h1>
+          <p class="lead">
+            Choose between <strong>Nova/Egy A</strong>, <strong>Nova/Egy B</strong>, and <strong>Upgrade Nova/Egy A → Nova/Egy B</strong>.
+          </p>
+          <span class="note-badge" role="note" title="Weapon & Shield (Egy B) are only available via FGW or LHWT">⚠️ Weapon & Shield (Egy B) only via FGW / LHWT</span>
         </div>
-        <div class="panel-body">
-          <!-- Search -->
-          <div class="search-box">
-            <span class="icon">🔍</span>
-            <input type="text" id="searchInput" placeholder="Search items..." aria-label="Search items" />
-          </div>
-
-          <nav class="tabs" role="tablist" aria-label="Equipment categories">
-            <button class="tab active" data-tab="Nova/Egy A" role="tab" aria-selected="true">Nova/Egy A</button>
-            <button class="tab" data-tab="Nova/Egy B" role="tab" aria-selected="false">Nova/Egy B</button>
-            <button class="tab" data-tab="Upgrade Nova/Egy A → B" role="tab" aria-selected="false">Upgrade Nova/Egy A → B</button>
-          </nav>
-
-          <div id="groupsContainer" role="list" aria-label="Item groups"></div>
-
-          <div class="actions">
-            <button id="clear" class="ghost" aria-label="Reset all selections">✕ Reset</button>
-            <button id="export" class="ghost" aria-label="Export selections as CSV">📊 Export CSV</button>
-            <button id="exportJSON" class="ghost" aria-label="Export selections as JSON">📦 Export JSON</button>
-            <button id="selectAllTabs" class="ghost" aria-label="Select or deselect all visible items">☑ Select All</button>
-          </div>
+        <div class="hero-actions">
+          <div class="pill" id="selCount" aria-live="polite">0 selected</div>
         </div>
-      </section>
+      </header>
 
-      <!-- ===== SUMMARY PANEL ===== -->
-      <aside class="right">
-        <section class="summary" aria-label="Total sum">
-          <h2>💰 Total Sum</h2>
-          
-          <div class="total-main" aria-label="Total gold">
-            <span class="coin gold" aria-hidden="true">G</span>
-            <span class="amount" id="totalGold">0</span>
-            <span class="label">Total Gold</span>
+      <div class="grid">
+        <section class="panel" aria-label="Item selection">
+          <div class="panel-head">
+            <div>
+              <h2>Selection <span class="keyboard-hint">⌘A = Select All · ESC = Reset</span></h2>
+              <div class="sub">Grouped items – packages automatically select all associated parts.</div>
+            </div>
           </div>
+          <div class="panel-body">
+            <div class="search-box">
+              <span class="icon">🔍</span>
+              <input type="text" id="searchInput" placeholder="Search items..." aria-label="Search items" />
+            </div>
 
-          <div class="total-currencies" role="list" aria-label="Currency breakdown">
-            <div class="currency-item" role="listitem">
-              <span class="coin sc" aria-hidden="true">SC</span>
-              <span class="currency-label">Silver Coins</span>
-              <span class="value" id="totalSC">0</span>
-            </div>
-            <div class="currency-item" role="listitem">
-              <span class="coin lsc" aria-hidden="true">LSC</span>
-              <span class="currency-label">Legend Silver Coins</span>
-              <span class="value" id="totalLSC">0</span>
-            </div>
-            <div class="currency-item" role="listitem">
-              <span class="coin gc" aria-hidden="true">GC</span>
-              <span class="currency-label">Gold Coins</span>
-              <span class="value" id="totalGC">0</span>
-            </div>
-            <div class="currency-item" role="listitem">
-              <span class="coin lgc" aria-hidden="true">LGC</span>
-              <span class="currency-label">Legend Gold Coins</span>
-              <span class="value" id="totalLGC">0</span>
+            <nav class="tabs" role="tablist" aria-label="Equipment categories">
+              <button class="tab active" data-tab="Nova/Egy A" role="tab" aria-selected="true">Nova/Egy A</button>
+              <button class="tab" data-tab="Nova/Egy B" role="tab" aria-selected="false">Nova/Egy B</button>
+              <button class="tab" data-tab="Upgrade Nova/Egy A → B" role="tab" aria-selected="false">Upgrade Nova/Egy A → B</button>
+            </nav>
+
+            <div id="groupsContainer" role="list" aria-label="Item groups"></div>
+
+            <div class="actions">
+              <button id="clear" class="ghost" aria-label="Reset all selections">✕ Reset</button>
+              <button id="export" class="ghost" aria-label="Export selections as CSV">📊 Export CSV</button>
+              <button id="exportJSON" class="ghost" aria-label="Export selections as JSON">📦 Export JSON</button>
+              <button id="selectAllTabs" class="ghost" aria-label="Select or deselect all visible items">☑ Select All</button>
             </div>
           </div>
         </section>
 
-        <section class="summary" aria-label="Selected items list">
-          <h2>
-            📋 Selected Items
-            <span style="font-size:12px;font-weight:400;color:var(--muted);">
-              <span id="totalItemsCount">0</span> items
-            </span>
-          </h2>
-          <div class="selected-list" id="selectedList" role="list" aria-label="Your selected items">
-            <div class="small">Nothing selected yet.</div>
+        <aside class="right">
+          <section class="summary" aria-label="Total sum">
+            <h2>💰 Total Sum</h2>
+            <div class="total-main" aria-label="Total gold">
+              <span class="coin gold" aria-hidden="true">G</span>
+              <span class="amount" id="totalGold">0</span>
+              <span class="label">Total Gold</span>
+            </div>
+            <div class="total-currencies" role="list" aria-label="Currency breakdown">
+              <div class="currency-item" role="listitem">
+                <span class="coin sc" aria-hidden="true">SC</span>
+                <span class="currency-label">Silver Coins</span>
+                <span class="value" id="totalSC">0</span>
+              </div>
+              <div class="currency-item" role="listitem">
+                <span class="coin lsc" aria-hidden="true">LSC</span>
+                <span class="currency-label">Legend Silver Coins</span>
+                <span class="value" id="totalLSC">0</span>
+              </div>
+              <div class="currency-item" role="listitem">
+                <span class="coin gc" aria-hidden="true">GC</span>
+                <span class="currency-label">Gold Coins</span>
+                <span class="value" id="totalGC">0</span>
+              </div>
+              <div class="currency-item" role="listitem">
+                <span class="coin lgc" aria-hidden="true">LGC</span>
+                <span class="currency-label">Legend Gold Coins</span>
+                <span class="value" id="totalLGC">0</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="summary" aria-label="Selected items list">
+            <h2>
+              📋 Selected Items
+              <span style="font-size:12px;font-weight:400;color:var(--muted);">
+                <span id="totalItemsCount">0</span> items
+              </span>
+            </h2>
+            <div class="selected-list" id="selectedList" role="list" aria-label="Your selected items">
+              <div class="small">Nothing selected yet.</div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ===== COMPARE PAGE ===== -->
+    <div id="pageCompare" class="page hidden">
+      <header class="hero">
+        <div class="hero-left">
+          <h1>Egy A vs Egy B Comparison</h1>
+          <p class="lead">
+            Compare the total costs of <strong>Nova/Egy A</strong> (including Upgrade) and <strong>Nova/Egy B</strong> side by side.
+          </p>
+          <span class="note-badge" role="note" title="Weapon & Shield (Egy B) are only available via FGW or LHWT">⚠️ Weapon & Shield (Egy B) only via FGW / LHWT</span>
+        </div>
+        <div class="hero-actions"></div>
+      </header>
+
+      <div class="compare-grid" id="compareContainer">
+        <div class="compare-col panel">
+          <div class="panel-head">
+            <h3>
+              <span>Nova/Egy A + Upgrade</span>
+              <span class="badge-a">Destruction → Immortal / Myth → Legend</span>
+            </h3>
           </div>
-        </section>
-      </aside>
+          <div class="panel-body">
+            <div id="egyAItems"></div>
+            <div class="compare-total" id="egyATotalContainer">
+              <div class="total-row">
+                <span>Total Gold</span>
+                <span class="value gold" id="egyATotalGold">0</span>
+              </div>
+              <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+                <span>SC</span> <span id="egyATotalSC">0</span>
+              </div>
+              <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+                <span>LSC</span> <span id="egyATotalLSC">0</span>
+              </div>
+              <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+                <span>GC</span> <span id="egyATotalGC">0</span>
+              </div>
+              <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+                <span>LGC</span> <span id="egyATotalLGC">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="compare-col panel">
+          <div class="panel-head">
+            <h3>
+              <span>Nova/Egy B</span>
+              <span class="badge-b">Immortal / Legend</span>
+            </h3>
+          </div>
+          <div class="panel-body">
+            <div id="egyBItems"></div>
+            <div class="compare-total" id="egyBTotalContainer">
+              <div class="total-row">
+                <span>Total Gold</span>
+                <span class="value gold" id="egyBTotalGold">0</span>
+              </div>
+              <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+                <span>SC</span> <span id="egyBTotalSC">0</span>
+              </div>
+              <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+                <span>LSC</span> <span id="egyBTotalLSC">0</span>
+              </div>
+              <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+                <span>GC</span> <span id="egyBTotalGC">0</span>
+              </div>
+              <div class="total-row" style="font-weight:400;font-size:13px;color:var(--muted);">
+                <span>LGC</span> <span id="egyBTotalLGC">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-diff" id="diffBox">
+        <div class="label">💰 Price Difference (Egy B - Egy A+Upgrade)</div>
+        <div class="value" id="diffValue">0</div>
+        <div class="sub" id="diffSub">Egy B is more expensive than Egy A+Upgrade</div>
+        <div class="diff-currencies" id="diffCurrencies">
+          <span class="diff-item"><span class="coin sc">SC</span> <span id="diffSC">0</span></span>
+          <span class="diff-item"><span class="coin lsc">LSC</span> <span id="diffLSC">0</span></span>
+          <span class="diff-item"><span class="coin gc">GC</span> <span id="diffGC">0</span></span>
+          <span class="diff-item"><span class="coin lgc">LGC</span> <span id="diffLGC">0</span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -162,520 +444,239 @@
   <script src="data/groups.js"></script>
   <script src="menu.js"></script>
   <script>
-    // ===== MENU RENDER =====
-    document.addEventListener('DOMContentLoaded', function() {
-      renderMenu('index');
-    });
+    // ============================================================
+    //  ===== ROUTER =====
+    // ============================================================
+    function getPage() {
+      const path = window.location.pathname;
+      if (path.includes('/compare') || path.endsWith('/compare')) {
+        return 'compare';
+      }
+      return 'calculator';
+    }
+
+    function navigateTo(page) {
+      const base = '/legends-egy-calculator/';
+      if (page === 'compare') {
+        window.history.pushState({ page: 'compare' }, '', base + 'compare');
+      } else {
+        window.history.pushState({ page: 'calculator' }, '', base);
+      }
+      renderPage(page);
+    }
 
     // ============================================================
-    //  SAFE EXECUTION HELPER
+    //  ===== PAGE RENDERER =====
     // ============================================================
-    function safeExecute(fn, fallback = null) {
-      try {
-        return fn();
-      } catch (e) {
-        console.error('Error:', e);
-        return fallback;
+    function renderPage(page) {
+      const calcPage = document.getElementById('pageCalculator');
+      const compPage = document.getElementById('pageCompare');
+
+      if (page === 'compare') {
+        calcPage.classList.add('hidden');
+        compPage.classList.remove('hidden');
+        renderMenu('compare');
+        renderComparison();
+      } else {
+        calcPage.classList.remove('hidden');
+        compPage.classList.add('hidden');
+        renderMenu('index');
+        if (typeof initCalculator === 'function') {
+          initCalculator();
+        }
       }
     }
 
     // ============================================================
-    //  STATE
+    //  ===== COMPARE LOGIC =====
     // ============================================================
-    const state = {
-      tab: 'Nova/Egy A',
-      selected: new Set(),
-      searchTerm: '',
-      theme: 'dark',
+    function renderComparison() {
+      const egyAItems = getItemsByCategory('Nova/Egy A');
+      const egyAFiltered = egyAItems.filter(i => i.group !== 'weapon_shield');
+
+      const upgradeItems = getItemsByCategory('Upgrade Nova/Egy A → B');
+      const upgradeFiltered = upgradeItems.filter(i => i.group !== 'weapon_shield');
+
+      const egyBItems = getItemsByCategory('Nova/Egy B');
+      const egyBFiltered = egyBItems.filter(i => i.group !== 'weapon_shield');
+
+      const egyASum = sumCurrencies(egyAFiltered);
+      const upgradeSum = sumCurrencies(upgradeFiltered);
+      const egyBSum = sumCurrencies(egyBFiltered);
+
+      const egyATotal = {
+        gold: egyASum.gold + upgradeSum.gold,
+        sc: egyASum.sc + upgradeSum.sc,
+        lsc: egyASum.lsc + upgradeSum.lsc,
+        gc: egyASum.gc + upgradeSum.gc,
+        lgc: egyASum.lgc + upgradeSum.lgc
+      };
+
+      // Render Egy A Items
+      const egyAContainer = document.getElementById('egyAItems');
+      egyAContainer.innerHTML = '';
+
+      egyAFiltered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'compare-item';
+        const name = item.setTag ? `${item.name} (${item.setTag})` : item.name;
+        div.innerHTML = `
+          <span class="label">${name}</span>
+          <span class="value gold">${fmt(item.gold)}</span>
+        `;
+        egyAContainer.appendChild(div);
+      });
+
+      const sep = document.createElement('div');
+      sep.className = 'compare-item';
+      sep.style.borderBottom = '2px solid var(--line)';
+      sep.style.padding = '2px 0';
+      sep.style.margin = '4px 0';
+      sep.innerHTML = `<span style="color:var(--muted);font-size:11px;">+ Upgrade Costs</span>`;
+      egyAContainer.appendChild(sep);
+
+      upgradeFiltered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'compare-sub-item';
+        const name = item.name;
+        div.innerHTML = `
+          <span class="label">↗ ${name}</span>
+          <span class="value gold">${fmt(item.gold)}</span>
+        `;
+        egyAContainer.appendChild(div);
+      });
+
+      // Render Egy B Items
+      const egyBContainer = document.getElementById('egyBItems');
+      egyBContainer.innerHTML = '';
+      egyBFiltered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'compare-item';
+        const name = item.setTag ? `${item.name} (${item.setTag})` : item.name;
+        div.innerHTML = `
+          <span class="label">${name}</span>
+          <span class="value gold">${fmt(item.gold)}</span>
+        `;
+        egyBContainer.appendChild(div);
+      });
+
+      const note = document.createElement('div');
+      note.className = 'compare-item';
+      note.style.color = 'var(--warn)';
+      note.style.fontSize = '12px';
+      note.style.opacity = '0.7';
+      note.innerHTML = `
+        <span class="label">⚠️ Weapon & Shield</span>
+        <span>only via FGW / LHWT</span>
+      `;
+      egyBContainer.appendChild(note);
+
+      // Update Totals
+      document.getElementById('egyATotalGold').textContent = fmt(egyATotal.gold);
+      document.getElementById('egyATotalSC').textContent = fmt(egyATotal.sc);
+      document.getElementById('egyATotalLSC').textContent = fmt(egyATotal.lsc);
+      document.getElementById('egyATotalGC').textContent = fmt(egyATotal.gc);
+      document.getElementById('egyATotalLGC').textContent = fmt(egyATotal.lgc);
+
+      document.getElementById('egyBTotalGold').textContent = fmt(egyBSum.gold);
+      document.getElementById('egyBTotalSC').textContent = fmt(egyBSum.sc);
+      document.getElementById('egyBTotalLSC').textContent = fmt(egyBSum.lsc);
+      document.getElementById('egyBTotalGC').textContent = fmt(egyBSum.gc);
+      document.getElementById('egyBTotalLGC').textContent = fmt(egyBSum.lgc);
+
+      // Difference
+      const diffGold = egyBSum.gold - egyATotal.gold;
+      const diffSC = egyBSum.sc - egyATotal.sc;
+      const diffLSC = egyBSum.lsc - egyATotal.lsc;
+      const diffGC = egyBSum.gc - egyATotal.gc;
+      const diffLGC = egyBSum.lgc - egyATotal.lgc;
+
+      const diffEl = document.getElementById('diffValue');
+      const subEl = document.getElementById('diffSub');
+
+      diffEl.textContent = fmt(Math.abs(diffGold));
+      diffEl.className = 'value';
       
-      get items() {
-        return Object.values(ITEMS).filter(i => i.cat === this.tab);
-      },
-      
-      get packages() {
-        return Object.values(PACKAGES).filter(p => p.cat === this.tab);
-      },
-      
-      get selectedItems() {
-        return Object.values(ITEMS).filter(i => this.selected.has(i.id));
-      },
-      
-      isSelected(id) { return this.selected.has(id); },
-      
-      toggle(id) {
-        if (this.selected.has(id)) {
-          this.selected.delete(id);
-        } else {
-          this.selected.add(id);
-        }
-        this._update();
-      },
-      
-      toggleAll(itemIds) {
-        const allSelected = itemIds.every(id => this.selected.has(id));
-        if (allSelected) {
-          itemIds.forEach(id => this.selected.delete(id));
-        } else {
-          itemIds.forEach(id => this.selected.add(id));
-        }
-        this._update();
-      },
-      
-      clear() {
-        this.selected.clear();
-        this._update();
-      },
-      
-      getPackageStatus(pkg) {
-        const all = pkg.items.every(id => this.selected.has(id));
-        const count = pkg.items.filter(id => this.selected.has(id)).length;
-        return { all, count, total: pkg.items.length };
-      },
-      
-      getItemsByGroup(group) {
-        return this.items.filter(i => i.group === group);
-      },
-      
-      _update() {
-        safeExecute(() => {
-          renderGroups();
-          updateUI();
-          saveState();
-        });
-      },
-      
-      saveTheme() {
-        try { localStorage.setItem('egy_theme', this.theme); } catch (_) {}
-      },
-      
-      loadTheme() {
-        try {
-          const theme = localStorage.getItem('egy_theme');
-          if (theme) { this.theme = theme; return true; }
-        } catch (_) {}
-        return false;
+      if (diffGold > 0) {
+        diffEl.classList.add('positive');
+        subEl.textContent = `Egy B is ${fmt(diffGold)} more expensive than Egy A + Upgrade`;
+      } else if (diffGold < 0) {
+        diffEl.classList.add('negative');
+        subEl.textContent = `Egy B is ${fmt(Math.abs(diffGold))} cheaper than Egy A + Upgrade`;
+      } else {
+        diffEl.classList.add('neutral');
+        subEl.textContent = 'Egy B and Egy A + Upgrade cost the same';
       }
-    };
+
+      document.getElementById('diffSC').textContent = fmt(Math.abs(diffSC));
+      document.getElementById('diffLSC').textContent = fmt(Math.abs(diffLSC));
+      document.getElementById('diffGC').textContent = fmt(Math.abs(diffGC));
+      document.getElementById('diffLGC').textContent = fmt(Math.abs(diffLGC));
+    }
 
     // ============================================================
-    //  UTILITY
+    //  ===== UTILITY =====
     // ============================================================
     const formatter = new Intl.NumberFormat('de-DE');
     const fmt = n => formatter.format(n || 0);
 
-    function getDisplayName(item) {
-      if (item.upgradeFrom && item.upgradeTo) {
-        return `${item.name} (${item.upgradeFrom} → ${item.upgradeTo})`;
-      }
-      if (item.setTag && item.setTag !== 'Upgrade') {
-        return `${item.name} (${item.setTag})`;
-      }
-      return item.name;
+    function getItemsByCategory(cat) {
+      return Object.values(ITEMS).filter(i => i.cat === cat);
     }
 
-    function getPriceParts(item) {
-      const parts = [];
-      if (item.gold) parts.push({ type: 'gold', label: 'G', value: item.gold, cls: 'gold-price' });
-      if (item.sc) parts.push({ type: 'sc', label: 'SC', value: item.sc });
-      if (item.lsc) parts.push({ type: 'lsc', label: 'LSC', value: item.lsc });
-      if (item.gc) parts.push({ type: 'gc', label: 'GC', value: item.gc });
-      if (item.lgc) parts.push({ type: 'lgc', label: 'LGC', value: item.lgc });
-      return parts;
+    function sumCurrencies(items) {
+      let gold = 0, sc = 0, lsc = 0, gc = 0, lgc = 0;
+      items.forEach(item => {
+        gold += item.gold || 0;
+        sc += item.sc || 0;
+        lsc += item.lsc || 0;
+        gc += item.gc || 0;
+        lgc += item.lgc || 0;
+      });
+      return { gold, sc, lsc, gc, lgc };
     }
 
     // ============================================================
-    //  STORAGE (with validation)
-    // ============================================================
-    function saveState() {
-      try {
-        localStorage.setItem('egy_state', JSON.stringify({
-          tab: state.tab,
-          selected: [...state.selected]
-        }));
-      } catch (_) {}
-    }
-
-    function loadState() {
-      try {
-        const raw = localStorage.getItem('egy_state');
-        if (!raw) return false;
-        const data = JSON.parse(raw);
-        
-        const validTabs = ['Nova/Egy A', 'Nova/Egy B', 'Upgrade Nova/Egy A → B'];
-        if (data.tab && validTabs.includes(data.tab)) {
-          state.tab = data.tab;
-        }
-        
-        if (Array.isArray(data.selected)) {
-          const validIds = new Set(Object.keys(ITEMS));
-          const validSelected = data.selected.filter(id => validIds.has(id));
-          state.selected = new Set(validSelected);
-        }
-        
-        return true;
-      } catch (_) { return false; }
-    }
-
-    // ============================================================
-    //  THEME
+    //  ===== THEME =====
     // ============================================================
     function applyTheme() {
-      document.documentElement.setAttribute('data-theme', state.theme);
-    }
-
-    // ============================================================
-    //  RENDER FUNCTIONS
-    // ============================================================
-    function renderGroups() {
-      const container = document.getElementById('groupsContainer');
-      container.innerHTML = '';
-
-      if (state.tab === 'Nova/Egy B' || state.tab === 'Upgrade Nova/Egy A → B') {
-        const info = document.createElement('div');
-        info.className = 'info-box';
-        info.innerHTML = `
-          <span class="icon">⚠️</span>
-          <span><strong>Weapon & Shield (Egy B)</strong> can only be obtained via <strong>FGW</strong> or <strong>LHWT</strong>. Direct purchase is not possible.</span>
-        `;
-        container.appendChild(info);
-      }
-
-      const searchTerm = state.searchTerm.toLowerCase().trim();
-
-      const groupsMap = {};
-      state.items.forEach(item => {
-        if (!groupsMap[item.group]) groupsMap[item.group] = [];
-        groupsMap[item.group].push(item);
-      });
-
-      state.packages.forEach(pkg => {
-        const firstItem = ITEMS[pkg.items[0]];
-        if (firstItem) {
-          const group = firstItem.group;
-          if (!groupsMap[group]) groupsMap[group] = [];
-          if (!groupsMap[group]._packages) groupsMap[group]._packages = [];
-          groupsMap[group]._packages.push(pkg);
-        }
-      });
-
-      for (const [groupKey, groupData] of Object.entries(groupsMap)) {
-        const groupInfo = GROUPS[groupKey] || { label: groupKey, icon: '📦' };
-        const pkgList = groupData._packages || [];
-        const actualItems = groupData.filter(i => i.id);
-
-        const filteredItems = searchTerm
-          ? actualItems.filter(i => getDisplayName(i).toLowerCase().includes(searchTerm))
-          : actualItems;
-
-        const groupEl = document.createElement('div');
-        groupEl.className = 'group';
-        if (filteredItems.length === 0 && searchTerm) {
-          groupEl.classList.add('hidden');
-        }
-
-        const selectedCount = filteredItems.filter(i => state.isSelected(i.id)).length;
-        const totalCount = filteredItems.length;
-        const progress = totalCount > 0 ? (selectedCount / totalCount) * 100 : 0;
-        const allSelected = selectedCount === totalCount && totalCount > 0;
-
-        const header = document.createElement('div');
-        header.className = 'group-header';
-        header.innerHTML = `
-          <h3>${groupInfo.icon} ${groupInfo.label}</h3>
-          <div class="progress-wrapper">
-            <div class="progress-bar">
-              <div class="progress-fill" style="width:${progress}%"></div>
-            </div>
-            <span class="progress-text">${selectedCount}/${totalCount}</span>
-          </div>
-          <div class="group-actions">
-            ${pkgList.map(pkg => {
-              const status = state.getPackageStatus(pkg);
-              const label = status.all ? '✓ ' + pkg.name : pkg.name;
-              const cls = status.all ? 'complete' : '';
-              return `<button class="${cls}" data-pkg="${pkg.id}">${label}</button>`;
-            }).join('')}
-            <button class="select-all" data-select-group="${groupKey}">${allSelected ? '✕ None' : '☑ All'}</button>
-          </div>
-        `;
-        groupEl.appendChild(header);
-
-        const itemsContainer = document.createElement('div');
-        itemsContainer.className = 'group-items';
-
-        filteredItems.forEach(item => {
-          const row = document.createElement('div');
-          row.className = 'item-row' + (state.isSelected(item.id) ? ' selected' : '');
-          row.dataset.itemId = item.id;
-          row.tabIndex = 0;
-          row.setAttribute('role', 'checkbox');
-          row.setAttribute('aria-checked', state.isSelected(item.id) ? 'true' : 'false');
-
-          const checked = state.isSelected(item.id);
-          const priceParts = getPriceParts(item);
-
-          row.innerHTML = `
-            <input type="checkbox" ${checked ? 'checked' : ''} aria-hidden="true" />
-            <div class="item-info">
-              <span class="item-name">${getDisplayName(item)}</span>
-              <div class="item-prices">
-                ${priceParts.map(p => 
-                  `<span class="price ${p.cls || ''}"><span class="coin ${p.type}">${p.label}</span>${fmt(p.value)}</span>`
-                ).join('')}
-              </div>
-            </div>
-          `;
-
-          const checkbox = row.querySelector('input');
-
-          checkbox.addEventListener('change', (e) => {
-            e.stopPropagation();
-            state.toggle(item.id);
-          });
-
-          row.addEventListener('click', (e) => {
-            if (e.target === checkbox) return;
-            checkbox.checked = !checkbox.checked;
-            checkbox.dispatchEvent(new Event('change'));
-          });
-
-          row.addEventListener('keydown', (e) => {
-            if (e.key === ' ' || e.key === 'Enter') {
-              e.preventDefault();
-              checkbox.checked = !checkbox.checked;
-              checkbox.dispatchEvent(new Event('change'));
-            }
-          });
-
-          itemsContainer.appendChild(row);
-        });
-
-        groupEl.appendChild(itemsContainer);
-        container.appendChild(groupEl);
-      }
-
-      container.querySelectorAll('[data-pkg]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const pkg = PACKAGES[btn.dataset.pkg];
-          if (!pkg) return;
-          const status = state.getPackageStatus(pkg);
-          if (status.all) {
-            pkg.items.forEach(id => state.selected.delete(id));
-          } else {
-            pkg.items.forEach(id => state.selected.add(id));
-          }
-          state._update();
-        });
-      });
-
-      container.querySelectorAll('[data-select-group]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const groupKey = btn.dataset.selectGroup;
-          const items = state.getItemsByGroup(groupKey);
-          state.toggleAll(items.map(i => i.id));
-        });
-      });
-    }
-
-    function updateUI() {
-      const sel = state.selectedItems;
-      let gold = 0, sc = 0, lsc = 0, gc = 0, lgc = 0;
-
-      const list = document.getElementById('selectedList');
-      list.innerHTML = '';
-
-      if (sel.length === 0) {
-        list.innerHTML = '<div class="small">Nothing selected yet.</div>';
-      } else {
-        sel.forEach((item, index) => {
-          gold += item.gold || 0;
-          sc += item.sc || 0;
-          lsc += item.lsc || 0;
-          gc += item.gc || 0;
-          lgc += item.lgc || 0;
-
-          const row = document.createElement('div');
-          row.className = 'selected-item';
-
-          const priceParts = getPriceParts(item);
-          
-          let badge = '↑';
-          if (item.cat === 'Nova/Egy A') badge = 'A';
-          else if (item.cat === 'Nova/Egy B') badge = 'B';
-
-          row.innerHTML = `
-            <span class="order-number">${index + 1}</span>
-            <div class="item-icon">${GROUP_ICONS[item.group] || '📦'}</div>
-            <div class="item-details">
-              <div class="name">
-                ${getDisplayName(item)}
-                <span class="badge">${badge}</span>
-              </div>
-              <div class="meta">${item.cat} · ${GROUPS[item.group]?.label || item.group}</div>
-              <div class="item-prices-compact">
-                ${priceParts.map(p => 
-                  `<span class="price-tag"><span class="coin ${p.type}">${p.label}</span>${fmt(p.value)}</span>`
-                ).join('')}
-              </div>
-            </div>
-            <div class="item-actions">
-              <button class="remove-btn" data-remove="${item.id}">✕ Remove</button>
-              <span class="group-label">${GROUPS[item.group]?.label || item.group}</span>
-            </div>
-          `;
-          list.appendChild(row);
-        });
-      }
-
-      list.querySelectorAll('.remove-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          state.selected.delete(btn.dataset.remove);
-          state._update();
-        });
-      });
-
-      document.getElementById('totalGold').textContent = fmt(gold);
-      document.getElementById('totalSC').textContent = fmt(sc);
-      document.getElementById('totalLSC').textContent = fmt(lsc);
-      document.getElementById('totalGC').textContent = fmt(gc);
-      document.getElementById('totalLGC').textContent = fmt(lgc);
-
-      document.getElementById('selCount').textContent = `${sel.length} selected`;
-      document.getElementById('totalItemsCount').textContent = sel.length;
-    }
-
-    // ============================================================
-    //  TAB MANAGEMENT
-    // ============================================================
-    function setTab(tab) {
-      state.tab = tab;
-      document.querySelectorAll('.tab').forEach(t => {
-        const isActive = t.dataset.tab === tab;
-        t.classList.toggle('active', isActive);
-        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
-      });
-      state._update();
-    }
-
-    // ============================================================
-    //  KEYBOARD SHORTCUTS
-    // ============================================================
-    document.addEventListener('keydown', (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
-        e.preventDefault();
-        state.toggleAll(state.items.map(i => i.id));
-      }
-      
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        state.clear();
-      }
-    });
-
-    // ============================================================
-    //  EVENT LISTENERS
-    // ============================================================
-    document.querySelectorAll('.tab').forEach(btn => {
-      btn.addEventListener('click', () => setTab(btn.dataset.tab));
-    });
-
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      const raw = e.target.value;
-      const sanitized = raw.replace(/[<>]/g, '');
-      if (sanitized !== raw) {
-        e.target.value = sanitized;
-      }
-      state.searchTerm = sanitized;
-      renderGroups();
-    });
-
-    document.getElementById('clear').addEventListener('click', () => state.clear());
-
-    document.getElementById('selectAllTabs').addEventListener('click', () => {
-      state.toggleAll(state.items.map(i => i.id));
-    });
-
-    document.getElementById('export').addEventListener('click', () => {
-      const sel = state.selectedItems;
-      if (sel.length === 0) { alert('No items selected.'); return; }
-      
+      let theme = 'dark';
       try {
-        const headers = ['Category', 'Group', 'Name', 'Set', 'Upgrade From', 'Upgrade To', 'Gold', 'SC', 'LSC', 'GC', 'LGC'];
-        const rows = sel.map(i => [
-          i.cat, i.group, i.name, i.setTag || '', i.upgradeFrom || '', i.upgradeTo || '', 
-          i.gold || 0, i.sc || 0, i.lsc || 0, i.gc || 0, i.lgc || 0
-        ]);
-        const csv = [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'egy_calculator.csv';
-        a.click();
-        URL.revokeObjectURL(url);
-      } catch (e) {
-        console.error('Export failed:', e);
-        alert('Export failed. Please try again.');
-      }
-    });
-
-    document.getElementById('exportJSON').addEventListener('click', () => {
-      const sel = state.selectedItems;
-      if (sel.length === 0) { alert('No items selected.'); return; }
-      
-      try {
-        const data = {
-          version: '1.0',
-          exportedAt: new Date().toISOString(),
-          tab: state.tab,
-          selected: sel.map(i => i.id)
-        };
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'egy_calculator_profile.json';
-        a.click();
-        URL.revokeObjectURL(url);
-      } catch (e) {
-        console.error('Export failed:', e);
-        alert('Export failed. Please try again.');
-      }
-    });
-
-    // ============================================================
-    //  ERROR HANDLING
-    // ============================================================
-    window.addEventListener('error', (e) => {
-      console.error('Global error:', e.message);
-    });
-
-    // ============================================================
-    //  INIT
-    // ============================================================
-    function init() {
-      // Theme laden
-      if (!state.loadTheme()) state.theme = 'dark';
-      applyTheme();
-      
-      // State laden
-      loadState();
-      
-      // Tabs aktualisieren
-      document.querySelectorAll('.tab').forEach(t => {
-        const isActive = t.dataset.tab === state.tab;
-        t.classList.toggle('active', isActive);
-        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
-      });
-      
-      // Render
-      renderGroups();
-      updateUI();
+        const saved = localStorage.getItem('egy_theme');
+        if (saved) theme = saved;
+      } catch (_) {}
+      document.documentElement.setAttribute('data-theme', theme);
     }
+    applyTheme();
 
-    // App starten
-    safeExecute(init);
+    // ============================================================
+    //  ===== MENU =====
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+      const initialPage = getPage();
+      renderPage(initialPage);
+    });
+
+    // ============================================================
+    //  ===== POPSTATE (Browser Back/Forward) =====
+    // ============================================================
+    window.addEventListener('popstate', function() {
+      const page = getPage();
+      renderPage(page);
+    });
+
+    // ============================================================
+    //  ===== EXPOSE CALCULATOR INIT =====
+    // ============================================================
+    // Wird von app.js überschrieben, wenn geladen
+    let initCalculator = function() {
+      console.log('Calculator init - waiting for app.js');
+    };
+
+    // Lade app.js für Calculator-Logik
+    const script = document.createElement('script');
+    script.src = 'app.js';
+    document.body.appendChild(script);
   </script>
 </body>
 </html>
