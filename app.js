@@ -37,7 +37,6 @@ function getCalculatorHTML() {
           <div class="actions">
             <button id="clear" class="ghost">✕ Reset</button>
             <button id="export" class="ghost">📊 Export CSV</button>
-            <button id="exportJSON" class="ghost">📦 Export JSON</button>
             <button id="selectAllTabs" class="ghost">☑ Select All</button>
           </div>
         </div>
@@ -392,36 +391,28 @@ function initCalculator() {
   document.getElementById('clear')?.addEventListener('click', () => state.clear());
   document.getElementById('selectAllTabs')?.addEventListener('click', () => state.toggleAll(state.items.map(i => i.id)));
 
+  // ===== CSV EXPORT =====
   document.getElementById('export')?.addEventListener('click', () => {
     const sel = state.selectedItems;
     if (sel.length === 0) { alert('No items selected.'); return; }
     try {
       const headers = ['Category', 'Group', 'Name', 'Set', 'Upgrade From', 'Upgrade To', 'Gold', 'SC', 'LSC', 'GC', 'LGC'];
-      const rows = sel.map(i => [i.cat, i.group, i.name, i.setTag || '', i.upgradeFrom || '', i.upgradeTo || '', i.gold || 0, i.sc || 0, i.lsc || 0, i.gc || 0, i.lgc || 0]);
+      const rows = sel.map(i => [
+        i.cat, i.group, i.name, i.setTag || '', i.upgradeFrom || '', i.upgradeTo || '',
+        i.gold || 0, i.sc || 0, i.lsc || 0, i.gc || 0, i.lgc || 0
+      ]);
       const csv = [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'egy_calculator.csv';
+      a.download = 'egy_calculator_export.csv';
       a.click();
       URL.revokeObjectURL(url);
-    } catch (e) { console.error('Export failed:', e); alert('Export failed. Please try again.'); }
-  });
-
-  document.getElementById('exportJSON')?.addEventListener('click', () => {
-    const sel = state.selectedItems;
-    if (sel.length === 0) { alert('No items selected.'); return; }
-    try {
-      const data = { version: '1.0', exportedAt: new Date().toISOString(), tab: state.tab, selected: sel.map(i => i.id) };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'egy_calculator_profile.json';
-      a.click();
-      URL.revokeObjectURL(url);
-    } catch (e) { console.error('Export failed:', e); alert('Export failed. Please try again.'); }
+    } catch (e) {
+      console.error('Export failed:', e);
+      alert('Export failed. Please try again.');
+    }
   });
 
   document.addEventListener('keydown', (e) => {
