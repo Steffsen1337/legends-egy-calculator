@@ -28,15 +28,10 @@
   <link rel="stylesheet" href="styles/menu.css" />
   
   <style>
-    /* ===== FIX: Abstand für das fixed Menü ===== */
-    .wrap {
-      padding-top: 100px !important;
-    }
+    .wrap { padding-top: 100px !important; }
 
-    .events-container {
-      margin-top: 20px;
-    }
-
+    .events-container { margin-top: 20px; }
+    
     .server-time {
       text-align: center;
       padding: 16px;
@@ -47,12 +42,7 @@
       box-shadow: var(--shadow-sm);
       transition: background .4s ease, border-color .4s ease;
     }
-
-    .server-time .label {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
+    .server-time .label { color: var(--muted); font-size: 13px; }
     .server-time .time {
       font-size: 32px;
       font-weight: 900;
@@ -75,10 +65,7 @@
       box-shadow: var(--shadow-sm);
       transition: background .4s ease, border-color .4s ease;
     }
-
-    [data-theme="light"] .event-card {
-      border-color: rgba(0,0,0,.06);
-    }
+    [data-theme="light"] .event-card { border-color: rgba(0,0,0,.06); }
 
     .event-card .event-name {
       font-size: 16px;
@@ -88,10 +75,7 @@
       align-items: center;
       gap: 8px;
     }
-
-    .event-card .event-name .icon {
-      font-size: 20px;
-    }
+    .event-card .event-name .icon { font-size: 20px; }
 
     .event-card .event-times {
       display: flex;
@@ -110,13 +94,6 @@
       transition: background .4s ease, border-color .4s ease;
     }
 
-    .event-card .event-times .time-badge.soon {
-      background: rgba(251,191,36,.20);
-      border-color: rgba(251,191,36,.30);
-      color: var(--warn);
-      animation: pulse-soon 2s ease-in-out infinite;
-    }
-
     .event-card .event-times .time-badge.active {
       background: rgba(110,231,183,.20);
       border-color: rgba(110,231,183,.30);
@@ -128,27 +105,27 @@
       opacity: 0.35;
     }
 
+    .event-card .event-next {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .event-card .event-next .highlight {
+      color: var(--warn);
+      font-weight: 600;
+    }
+
+    .event-card .event-next .soon {
+      color: var(--success);
+      font-weight: 600;
+    }
+
     .event-card .event-note {
       font-size: 12px;
       color: var(--muted);
       margin-top: 8px;
       opacity: 0.7;
-    }
-
-    .event-card .countdown {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    .event-card .countdown .highlight {
-      color: var(--warn);
-      font-weight: 600;
-    }
-
-    @keyframes pulse-soon {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
     }
 
     @keyframes pulse-active {
@@ -157,14 +134,8 @@
     }
 
     @media (max-width: 768px) {
-      .events-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-      
-      .server-time .time {
-        font-size: 24px;
-      }
+      .events-grid { grid-template-columns: 1fr; gap: 12px; }
+      .server-time .time { font-size: 24px; }
     }
   </style>
 </head>
@@ -181,13 +152,10 @@
     </header>
 
     <div class="events-container" id="eventsContainer">
-      <!-- Server Time -->
       <div class="server-time">
         <div class="label">🕐 Server Time (UTC/GMT+3)</div>
         <div class="time" id="serverTime">--:--:--</div>
       </div>
-
-      <!-- Events Grid -->
       <div class="events-grid" id="eventsGrid"></div>
     </div>
   </div>
@@ -198,133 +166,140 @@
     //  EVENTS DATA
     // ============================================================
     const EVENTS = [
-      {
-        name: 'Capture The Flag',
-        icon: '🏴',
-        times: ['01:00', '05:00', '09:00', '13:00', '17:00', '21:00'],
-        note: ''
+      { 
+        name: 'Capture The Flag', 
+        icon: '🏴', 
+        times: ['01:00', '05:00', '09:00', '13:00', '17:00', '21:00'], 
+        days: [0, 1, 2, 3, 4, 5, 6],
+        note: '' 
       },
-      {
-        name: 'Battle Arena (Score)',
-        icon: '⚔️',
-        times: ['04:00', '08:00', '16:00'],
-        note: ''
+      { 
+        name: 'Battle Arena (Score)', 
+        icon: '⚔️', 
+        times: ['04:00', '08:00', '16:00'], 
+        days: [0, 1, 2, 3, 4, 5, 6],
+        note: '' 
       },
-      {
-        name: 'Battle Arena (Flag)',
-        icon: '⚔️',
-        times: ['12:00', '20:00'],
-        note: ''
+      { 
+        name: 'Battle Arena (Flag)', 
+        icon: '⚔️', 
+        times: ['12:00', '20:00'], 
+        days: [0, 1, 2, 3, 4, 5, 6],
+        note: '' 
       },
-      {
-        name: 'Survival Arena',
-        icon: '🏟️',
-        times: ['23:00', '11:00'],
-        note: ''
+      { 
+        name: 'Survival Arena', 
+        icon: '🏟️', 
+        times: ['23:00', '11:00'], 
+        days: [0, 1, 2, 3, 4, 5, 6],
+        note: '' 
       },
-      {
-        name: 'Special Goods Time',
-        icon: '🛒',
-        times: ['09:30', '15:30', '21:30'],
-        note: ''
+      { 
+        name: 'Special Goods Time', 
+        icon: '🛒', 
+        times: ['09:30', '15:30', '21:30'], 
+        days: [0, 1, 2, 3, 4, 5, 6],
+        note: '' 
       },
-      {
-        name: 'Last Man Standing',
-        icon: '👑',
-        times: ['23:30', '11:30'],
-        note: ''
+      { 
+        name: 'Last Man Standing', 
+        icon: '👑', 
+        times: ['23:30', '11:30'], 
+        days: [0, 1, 2, 3, 4, 5, 6],
+        note: '' 
       },
-      {
-        name: 'War of Leagues',
-        icon: '⚔️',
-        times: ['19:30'],
-        note: ''
+      { 
+        name: 'War of Leagues', 
+        icon: '⚔️', 
+        times: ['19:30'], 
+        days: [0, 1, 2, 3, 4, 5, 6],
+        note: '' 
       },
-      {
-        name: 'Selketh & Neith',
-        icon: '👹',
-        times: ['06:30', '12:30', '18:30'],
-        note: 'Not available on Sundays'
+      { 
+        name: 'Selketh & Neith', 
+        icon: '👹', 
+        times: ['06:30', '12:30', '18:30'], 
+        days: [0, 1, 2, 3, 4, 5, 6],
+        // Am Sonntag (0) entfällt 18:30
+        skipTimesOnDays: { 0: ['18:30'] },
+        note: '18:30 not available on Sundays' 
       },
-      {
-        name: 'Isis & Anubis',
-        icon: '👹',
-        times: ['07:30', '14:30', '20:30'],
-        note: 'Not available on Sundays'
+      { 
+        name: 'Isis & Anubis', 
+        icon: '👹', 
+        times: ['07:30', '14:30', '20:30'], 
+        days: [0, 1, 2, 3, 4, 5, 6],
+        // Am Sonntag (0) entfällt 20:30
+        skipTimesOnDays: { 0: ['20:30'] },
+        note: '20:30 not available on Sundays' 
       },
-      {
-        name: 'Tower Defense',
-        icon: '🗼',
-        times: ['17:30'],
-        note: 'Friday, Saturday, Sunday only'
+      { 
+        name: 'Tower Defense', 
+        icon: '🗼', 
+        times: ['17:30'], 
+        days: [5, 6, 0], // Freitag, Samstag, Sonntag
+        note: 'Friday, Saturday, Sunday only' 
       },
-      {
-        name: 'Beakyung The White Viper',
-        icon: '🐍',
-        times: ['21:30'],
-        note: 'Friday only'
+      { 
+        name: 'Beakyung The White Viper', 
+        icon: '🐍', 
+        times: ['21:30'], 
+        days: [5], // Nur Freitag
+        note: 'Friday only' 
       },
-      {
-        name: 'The Roc',
-        icon: '🦅',
-        times: ['21:30'],
-        note: 'Saturday only'
+      { 
+        name: 'The Roc', 
+        icon: '🦅', 
+        times: ['21:30'], 
+        days: [6], // Nur Samstag
+        note: 'Saturday only' 
       },
-      {
-        name: 'Haroesis & Seth',
-        icon: '👹',
-        times: ['18:30'],
-        note: 'Sunday only'
+      { 
+        name: 'Haroesis & Seth', 
+        icon: '👹', 
+        times: ['18:30'], 
+        days: [0], // Nur Sonntag
+        note: 'Sunday only' 
       },
-      {
-        name: 'Guild Wars',
-        icon: '⚔️',
-        times: ['20:30'],
-        note: 'Sunday only'
+      { 
+        name: 'Guild Wars', 
+        icon: '⚔️', 
+        times: ['20:30'], 
+        days: [0],
+        note: 'Sunday only' 
       },
-      {
-        name: 'Fortress War',
-        icon: '🏰',
-        times: ['21:30'],
-        note: 'Sunday only'
+      { 
+        name: 'Fortress War', 
+        icon: '🏰', 
+        times: ['21:30'], 
+        days: [0],
+        note: 'Sunday only' 
       }
     ];
 
     // ============================================================
     //  HELPERS
     // ============================================================
-    const TIMEZONE_OFFSET = 3; // UTC+3
-    const HOUR_MS = 3600000;
+    const TIMEZONE_OFFSET = 3;
     const MINUTE_MS = 60000;
 
     function getServerTime() {
       const now = new Date();
       const utc = now.getTime() + now.getTimezoneOffset() * MINUTE_MS;
-      return new Date(utc + TIMEZONE_OFFSET * HOUR_MS);
+      return new Date(utc + TIMEZONE_OFFSET * 3600000);
     }
 
     function getServerTimeStr() {
-      const t = getServerTime();
-      return t.toTimeString().slice(0, 8);
+      return getServerTime().toTimeString().slice(0, 8);
     }
 
-    function getCurrentHour() {
+    function getCurrentMinutes() {
       const t = getServerTime();
-      return t.getHours();
-    }
-
-    function getCurrentMinute() {
-      const t = getServerTime();
-      return t.getMinutes();
+      return t.getHours() * 60 + t.getMinutes();
     }
 
     function getCurrentDay() {
-      const t = getServerTime();
-      return t.getDay(); // 0 = Sunday
-    }
-
-    function getCurrentTimeMinutes() {
-      return getCurrentHour() * 60 + getCurrentMinute();
+      return getServerTime().getDay();
     }
 
     function parseTimeToMinutes(timeStr) {
@@ -332,45 +307,74 @@
       return h * 60 + m;
     }
 
-    function getRemainingTime(timeStr) {
-      const target = parseTimeToMinutes(timeStr);
-      const current = getCurrentTimeMinutes();
-      let diff = target - current;
-      if (diff < 0) diff += 1440; // nächster Tag
-      const hours = Math.floor(diff / 60);
-      const minutes = diff % 60;
-      return { hours, minutes, total: diff };
+    function getAvailableTimesForEvent(event) {
+      const currentDay = getCurrentDay();
+      const skipTimes = event.skipTimesOnDays ? event.skipTimesOnDays[currentDay] || [] : [];
+      return event.times.filter(time => !skipTimes.includes(time));
     }
 
-    function formatRemaining(hours, minutes) {
-      if (hours === 0 && minutes === 0) return '🔴 NOW!';
-      if (hours === 0) return `${minutes}m`;
-      if (hours < 24) return `${hours}h ${minutes}m`;
-      return `${Math.floor(hours / 24)}d ${hours % 24}h`;
+    function getNextEventTime(event) {
+      const current = getCurrentMinutes();
+      const currentDay = getCurrentDay();
+      const availableTimes = getAvailableTimesForEvent(event);
+      
+      let best = null;
+      let bestDiff = Infinity;
+
+      for (let dayOffset = 0; dayOffset <= 7; dayOffset++) {
+        const checkDay = (currentDay + dayOffset) % 7;
+        if (!event.days.includes(checkDay)) continue;
+        
+        // Prüfen ob an diesem Tag bestimmte Zeiten ausgeschlossen sind
+        const skipTimes = event.skipTimesOnDays ? event.skipTimesOnDays[checkDay] || [] : [];
+        const timesForDay = event.times.filter(time => !skipTimes.includes(time));
+        
+        if (timesForDay.length === 0) continue; // Wenn an diesem Tag alle Slots ausfallen
+        
+        for (const time of timesForDay) {
+          const target = parseTimeToMinutes(time);
+          let diff = target - current;
+          if (dayOffset > 0) {
+            diff += dayOffset * 1440;
+          } else if (dayOffset === 0 && diff < 0) {
+            continue;
+          }
+          
+          if (diff >= 0 && diff < bestDiff) {
+            bestDiff = diff;
+            best = { time, diff, target, day: checkDay, dayOffset };
+          }
+        }
+      }
+
+      return best;
     }
 
-    function getTimeStatus(timeStr) {
-      const target = parseTimeToMinutes(timeStr);
-      const current = getCurrentTimeMinutes();
-      const diff = target - current;
-      
-      if (diff >= 0 && diff <= 5) return 'active';
-      if (diff >= 0 && diff <= 30) return 'soon';
-      if (diff < 0) return 'passed';
-      return 'normal';
+    function isEventAvailableToday(event) {
+      const currentDay = getCurrentDay();
+      if (!event.days.includes(currentDay)) return false;
+      const availableTimes = getAvailableTimesForEvent(event);
+      return availableTimes.length > 0;
     }
 
-    function isEventAvailable(event) {
-      const day = getCurrentDay();
-      const note = event.note || '';
+    function isEventNow(event) {
+      const current = getCurrentMinutes();
+      const currentDay = getCurrentDay();
       
-      if (day === 0 && note.includes('Sunday')) return false;
-      if (note.includes('Friday only') && day !== 5) return false;
-      if (note.includes('Saturday only') && day !== 6) return false;
-      if (note.includes('Sunday only') && day !== 0) return false;
-      if (note.includes('Friday, Saturday, Sunday') && ![5, 6, 0].includes(day)) return false;
+      if (!event.days.includes(currentDay)) return false;
+      const availableTimes = getAvailableTimesForEvent(event);
       
-      return true;
+      for (const time of availableTimes) {
+        const target = parseTimeToMinutes(time);
+        const diff = target - current;
+        if (diff >= 0 && diff <= 5) return true;
+      }
+      return false;
+    }
+
+    function getDayName(day) {
+      const names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return names[day];
     }
 
     // ============================================================
@@ -384,32 +388,78 @@
         const card = document.createElement('div');
         card.className = 'event-card';
 
-        const available = isEventAvailable(event);
-        
+        const availableToday = isEventAvailableToday(event);
+        const isNow = isEventNow(event);
+        const next = getNextEventTime(event);
+        const availableTimes = getAvailableTimesForEvent(event);
+
         let nameHTML = `<span class="icon">${event.icon}</span> ${event.name}`;
-        if (!available) {
+        if (!availableToday) {
           nameHTML += ` <span style="font-size:11px;color:var(--muted);opacity:0.5;">(Not available today)</span>`;
         }
 
+        // Times
         let timesHTML = '';
+        const current = getCurrentMinutes();
+        const currentDay = getCurrentDay();
+        const isToday = event.days.includes(currentDay);
+        
         event.times.forEach(time => {
-          const status = getTimeStatus(time);
+          const target = parseTimeToMinutes(time);
+          let diff = target - current;
+          const isSkipped = event.skipTimesOnDays && event.skipTimesOnDays[currentDay] && event.skipTimesOnDays[currentDay].includes(time);
+          
+          let isActive = false;
+          if (isToday && !isSkipped && diff >= 0 && diff <= 5) isActive = true;
+          if (isToday && diff < 0) diff += 1440;
+
           let cls = 'time-badge';
-          if (status === 'active') cls += ' active';
-          else if (status === 'soon') cls += ' soon';
-          else if (status === 'passed') cls += ' passed';
-          
-          const remaining = getRemainingTime(time);
+          if (isActive) cls += ' active';
+          else if (!isToday || isSkipped) cls += ' passed';
+
           let label = time;
-          if (status === 'active') label = `🔴 ${time} (NOW!)`;
-          else if (status === 'soon') label = `${time} (in ${formatRemaining(remaining.hours, remaining.minutes)})`;
-          
+          if (isActive) label = `🔴 ${time} (NOW!)`;
+          if (isSkipped) label = `${time} (skipped today)`;
+
           timesHTML += `<span class="${cls}">${label}</span>`;
         });
+
+        // Next event
+        let nextHTML = '';
+        if (next) {
+          const diff = next.diff;
+          const isNow = diff <= 5;
+          const hours = Math.floor(diff / 60);
+          const minutes = diff % 60;
+          const days = Math.floor(hours / 24);
+
+          let label = '';
+          if (isNow) {
+            label = '🔴 Starts now!';
+          } else if (days === 1 && hours < 24) {
+            const remHours = hours % 24;
+            label = `Tomorrow at ${remHours}h ${minutes}m`;
+          } else if (days === 0 && hours === 0) {
+            label = `Starts in ${minutes}m`;
+          } else if (days === 0 && hours < 24) {
+            label = `Starts in ${hours}h ${minutes}m`;
+          } else {
+            const remHours = hours % 24;
+            label = `Starts in ${days}d ${remHours}h ${minutes}m`;
+          }
+
+          const dayName = next.dayOffset === 0 ? 'Today' : getDayName(next.day);
+          nextHTML = `
+            <div class="event-next">
+              Next: <span class="highlight">${next.time}</span> (${dayName}) — ${label}
+            </div>
+          `;
+        }
 
         card.innerHTML = `
           <div class="event-name">${nameHTML}</div>
           <div class="event-times">${timesHTML}</div>
+          ${nextHTML}
           ${event.note ? `<div class="event-note">${event.note}</div>` : ''}
         `;
         grid.appendChild(card);
@@ -427,19 +477,12 @@
       if (typeof renderMenu === 'function') {
         renderMenu('events');
       }
-      
+
       updateServerTime();
       renderEvents();
-      
-      // ===== LIVE-UHR: Jede Sekunde aktualisieren =====
-      setInterval(() => {
-        updateServerTime();
-      }, 1000);
-      
-      // Events nur jede Minute neu rendern (Performance)
-      setInterval(() => {
-        renderEvents();
-      }, 60000);
+
+      setInterval(updateServerTime, 1000);
+      setInterval(renderEvents, 60000);
     });
   </script>
 </body>
