@@ -288,38 +288,6 @@ h1{
   pointer-events:none;
 }
 
-/* Timezone selector - consistent appearance in Dark and Light mode */
-.timezone-selector select{
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: var(--input-bg);
-  color: var(--text);
-  border: 1px solid var(--line);
-  padding: 8px 36px 8px 12px;
-  border-radius: 10px;
-  font-size: 14px;
-  cursor: pointer;
-  min-width: 160px;
-  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
-  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
-  background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 13px) calc(50% - 2px);
-  background-size: 6px 6px, 6px 6px;
-  background-repeat: no-repeat;
-}
-
-.timezone-selector select:focus{
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(124,156,255,.10);
-  background: var(--input-bg-focus);
-}
-
-[data-theme="light"] .timezone-selector select{
-  background: var(--card);
-  color: var(--text);
-  border-color: var(--line);
-}
 
 /* ============================================================
    TABS
@@ -1103,9 +1071,33 @@ h1{
   background-position: calc(100% - 12px) center, calc(100% - 8px) center;
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
+  color-scheme: light dark;
 }
 .timezone-selector select:hover { border-color: var(--accent); }
 .timezone-selector select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,156,255,0.12); }
 
 [data-theme="dark"] .timezone-selector select { border-color: rgba(255,255,255,0.06); }
 [data-theme="dark"] .timezone-selector select:focus { box-shadow: 0 0 0 3px rgba(124,156,255,0.10); border-color: rgba(124,156,255,0.18); }
+
+/* Hint browsers to render native dropdowns in dark mode and style options when possible */
+.timezone-selector select option{
+  background: var(--card);
+  color: var(--text);
+}
+
+[data-theme="dark"] .timezone-selector select{
+  color-scheme: dark;
+  background: var(--card);
+  color: var(--text);
+  border-color: rgba(255,255,255,0.06);
+}
+
+[data-theme="dark"] .timezone-selector select option{
+  background: var(--card);
+  color: var(--text);
+}
+
+[data-theme="light"] .timezone-selector select option{
+  background: var(--card);
+  color: var(--text);
+}
