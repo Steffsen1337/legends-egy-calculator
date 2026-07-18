@@ -55,9 +55,9 @@ function renderMenu(activePage) {
         const page = this.dataset.page;
         const base = '/legends-egy-calculator/';
         const target = page === 'compare'
-          ? `${base}compare.html`
+          ? `${base}compare`
           : page === 'events'
-            ? `${base}events.html`
+            ? `${base}events`
             : base;
 
         window.location.assign(target);

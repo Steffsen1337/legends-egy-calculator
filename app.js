@@ -447,7 +447,7 @@ function renderPage(page) {
   const compPage = document.getElementById('pageCompare');
 
   if (page === 'events') {
-    window.location.assign('/legends-egy-calculator/events.html');
+    window.location.assign('/legends-egy-calculator/events');
     return;
   }
 
