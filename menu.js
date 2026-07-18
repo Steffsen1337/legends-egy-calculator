@@ -1,6 +1,8 @@
 function renderMenu(activePage) {
   let currentTheme = 'dark';
   try { const saved = localStorage.getItem('egy_theme'); if (saved) currentTheme = saved; } catch (_) {}
+  // Ensure the saved theme is applied globally so all pages load with same theme
+  try { document.documentElement.setAttribute('data-theme', currentTheme); } catch (_) {}
 
   const themeIcon = currentTheme === 'dark' ? '🌙' : '☀️';
   const themeLabel = currentTheme === 'dark' ? 'Dark' : 'Light';
