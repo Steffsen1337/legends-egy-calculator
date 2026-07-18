@@ -436,13 +436,20 @@ function initCalculator() {
 
 // ===== ROUTER =====
 function getPage() {
-  const path = window.location.pathname;
-  return (path.includes('/compare') || path.endsWith('/compare')) ? 'compare' : 'calculator';
+  const path = window.location.pathname.toLowerCase();
+  if (path.includes('/compare') || path.endsWith('/compare') || path.endsWith('/compare.html')) return 'compare';
+  if (path.includes('/events') || path.endsWith('/events') || path.endsWith('/events.html')) return 'events';
+  return 'calculator';
 }
 
 function renderPage(page) {
   const calcPage = document.getElementById('pageCalculator');
   const compPage = document.getElementById('pageCompare');
+
+  if (page === 'events') {
+    window.location.assign('/legends-egy-calculator/events.html');
+    return;
+  }
 
   if (page === 'compare') {
     calcPage?.classList.add('hidden');
