@@ -646,17 +646,34 @@
         let hasFutureTimeToday = false;
         if (isAvailableToday) {
           const currentDisplayMinutes = getCurrentDisplayMinutes();
-          const serverDay = getServerDay();
-          const skipTimes = event.skipTimesOnDays ? event.skipTimesOnDays[serverDay] || [] : [];
-          
+          const serverTimeNow = getServerTime();
+          const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+
+          // For each scheduled server-time, check if there exists an occurrence
+          // that falls on the current DISPLAY local date and is not skipped on the
+          // corresponding SERVER day. We consider day offsets -1..+1 to catch
+          // events that cross midnight between zones.
           for (const time of event.times) {
-            if (skipTimes.includes(time)) continue;
-            const target = parseTimeToMinutes(time);
-            const displayTarget = convertServerTimeToDisplay(target);
-            if (displayTarget > currentDisplayMinutes) {
-              hasFutureTimeToday = true;
-              break;
+            const [th, tm] = time.split(':').map(Number);
+            for (let dayOffset = -1; dayOffset <= 1; dayOffset++) {
+              const evtServerDate = new Date(serverTimeNow);
+              evtServerDate.setDate(evtServerDate.getDate() + dayOffset);
+              evtServerDate.setHours(th, tm, 0, 0);
+
+              const evtLocalDate = new Date(evtServerDate.getTime() + offsetDiff * 3600000);
+              if (evtLocalDate.toDateString() !== getDisplayTime().toDateString()) continue;
+
+              const serverDayOfEvent = evtServerDate.getDay();
+              const skippedOnServer = event.skipTimesOnDays && event.skipTimesOnDays[serverDayOfEvent] && event.skipTimesOnDays[serverDayOfEvent].includes(time);
+              if (skippedOnServer) continue;
+
+              const displayMinutesForEvt = evtLocalDate.getHours() * 60 + evtLocalDate.getMinutes();
+              if (displayMinutesForEvt > currentDisplayMinutes) {
+                hasFutureTimeToday = true;
+                break;
+              }
             }
+            if (hasFutureTimeToday) break;
           }
         }
         
@@ -676,13 +693,36 @@
           const target = parseTimeToMinutes(time);
           const displayTime = convertServerTimeToDisplay(target);
           const displayTimeStr = formatTimeForDisplay(displayTime);
-          
+
           let diff = target - currentServer;
-          const isSkipped = event.skipTimesOnDays && event.skipTimesOnDays[serverDay] && event.skipTimesOnDays[serverDay].includes(time);
-          
+
+          // Determine whether this specific occurrence is skipped for the
+          // DISPLAY local date by checking server-day(s) whose event maps to
+          // the current display date.
+          const serverTimeNow = getServerTime();
+          const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+          let isSkipped = false;
           let isActive = false;
-          if (isTodayOnServer && !isSkipped && diff >= 0 && diff <= 5) isActive = true;
-          if (isTodayOnServer && diff < 0) diff += 1440;
+
+          for (let dayOffset = -1; dayOffset <= 1; dayOffset++) {
+            const evtServerDate = new Date(serverTimeNow);
+            evtServerDate.setDate(evtServerDate.getDate() + dayOffset);
+            evtServerDate.setHours(Math.floor(target / 60), target % 60, 0, 0);
+
+            const evtLocalDate = new Date(evtServerDate.getTime() + offsetDiff * 3600000);
+            if (evtLocalDate.toDateString() !== getDisplayTime().toDateString()) continue;
+
+            const serverDayOfEvent = evtServerDate.getDay();
+            const skippedOnServer = event.skipTimesOnDays && event.skipTimesOnDays[serverDayOfEvent] && event.skipTimesOnDays[serverDayOfEvent].includes(time);
+            if (skippedOnServer) { isSkipped = true; break; }
+
+            // If this occurrence maps to local today and is within NOW window
+            // relative to server minutes, mark active.
+            let diffForThis = target - currentServer;
+            if (dayOffset > 0) diffForThis += dayOffset * 1440;
+            else if (dayOffset === 0 && diffForThis < 0) continue;
+            if (diffForThis >= 0 && diffForThis <= 5) { isActive = true; break; }
+          }
 
           let cls = 'time-badge';
           if (isActive) cls += ' active';
