@@ -73,25 +73,7 @@
       font-weight: 600;
       color: var(--text);
     }
-    .timezone-selector select {
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--line);
-      background: var(--item-bg);
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all .2s ease;
-    }
-    .timezone-selector select:hover {
-      border-color: var(--accent);
-    }
-    .timezone-selector select:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(124, 156, 255, 0.2);
-    }
+    /* Timezone select styling moved to styles/main.css for consistency */
     .timezone-selector .offset-display {
       font-size: 13px;
       color: var(--muted);
@@ -737,11 +719,15 @@
             label = `Starts in ${days}d ${remHours}h ${minutes}m`;
           }
 
-          // ===== KORREKT: Tag in der LOKALEN Zeitzone =====
           const targetMinutes = parseTimeToMinutes(next.time);
-          const localDay = getLocalDayForEvent(targetMinutes, next.dayOffset);
-          const dayName = localDay === getDisplayDay() ? 'Today' : getDayName(localDay);
-          
+          const eventServerDate = new Date(getServerTime());
+          eventServerDate.setDate(eventServerDate.getDate() + next.dayOffset);
+          eventServerDate.setHours(Math.floor(targetMinutes / 60), targetMinutes % 60, 0, 0);
+          const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+          const eventLocalDate = new Date(eventServerDate.getTime() + offsetDiff * 3600000);
+          const isSameLocalDate = eventLocalDate.toDateString() === getDisplayTime().toDateString();
+          const dayName = isSameLocalDate ? 'Today' : getDayName(eventLocalDate.getDay());
+
           const displayTimeStr = formatTimeForDisplay(next.displayTime);
           nextHTML = `
             <div class="event-next">
@@ -794,11 +780,15 @@
       sortedEvents.forEach(({ event, next, diff }) => {
         const status = getStatus(diff);
         
-        // ===== KORREKT: Tag in der LOKALEN Zeitzone =====
         const targetMinutes = parseTimeToMinutes(next.time);
-        const localDay = getLocalDayForEvent(targetMinutes, next.dayOffset);
-        const dayName = localDay === getDisplayDay() ? 'Today' : getDayName(localDay);
-        
+        const eventServerDate = new Date(getServerTime());
+        eventServerDate.setDate(eventServerDate.getDate() + next.dayOffset);
+        eventServerDate.setHours(Math.floor(targetMinutes / 60), targetMinutes % 60, 0, 0);
+        const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+        const eventLocalDate = new Date(eventServerDate.getTime() + offsetDiff * 3600000);
+        const isSameLocalDate = eventLocalDate.toDateString() === getDisplayTime().toDateString();
+        const dayName = isSameLocalDate ? 'Today' : getDayName(eventLocalDate.getDay());
+
         const displayTimeStr = formatTimeForDisplay(next.displayTime);
         const timeDisplay = `${displayTimeStr} (${dayName})`;
         
