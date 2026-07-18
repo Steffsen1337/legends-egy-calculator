@@ -28,16 +28,19 @@
   <link rel="stylesheet" href="styles/menu.css" />
   
   <style>
-    .wrap { padding-top: 100px !important; }
-    .page { display: block; }
-    .page.hidden { display: none; }
-    
+    /* ===== FIX: Abstand für das fixed Menü ===== */
+    .wrap {
+      padding-top: 100px !important;
+    }
+
+    /* ===== COMPARE STYLES ===== */
     .compare-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 18px;
       margin-top: 16px;
     }
+
     .compare-col .panel-head h3 {
       margin: 0;
       font-size: 16px;
@@ -47,6 +50,7 @@
       gap: 8px;
       flex-wrap: wrap;
     }
+
     .badge-a {
       font-size: 10px;
       font-weight: 700;
@@ -56,6 +60,7 @@
       color: var(--accent2);
       border: 1px solid rgba(124,156,255,.20);
     }
+
     .badge-b {
       font-size: 10px;
       font-weight: 700;
@@ -65,6 +70,7 @@
       color: var(--warn);
       border: 1px solid rgba(251,191,36,.20);
     }
+
     .compare-item {
       display: flex;
       justify-content: space-between;
@@ -73,11 +79,13 @@
       font-size: 13px;
       transition: border-color .4s ease;
     }
+
     .compare-item:last-child { border-bottom: none; }
     .compare-item .label { color: var(--muted); }
     .compare-item .value { font-weight: 600; }
     .compare-item .value.gold { color: #ffd966; }
     [data-theme="light"] .compare-item .value.gold { color: #b8860b; }
+
     .compare-sub-item {
       padding-left: 16px;
       font-size: 12px;
@@ -88,10 +96,12 @@
       padding-top: 4px;
       padding-bottom: 4px;
     }
+
     .compare-sub-item .label { opacity: 0.7; }
     .compare-sub-item .value { font-weight: 500; }
     .compare-sub-item .value.gold { color: #ffd966; }
     [data-theme="light"] .compare-sub-item .value.gold { color: #b8860b; }
+
     .compare-total {
       margin-top: 12px;
       padding-top: 12px;
@@ -102,10 +112,16 @@
       flex-direction: column;
       gap: 4px;
     }
-    .compare-total .total-row { display: flex; justify-content: space-between; }
+
+    .compare-total .total-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
     .compare-total .total-row .value { font-size: 16px; }
     .compare-total .total-row .value.gold { color: #ffd966; }
     [data-theme="light"] .compare-total .total-row .value.gold { color: #b8860b; }
+
     .compare-diff {
       margin-top: 20px;
       padding: 16px;
@@ -115,6 +131,7 @@
       text-align: center;
       transition: background .4s ease, border-color .4s ease;
     }
+
     [data-theme="light"] .compare-diff { border-color: rgba(0,0,0,.06); }
     .compare-diff .label { color: var(--muted); font-size: 13px; }
     .compare-diff .value { font-size: 28px; font-weight: 900; margin-top: 4px; }
@@ -122,6 +139,7 @@
     .compare-diff .value.negative { color: var(--success); }
     .compare-diff .value.neutral { color: var(--muted); }
     .compare-diff .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
     .compare-diff .diff-currencies {
       display: flex;
       justify-content: center;
@@ -131,14 +149,22 @@
       font-size: 13px;
       color: var(--muted);
     }
+
     .compare-diff .diff-currencies .diff-item {
       display: flex;
       align-items: center;
       gap: 4px;
     }
+
     @media (max-width: 768px) {
-      .compare-grid { grid-template-columns: 1fr; gap: 12px; }
+      .compare-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
     }
+
+    .page { display: block; }
+    .page.hidden { display: none; }
   </style>
 </head>
 <body>
@@ -152,7 +178,8 @@
   </div>
 
   <div class="wrap" role="main">
-    <div id="appContent"></div>
+    <div id="pageCalculator" class="page"></div>
+    <div id="pageCompare" class="page hidden"></div>
   </div>
 
   <script src="data/items.js"></script>
