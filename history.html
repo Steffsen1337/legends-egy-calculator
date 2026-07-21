@@ -1,143 +1,127 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Unique History – Legends Online</title>
+    <!-- Zentrale Styles einbinden -->
+    <link rel="stylesheet" href="menu.css" />
+    <link rel="stylesheet" href="main.css" />
+    <!-- Kleine, seiten-spezifische Anpassungen -->
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0b0e14;
-            color: #e0e0e0;
-            padding: 20px;
-            transition: background 0.2s, color 0.2s;
-        }
-        [data-theme="light"] body {
-            background: #f0f2f5;
-            color: #1a1a1a;
-        }
-        [data-theme="light"] .history-container {
-            background: #ffffff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        [data-theme="light"] .kill-entry {
-            background: #f8f9fa;
-            border-left-color: #e6b800;
-        }
-        [data-theme="light"] .kill-entry:hover {
-            background: #e9ecef;
-        }
-        [data-theme="light"] .meta-info {
-            color: #6c757d;
-        }
-        [data-theme="light"] .stale {
-            color: #dc3545;
-        }
-        .history-container {
-            max-width: 1200px;
-            margin: 20px auto 0;
-            background: #141a24;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.6);
-            transition: background 0.2s;
-        }
-        h1 {
-            color: #f0c040;
-            font-size: 2rem;
-            margin-bottom: 25px;
+        /* History-Einträge wie die Items in main.css */
+        .history-entry {
             display: flex;
             align-items: center;
             gap: 12px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: var(--item-bg);
+            border: 1px solid var(--line);
+            transition: background var(--transition), border-color var(--transition);
         }
-        h1 small {
-            font-size: 1rem;
-            color: #8899aa;
-            font-weight: normal;
+        .history-entry:hover {
+            background: var(--item-bg-hover);
+            border-color: var(--line-hover);
         }
-        .kill-list {
-            margin-top: 10px;
+        .history-entry .monster {
+            font-weight: 500;
+            flex: 1;
+            color: var(--text);
         }
-        .kill-entry {
-            background: #1a212c;
-            padding: 12px 18px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            border-left: 4px solid #f0c040;
-            transition: 0.1s;
+        .history-entry .killer {
+            color: var(--muted);
+            font-size: 0.9rem;
         }
-        .kill-entry:hover {
-            background: #222b3a;
-        }
-        .monster {
-            font-weight: bold;
-            color: #ffd966;
-        }
-        .killer a {
-            color: #6ea8fe;
+        .history-entry .killer a {
+            color: var(--accent);
             text-decoration: none;
         }
-        .killer a:hover {
+        .history-entry .killer a:hover {
             text-decoration: underline;
         }
-        .time {
-            color: #8899aa;
-            font-size: 0.9rem;
-            background: #0f141d;
+        .history-entry .time {
+            color: var(--muted);
+            font-size: 0.8rem;
+            background: var(--input-bg);
             padding: 2px 10px;
             border-radius: 20px;
+            white-space: nowrap;
         }
-        .meta-info {
-            margin-top: 25px;
-            color: #556;
-            font-size: 0.85rem;
+        .history-empty {
+            color: var(--muted);
+            text-align: center;
+            padding: 20px 0;
+        }
+        .history-meta {
+            font-size: 0.8rem;
+            color: var(--muted);
             text-align: right;
-            border-top: 1px solid #1f2836;
-            padding-top: 15px;
+            border-top: 1px solid var(--line);
+            padding-top: 12px;
+            margin-top: 12px;
         }
-        .stale {
-            color: #aa5555;
-            font-style: italic;
+        .history-loading {
+            color: var(--muted);
+            text-align: center;
+            padding: 20px 0;
         }
-        .loading {
-            color: #8899aa;
-            animation: pulse 1.5s infinite;
+        .panel-body .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
-        @keyframes pulse {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { opacity: 0.4; }
+        .update-badge {
+            font-size: 0.75rem;
+            color: var(--muted);
+            background: var(--input-bg);
+            padding: 2px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--line);
         }
-        @media (max-width: 600px) {
-            .kill-entry { flex-direction: column; align-items: flex-start; gap: 6px; }
-            .history-container { padding: 15px; }
+        /* Für den Aktualisierungs-Pill im Hero */
+        .pill .update-time {
+            font-weight: 600;
+            color: var(--text);
         }
     </style>
 </head>
 <body>
 
+    <!-- Menü-Container (wird von menu.js befüllt) -->
     <div id="menuContainer"></div>
 
-    <div class="history-container">
-        <h1>
-            ⚔️ Unique History
-            <small>– letzte besiegte Bosse</small>
-        </h1>
-
-        <div id="historyContent" class="kill-list">
-            <div class="loading">Lade Daten...</div>
+    <!-- Hauptinhalt im .wrap (Abstand zum fixen Menü) -->
+    <div class="wrap">
+        <div class="hero">
+            <div class="hero-left">
+                <h1>⚔️ Unique History</h1>
+                <p class="lead">Die letzten besiegten Bosse – live aus dem Spiel.</p>
+            </div>
+            <div class="hero-actions">
+                <span class="pill" id="lastUpdate">🔄 lädt…</span>
+            </div>
         </div>
 
-        <div class="meta-info" id="metaInfo"></div>
+        <!-- Panel für die History-Liste -->
+        <div class="panel">
+            <div class="panel-head">
+                <h2>Letzte Kills</h2>
+                <span class="sub" id="metaInfo">—</span>
+            </div>
+            <div class="panel-body">
+                <div id="historyContent" class="history-list">
+                    <div class="history-loading">Daten werden geladen …</div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Menü-Script -->
     <script src="menu.js"></script>
+
     <script>
+        // Menü rendern mit active='history'
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof renderMenu === 'function') {
                 renderMenu('history');
@@ -146,6 +130,7 @@
             }
         });
 
+        // Daten laden und anzeigen
         fetch('unique_history.json')
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -154,20 +139,23 @@
             .then(data => {
                 const container = document.getElementById('historyContent');
                 const meta = document.getElementById('metaInfo');
+                const update = document.getElementById('lastUpdate');
 
                 if (!data.kills || data.kills.length === 0) {
-                    container.innerHTML = '<div class="stale">Keine Einträge gefunden.</div>';
+                    container.innerHTML = '<div class="history-empty">Keine Einträge gefunden.</div>';
                     meta.textContent = '';
+                    update.innerHTML = '📭 keine Daten';
                     return;
                 }
 
+                // Einträge rendern
                 let html = '';
                 data.kills.forEach(k => {
                     const killerLink = k.killer_url
                         ? `<a href="https://playlegends.online${k.killer_url}" target="_blank">${k.killer}</a>`
                         : k.killer || 'unbekannt';
                     html += `
-                        <div class="kill-entry">
+                        <div class="history-entry">
                             <span class="monster">${k.monster}</span>
                             <span class="killer">getötet von ${killerLink}</span>
                             <span class="time">${k.time_ago}</span>
@@ -176,12 +164,17 @@
                 });
 
                 container.innerHTML = html;
-                meta.textContent = `Stand: ${data.scraped_at} | ${data.total} Einträge`;
+
+                // Metadaten
+                const scraped = new Date(data.scraped_at).toLocaleString('de-DE', { timeZone: 'UTC' });
+                meta.textContent = `${data.total} Einträge · Stand: ${scraped} UTC`;
+                update.innerHTML = `🔄 <span class="update-time">${scraped}</span>`;
             })
             .catch(err => {
                 document.getElementById('historyContent').innerHTML =
-                    `<div class="stale">Fehler beim Laden der History: ${err.message}</div>`;
+                    `<div class="history-empty">Fehler beim Laden der History: ${err.message}</div>`;
                 document.getElementById('metaInfo').textContent = '';
+                document.getElementById('lastUpdate').innerHTML = '❌ Fehler';
             });
     </script>
 </body>
