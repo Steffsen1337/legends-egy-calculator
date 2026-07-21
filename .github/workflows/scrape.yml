@@ -5,6 +5,9 @@ on:
     - cron: '*/30 * * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write   # <--- Wichtig für Push
+
 jobs:
   scrape:
     runs-on: ubuntu-latest
