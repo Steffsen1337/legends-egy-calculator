@@ -1,36 +1,54 @@
 {
-  "scraped_at": "2026-07-21T20:24:21.512076Z",
+  "scraped_at": "2026-07-21T21:05:07.574069Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Fire Demon",
+      "killer": "SiLene_",
+      "killer_url": "/ranking/character-1348.html",
+      "time_ago": "10 seconds ago"
+    },
+    {
+      "monster": "Isyutaru",
+      "killer": "Meno",
+      "killer_url": "/ranking/character-47840.html",
+      "time_ago": "23 mins ago"
+    },
+    {
+      "monster": "Ancient Librarian",
+      "killer": "Samy",
+      "killer_url": "/ranking/character-24933.html",
+      "time_ago": "24 mins ago"
+    },
     {
       "monster": "Captain Ivy",
       "killer": "LevelUP",
       "killer_url": "/ranking/character-33553.html",
-      "time_ago": "25 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Demon Shaitan",
       "killer": "warlockmensh",
       "killer_url": "/ranking/character-46305.html",
-      "time_ago": "28 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "SoSo The Black Viper [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "34 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "SoSo The Black Viper",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "51 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Tai-Sui",
       "killer": "LevelUP",
       "killer_url": "/ranking/character-33553.html",
-      "time_ago": "51 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Gnome Earth Element [STR]",
@@ -42,7 +60,7 @@
       "monster": "Jung Snake General [INT]",
       "killer": "Jekku",
       "killer_url": "/ranking/character-34313.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Tomb General Hyun",
@@ -54,37 +72,37 @@
       "monster": "Hew Snake General [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Ki Snake General [INT]",
       "killer": "Jekku",
       "killer_url": "/ranking/character-34313.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Isis",
       "killer": "Malphas",
       "killer_url": "/ranking/character-44441.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Salt Desert Demon",
       "killer": "Cristin",
       "killer_url": "/ranking/character-40288.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Anubis",
       "killer": "Anamaria",
       "killer_url": "/ranking/character-10978.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Yul Snake General [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Illusionist",
@@ -102,25 +120,7 @@
       "monster": "Uruchi",
       "killer": "BowMasta",
       "killer_url": "/ranking/character-48607.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Tai-Sui",
-      "killer": "Parchita",
-      "killer_url": "/ranking/character-48542.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Desert Beast [STR]",
-      "killer": "Cuthalion",
-      "killer_url": "/ranking/character-28132.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Sun Genie [STR]",
-      "killer": "Embedded",
-      "killer_url": "/ranking/character-39609.html",
-      "time_ago": "3 hours ago"
+      "time_ago": "4 hours ago"
     }
   ]
 }
