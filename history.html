@@ -1,160 +1,121 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Unique History – Legends Online</title>
-    <link rel="stylesheet" href="menu.css" />
-    <link rel="stylesheet" href="main.css" />
-    <style>
-        /* Kleine Anpassung für die History-Liste – nutzt .item-row aus main.css */
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .history-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 8px 14px;
-            border-radius: 10px;
-            background: var(--item-bg);
-            border: 1px solid var(--line);
-            transition: background var(--transition), border-color var(--transition);
-        }
-        .history-item:hover {
-            background: var(--item-bg-hover);
-            border-color: var(--line-hover);
-        }
-        .history-item .monster {
-            flex: 1;
-            font-weight: 500;
-            color: var(--text);
-        }
-        .history-item .killer {
-            color: var(--muted);
-            font-size: 0.9rem;
-        }
-        .history-item .killer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        .history-item .killer a:hover {
-            text-decoration: underline;
-        }
-        .history-item .time {
-            color: var(--muted);
-            font-size: 0.8rem;
-            background: var(--input-bg);
-            padding: 2px 10px;
-            border-radius: 20px;
-            white-space: nowrap;
-        }
-        .history-empty {
-            color: var(--muted);
-            text-align: center;
-            padding: 30px 0;
-        }
-        .history-loading {
-            color: var(--muted);
-            text-align: center;
-            padding: 30px 0;
-        }
-        /* Datum im Pill – zentriert */
-        .pill .update-time {
-            font-weight: 600;
-            color: var(--text);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unique History – Legends Online</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/menu.css" />
+  <style>
+    /* spezifische Styles für History, ähnlich wie in events.html */
+    .wrap { padding-top: 100px !important; }
+    .history-container { margin-top: 20px; }
+    .kill-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 10px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: background .4s ease, border-color .4s ease;
+    }
+    .kill-card .monster { font-weight: 700; flex: 1; }
+    .kill-card .killer { color: var(--muted); }
+    .kill-card .killer a { color: var(--accent); text-decoration: none; }
+    .kill-card .killer a:hover { text-decoration: underline; }
+    .kill-card .time { color: var(--muted); font-size: 0.9rem; background: var(--item-bg); padding: 2px 12px; border-radius: 20px; white-space: nowrap; }
+    .history-meta { font-size: 0.85rem; color: var(--muted); text-align: right; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+    .history-empty { color: var(--muted); text-align: center; padding: 30px 0; }
+    .history-loading { color: var(--muted); text-align: center; padding: 30px 0; }
+    .pill .update-time { font-weight: 600; color: var(--text); }
+  </style>
 </head>
 <body>
-
-    <!-- Menü -->
-    <div id="menuContainer"></div>
-
-    <!-- Hauptbereich -->
-    <div class="wrap">
-        <div class="hero">
-            <div class="hero-left">
-                <h1>⚔️ Unique History</h1>
-                <p class="lead">Die letzten besiegten Bosse – live aus dem Spiel.</p>
-            </div>
-            <div class="hero-actions">
-                <span class="pill" id="lastUpdate">🔄 lädt …</span>
-            </div>
+  <div id="menuContainer"></div>
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-left">
+        <h1>⚔️ Unique History</h1>
+        <p class="lead">Die letzten besiegten Bosse – live aus dem Spiel.</p>
+      </div>
+      <div class="hero-actions">
+        <span class="pill" id="lastUpdate">🔄 lädt …</span>
+      </div>
+    </header>
+    <div class="history-container">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Letzte Kills</h2>
+          <span class="sub" id="metaInfo">—</span>
         </div>
-
-        <!-- Panel -->
-        <div class="panel">
-            <div class="panel-head">
-                <h2>Letzte Kills</h2>
-                <span class="sub" id="metaInfo">—</span>
-            </div>
-            <div class="panel-body">
-                <div id="historyContent" class="history-list">
-                    <div class="history-loading">Daten werden geladen …</div>
-                </div>
-            </div>
+        <div class="panel-body">
+          <div id="historyContent">
+            <div class="history-loading">Daten werden geladen …</div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  <script src="menu.js"></script>
+  <script>
+    // Menü rendern
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof renderMenu === 'function') {
+        renderMenu('history');
+      }
+    });
 
-    <script src="menu.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof renderMenu === 'function') {
-                renderMenu('history');
-            }
+    // Daten laden und anzeigen
+    fetch('unique_history.json')
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        const container = document.getElementById('historyContent');
+        const meta = document.getElementById('metaInfo');
+        const update = document.getElementById('lastUpdate');
+
+        if (!data.kills || data.kills.length === 0) {
+          container.innerHTML = '<div class="history-empty">Keine Einträge gefunden.</div>';
+          meta.textContent = '';
+          update.innerHTML = '📭 keine Daten';
+          return;
+        }
+
+        let html = '';
+        data.kills.forEach(k => {
+          const killerLink = k.killer_url
+            ? `<a href="https://playlegends.online${k.killer_url}" target="_blank">${k.killer}</a>`
+            : k.killer || 'unbekannt';
+          html += `
+            <div class="kill-card">
+              <span class="monster">${k.monster}</span>
+              <span class="killer">getötet von ${killerLink}</span>
+              <span class="time">${k.time_ago}</span>
+            </div>
+          `;
         });
 
-        fetch('unique_history.json')
-            .then(res => {
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                return res.json();
-            })
-            .then(data => {
-                const container = document.getElementById('historyContent');
-                const meta = document.getElementById('metaInfo');
-                const update = document.getElementById('lastUpdate');
+        container.innerHTML = html;
 
-                if (!data.kills || data.kills.length === 0) {
-                    container.innerHTML = '<div class="history-empty">Keine Einträge gefunden.</div>';
-                    meta.textContent = '';
-                    update.innerHTML = '📭 keine Daten';
-                    return;
-                }
+        const d = new Date(data.scraped_at);
+        const dateStr = d.toLocaleDateString('de-DE', { timeZone: 'UTC' });
+        const timeStr = d.toLocaleTimeString('de-DE', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const fullDate = `${dateStr}, ${timeStr} UTC`;
 
-                let html = '';
-                data.kills.forEach(k => {
-                    const killerLink = k.killer_url
-                        ? `<a href="https://playlegends.online${k.killer_url}" target="_blank">${k.killer}</a>`
-                        : k.killer || 'unbekannt';
-                    html += `
-                        <div class="history-item">
-                            <span class="monster">${k.monster}</span>
-                            <span class="killer">getötet von ${killerLink}</span>
-                            <span class="time">${k.time_ago}</span>
-                        </div>
-                    `;
-                });
-
-                container.innerHTML = html;
-
-                // Formatierte Zeit (UTC)
-                const d = new Date(data.scraped_at);
-                const dateStr = d.toLocaleDateString('de-DE', { timeZone: 'UTC' });
-                const timeStr = d.toLocaleTimeString('de-DE', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                const fullDate = `${dateStr}, ${timeStr} UTC`;
-
-                meta.textContent = `${data.total} Einträge · Stand: ${fullDate}`;
-                update.innerHTML = `🔄 <span class="update-time">${fullDate}</span>`;
-            })
-            .catch(err => {
-                document.getElementById('historyContent').innerHTML =
-                    `<div class="history-empty">Fehler beim Laden: ${err.message}</div>`;
-                document.getElementById('metaInfo').textContent = '';
-                document.getElementById('lastUpdate').innerHTML = '❌ Fehler';
-            });
-    </script>
+        meta.textContent = `${data.total} Einträge · Stand: ${fullDate}`;
+        update.innerHTML = `🔄 <span class="update-time">${fullDate}</span>`;
+      })
+      .catch(err => {
+        document.getElementById('historyContent').innerHTML =
+          `<div class="history-empty">Fehler beim Laden: ${err.message}</div>`;
+        document.getElementById('metaInfo').textContent = '';
+        document.getElementById('lastUpdate').innerHTML = '❌ Fehler';
+      });
+  </script>
 </body>
 </html>
