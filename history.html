@@ -4,43 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Unique History – Legends Online</title>
-    <!-- Zentrale Styles einbinden -->
     <link rel="stylesheet" href="menu.css" />
     <link rel="stylesheet" href="main.css" />
-    <!-- Kleine, seiten-spezifische Anpassungen -->
     <style>
-        /* History-Einträge wie die Items in main.css */
-        .history-entry {
+        /* Kleine Anpassung für die History-Liste – nutzt .item-row aus main.css */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .history-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 8px 12px;
+            padding: 8px 14px;
             border-radius: 10px;
             background: var(--item-bg);
             border: 1px solid var(--line);
             transition: background var(--transition), border-color var(--transition);
         }
-        .history-entry:hover {
+        .history-item:hover {
             background: var(--item-bg-hover);
             border-color: var(--line-hover);
         }
-        .history-entry .monster {
-            font-weight: 500;
+        .history-item .monster {
             flex: 1;
+            font-weight: 500;
             color: var(--text);
         }
-        .history-entry .killer {
+        .history-item .killer {
             color: var(--muted);
             font-size: 0.9rem;
         }
-        .history-entry .killer a {
+        .history-item .killer a {
             color: var(--accent);
             text-decoration: none;
         }
-        .history-entry .killer a:hover {
+        .history-item .killer a:hover {
             text-decoration: underline;
         }
-        .history-entry .time {
+        .history-item .time {
             color: var(--muted);
             font-size: 0.8rem;
             background: var(--input-bg);
@@ -51,35 +54,14 @@
         .history-empty {
             color: var(--muted);
             text-align: center;
-            padding: 20px 0;
-        }
-        .history-meta {
-            font-size: 0.8rem;
-            color: var(--muted);
-            text-align: right;
-            border-top: 1px solid var(--line);
-            padding-top: 12px;
-            margin-top: 12px;
+            padding: 30px 0;
         }
         .history-loading {
             color: var(--muted);
             text-align: center;
-            padding: 20px 0;
+            padding: 30px 0;
         }
-        .panel-body .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .update-badge {
-            font-size: 0.75rem;
-            color: var(--muted);
-            background: var(--input-bg);
-            padding: 2px 12px;
-            border-radius: 20px;
-            border: 1px solid var(--line);
-        }
-        /* Für den Aktualisierungs-Pill im Hero */
+        /* Datum im Pill – zentriert */
         .pill .update-time {
             font-weight: 600;
             color: var(--text);
@@ -88,10 +70,10 @@
 </head>
 <body>
 
-    <!-- Menü-Container (wird von menu.js befüllt) -->
+    <!-- Menü -->
     <div id="menuContainer"></div>
 
-    <!-- Hauptinhalt im .wrap (Abstand zum fixen Menü) -->
+    <!-- Hauptbereich -->
     <div class="wrap">
         <div class="hero">
             <div class="hero-left">
@@ -99,11 +81,11 @@
                 <p class="lead">Die letzten besiegten Bosse – live aus dem Spiel.</p>
             </div>
             <div class="hero-actions">
-                <span class="pill" id="lastUpdate">🔄 lädt…</span>
+                <span class="pill" id="lastUpdate">🔄 lädt …</span>
             </div>
         </div>
 
-        <!-- Panel für die History-Liste -->
+        <!-- Panel -->
         <div class="panel">
             <div class="panel-head">
                 <h2>Letzte Kills</h2>
@@ -117,20 +99,14 @@
         </div>
     </div>
 
-    <!-- Menü-Script -->
     <script src="menu.js"></script>
-
     <script>
-        // Menü rendern mit active='history'
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof renderMenu === 'function') {
                 renderMenu('history');
-            } else {
-                console.warn('menu.js nicht geladen');
             }
         });
 
-        // Daten laden und anzeigen
         fetch('unique_history.json')
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -148,14 +124,13 @@
                     return;
                 }
 
-                // Einträge rendern
                 let html = '';
                 data.kills.forEach(k => {
                     const killerLink = k.killer_url
                         ? `<a href="https://playlegends.online${k.killer_url}" target="_blank">${k.killer}</a>`
                         : k.killer || 'unbekannt';
                     html += `
-                        <div class="history-entry">
+                        <div class="history-item">
                             <span class="monster">${k.monster}</span>
                             <span class="killer">getötet von ${killerLink}</span>
                             <span class="time">${k.time_ago}</span>
@@ -165,14 +140,18 @@
 
                 container.innerHTML = html;
 
-                // Metadaten
-                const scraped = new Date(data.scraped_at).toLocaleString('de-DE', { timeZone: 'UTC' });
-                meta.textContent = `${data.total} Einträge · Stand: ${scraped} UTC`;
-                update.innerHTML = `🔄 <span class="update-time">${scraped}</span>`;
+                // Formatierte Zeit (UTC)
+                const d = new Date(data.scraped_at);
+                const dateStr = d.toLocaleDateString('de-DE', { timeZone: 'UTC' });
+                const timeStr = d.toLocaleTimeString('de-DE', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                const fullDate = `${dateStr}, ${timeStr} UTC`;
+
+                meta.textContent = `${data.total} Einträge · Stand: ${fullDate}`;
+                update.innerHTML = `🔄 <span class="update-time">${fullDate}</span>`;
             })
             .catch(err => {
                 document.getElementById('historyContent').innerHTML =
-                    `<div class="history-empty">Fehler beim Laden der History: ${err.message}</div>`;
+                    `<div class="history-empty">Fehler beim Laden: ${err.message}</div>`;
                 document.getElementById('metaInfo').textContent = '';
                 document.getElementById('lastUpdate').innerHTML = '❌ Fehler';
             });
