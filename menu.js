@@ -1,7 +1,6 @@
 function renderMenu(activePage) {
   let currentTheme = 'dark';
   try { const saved = localStorage.getItem('egy_theme'); if (saved) currentTheme = saved; } catch (_) {}
-  // Ensure the saved theme is applied globally so all pages load with same theme
   try { document.documentElement.setAttribute('data-theme', currentTheme); } catch (_) {}
 
   const themeIcon = currentTheme === 'dark' ? '🌙' : '☀️';
@@ -20,6 +19,10 @@ function renderMenu(activePage) {
             </a>
             <a href="/legends-egy-calculator/events" class="menu-link ${activePage === 'events' ? 'active' : ''}" data-page="events">
               <span class="menu-icon">📅</span><span class="menu-label">Events</span>
+            </a>
+            <!-- NEU: History -->
+            <a href="/legends-egy-calculator/history" class="menu-link ${activePage === 'history' ? 'active' : ''}" data-page="history">
+              <span class="menu-icon">⚔️</span><span class="menu-label">History</span>
             </a>
           </div>
           <div class="menu-right">
@@ -58,8 +61,9 @@ function renderMenu(activePage) {
           ? `${base}compare`
           : page === 'events'
             ? `${base}events`
-            : base;
-
+            : page === 'history'
+              ? `${base}history`
+              : base;
         window.location.assign(target);
       });
     });

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unique History – Legends Online</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0b0e14;
+            color: #e0e0e0;
+            padding: 20px;
+            transition: background 0.2s, color 0.2s;
+        }
+        [data-theme="light"] body {
+            background: #f0f2f5;
+            color: #1a1a1a;
+        }
+        [data-theme="light"] .history-container {
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        [data-theme="light"] .kill-entry {
+            background: #f8f9fa;
+            border-left-color: #e6b800;
+        }
+        [data-theme="light"] .kill-entry:hover {
+            background: #e9ecef;
+        }
+        [data-theme="light"] .meta-info {
+            color: #6c757d;
+        }
+        [data-theme="light"] .stale {
+            color: #dc3545;
+        }
+        .history-container {
+            max-width: 1200px;
+            margin: 20px auto 0;
+            background: #141a24;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+            transition: background 0.2s;
+        }
+        h1 {
+            color: #f0c040;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        h1 small {
+            font-size: 1rem;
+            color: #8899aa;
+            font-weight: normal;
+        }
+        .kill-list {
+            margin-top: 10px;
+        }
+        .kill-entry {
+            background: #1a212c;
+            padding: 12px 18px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border-left: 4px solid #f0c040;
+            transition: 0.1s;
+        }
+        .kill-entry:hover {
+            background: #222b3a;
+        }
+        .monster {
+            font-weight: bold;
+            color: #ffd966;
+        }
+        .killer a {
+            color: #6ea8fe;
+            text-decoration: none;
+        }
+        .killer a:hover {
+            text-decoration: underline;
+        }
+        .time {
+            color: #8899aa;
+            font-size: 0.9rem;
+            background: #0f141d;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .meta-info {
+            margin-top: 25px;
+            color: #556;
+            font-size: 0.85rem;
+            text-align: right;
+            border-top: 1px solid #1f2836;
+            padding-top: 15px;
+        }
+        .stale {
+            color: #aa5555;
+            font-style: italic;
+        }
+        .loading {
+            color: #8899aa;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+        @media (max-width: 600px) {
+            .kill-entry { flex-direction: column; align-items: flex-start; gap: 6px; }
+            .history-container { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="menuContainer"></div>
+
+    <div class="history-container">
+        <h1>
+            ⚔️ Unique History
+            <small>– letzte besiegte Bosse</small>
+        </h1>
+
+        <div id="historyContent" class="kill-list">
+            <div class="loading">Lade Daten...</div>
+        </div>
+
+        <div class="meta-info" id="metaInfo"></div>
+    </div>
+
+    <script src="menu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof renderMenu === 'function') {
+                renderMenu('history');
+            } else {
+                console.warn('menu.js nicht geladen');
+            }
+        });
+
+        fetch('unique_history.json')
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res.json();
+            })
+            .then(data => {
+                const container = document.getElementById('historyContent');
+                const meta = document.getElementById('metaInfo');
+
+                if (!data.kills || data.kills.length === 0) {
+                    container.innerHTML = '<div class="stale">Keine Einträge gefunden.</div>';
+                    meta.textContent = '';
+                    return;
+                }
+
+                let html = '';
+                data.kills.forEach(k => {
+                    const killerLink = k.killer_url
+                        ? `<a href="https://playlegends.online${k.killer_url}" target="_blank">${k.killer}</a>`
+                        : k.killer || 'unbekannt';
+                    html += `
+                        <div class="kill-entry">
+                            <span class="monster">${k.monster}</span>
+                            <span class="killer">getötet von ${killerLink}</span>
+                            <span class="time">${k.time_ago}</span>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+                meta.textContent = `Stand: ${data.scraped_at} | ${data.total} Einträge`;
+            })
+            .catch(err => {
+                document.getElementById('historyContent').innerHTML =
+                    `<div class="stale">Fehler beim Laden der History: ${err.message}</div>`;
+                document.getElementById('metaInfo').textContent = '';
+            });
+    </script>
+</body>
+</html>
