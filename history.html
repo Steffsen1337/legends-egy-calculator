@@ -43,6 +43,7 @@
         .tracker-empty { color: var(--muted); text-align: center; padding: 30px 0; }
         .tracker-loading { color: var(--muted); text-align: center; padding: 30px 0; }
         .pill .update-time { font-weight: 600; color: var(--text); }
+        .debug-info { font-size: 0.75rem; color: var(--muted); background: var(--input-bg); padding: 8px 12px; border-radius: 8px; margin-top: 8px; border: 1px solid var(--line); }
         @media (max-width: 768px) {
             .spawn-card { flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
             .spawn-card .name { min-width: 100%; font-size: 1rem; }
@@ -77,6 +78,7 @@
                     <div id="trackerContent">
                         <div class="tracker-loading">Daten werden geladen …</div>
                     </div>
+                    <div id="debugInfo" class="debug-info" style="display:none;"></div>
                 </div>
             </div>
         </div>
@@ -122,14 +124,35 @@
             const container = document.getElementById('trackerContent');
             const meta = document.getElementById('metaInfo');
             const update = document.getElementById('lastUpdate');
+            const debugEl = document.getElementById('debugInfo');
 
-            // Lade die persistenten Kill-Zeiten
+            // Versuche zuerst last_kills.json zu laden
             fetch('last_kills.json')
                 .then(res => {
-                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    if (!res.ok) {
+                        // Fallback: Lade unique_history.json
+                        console.warn('last_kills.json nicht gefunden, verwende unique_history.json');
+                        return fetch('unique_history.json').then(r => {
+                            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                            return r.json().then(data => {
+                                // Konvertiere history in last_kills-Format
+                                const lastKills = {};
+                                const scrapedAt = new Date(data.scraped_at);
+                                data.kills.forEach(kill => {
+                                    const minutes = parseTimeAgo(kill.time_ago);
+                                    if (minutes !== null) {
+                                        const killTime = new Date(scrapedAt.getTime() - minutes * 60000);
+                                        lastKills[kill.monster] = killTime.toISOString();
+                                    }
+                                });
+                                return lastKills;
+                            });
+                        });
+                    }
                     return res.json();
                 })
                 .then(lastKills => {
+                    debugEl.style.display = 'none';
                     const now = getServerTime();
 
                     if (!UNIQUES_DATA || UNIQUES_DATA.length === 0) {
@@ -245,7 +268,7 @@
 
                     container.innerHTML = html;
 
-                    // Metadaten: Zeitpunkt des letzten Scrapes (aus last_kills.json nicht verfügbar, daher aktuelles Datum)
+                    // Metadaten
                     const nowStr = new Date().toLocaleString('de-DE', { timeZone: 'UTC' });
                     meta.textContent = `${withData}/${spawns.length} mit Daten · Stand: ${nowStr} UTC`;
                     update.innerHTML = `🔄 <span class="update-time">${nowStr}</span>`;
@@ -254,7 +277,23 @@
                     container.innerHTML = `<div class="tracker-empty">Fehler beim Laden der Kill-Daten: ${err.message}</div>`;
                     meta.textContent = '';
                     update.innerHTML = '❌ Fehler';
+                    debugEl.style.display = 'block';
+                    debugEl.textContent = `Debug: ${err.message}`;
                 });
+        }
+
+        // Hilfsfunktion für Fallback
+        function parseTimeAgo(text) {
+            if (!text) return null;
+            text = text.trim().toLowerCase();
+            text = text.replace(/\s+ago$/, '');
+            const match = text.match(/^(\d+)\s*(min|hour|hours?|h|minute|minutes?)/);
+            if (!match) return null;
+            const num = parseInt(match[1]);
+            const unit = match[2];
+            if (unit.startsWith('min')) return num;
+            if (unit.startsWith('hour') || unit === 'h') return num * 60;
+            return null;
         }
 
         // Initial rendern und dann alle 30 Sekunden aktualisieren
