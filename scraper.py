@@ -77,8 +77,9 @@ def update_last_kills(kills, scraped_at_iso):
     else:
         print("ℹ️ last_kills.json existiert noch nicht, wird neu erstellt.")
 
-    scraped_at_utc = datetime.fromisoformat(scraped_at_iso.replace("Z", "+00:00"))
+    scraped_at = datetime.fromisoformat(scraped_at_iso.replace("Z", "+00:00"))
     updated = 0
+    skipped = 0
 
     for kill in kills:
         monster = kill["monster"]
@@ -88,24 +89,25 @@ def update_last_kills(kills, scraped_at_iso):
             print(f"⚠️ Konnte Zeitangabe nicht parsen: '{time_ago}' für {monster}")
             continue
         
-        # NUR Kills, die jünger als 1 Stunde sind (<= 60 Minuten)
+        # NUR Kills innerhalb der letzten 60 Minuten berücksichtigen
         if minutes > 60:
             print(f"ℹ️ Überspringe {monster} (älter als 1 Stunde: {minutes} min)")
+            skipped += 1
             continue
-
+            
         # Kill-Zeit in UTC berechnen
-        kill_time_utc = scraped_at_utc - timedelta(minutes=minutes)
+        kill_time_utc = scraped_at - timedelta(minutes=minutes)
         # Umrechnung auf UTC+3 (Serverzeit)
         kill_time_server = kill_time_utc + timedelta(hours=3)
-        # Korrekter ISO-String mit Zeitzone +03:00 (OHNE doppelte Zone)
+        # Speichern mit korrektem UTC+3-Suffix (OHNE doppelte Zeitzone!)
         last_kills[monster] = kill_time_server.isoformat() + "+03:00"
         updated += 1
 
-    # IMMER eine gültige JSON-Datei schreiben
+    # WICHTIG: IMMER eine gültige JSON-Datei schreiben (auch wenn leer)
     with open(LAST_KILLS_FILE, "w", encoding="utf-8") as f:
         json.dump(last_kills, f, indent=2, ensure_ascii=False)
 
-    print(f"ℹ️ {updated} von {len(kills)} Kills verarbeitet (nur Kills ≤ 1 Stunde, Zeiten in UTC+3).")
+    print(f"ℹ️ {updated} Kills verarbeitet (≤ 1 Stunde), {skipped} übersprungen (älter).")
     return last_kills
 
 if __name__ == "__main__":
@@ -115,4 +117,4 @@ if __name__ == "__main__":
     print(f"✅ {data['total']} Einträge in {HISTORY_FILE} gespeichert")
 
     last_kills = update_last_kills(data["kills"], data["scraped_at"])
-    print(f"✅ {len(last_kills)} Unique-Einträge in {LAST_KILLS_FILE} gespeichert (UTC+3, ≤ 1h)")
+    print(f"✅ {len(last_kills)} Unique-Einträge in {LAST_KILLS_FILE} gespeichert (UTC+3, nur ≤ 1h)")

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -60,22 +60,22 @@
         <header class="hero">
             <div class="hero-left">
                 <h1>⏳ Unique Spawn Tracker</h1>
-                <p class="lead">When will the next Unique bosses spawn? Based on the latest kills.</p>
+                <p class="lead">Wann spawnen die nächsten Unique-Bosse? Basierend auf den letzten Kills.</p>
             </div>
             <div class="hero-actions">
-                <span class="pill" id="lastUpdate">🔄 loading …</span>
+                <span class="pill" id="lastUpdate">🔄 lädt …</span>
             </div>
         </header>
 
         <div class="tracker-container">
             <div class="panel">
                 <div class="panel-head">
-                    <h2>Next Spawns</h2>
+                    <h2>Nächste Spawns</h2>
                     <span class="sub" id="metaInfo">—</span>
                 </div>
                 <div class="panel-body">
                     <div id="trackerContent">
-                        <div class="tracker-loading">Loading data …</div>
+                        <div class="tracker-loading">Daten werden geladen …</div>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
     <script src="data/uniques_data.js"></script>
     <script>
         // ============================================================
-        //  TRACKER-LOGIK (Serverzeit UTC+3)
+        //  TRACKER-LOGIK (Serverzeit UTC+3, deutsche Texte)
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -104,7 +104,7 @@
         }
 
         function formatCountdown(ms) {
-            if (ms < 0) return '⏰ now!';
+            if (ms < 0) return '⏰ jetzt!';
             if (ms < 60000) return `${Math.floor(ms / 1000)}s`;
             if (ms < 3600000) return `${Math.floor(ms / 60000)}m`;
             if (ms < 86400000) return `${Math.floor(ms / 3600000)}h ${Math.floor((ms % 3600000) / 60000)}m`;
@@ -112,10 +112,10 @@
         }
 
         function getSpawnStatus(ms) {
-            if (ms < 0) return { label: '🟢 Now!', class: 'active' };
-            if (ms < 300000) return { label: '🟡 Very soon', class: 'soon' };
-            if (ms < 600000) return { label: '🟡 Soon', class: 'soon' };
-            return { label: '⏳ Waiting', class: '' };
+            if (ms < 0) return { label: '🟢 Jetzt!', class: 'active' };
+            if (ms < 300000) return { label: '🟡 Sehr bald', class: 'soon' };
+            if (ms < 600000) return { label: '🟡 Bald', class: 'soon' };
+            return { label: '⏳ Warten', class: '' };
         }
 
         function renderTracker() {
@@ -148,9 +148,9 @@
                     const now = getServerTime(); // UTC+3
 
                     if (!UNIQUES_DATA || UNIQUES_DATA.length === 0) {
-                        container.innerHTML = '<div class="tracker-empty">No Unique data found.</div>';
+                        container.innerHTML = '<div class="tracker-empty">Keine Unique-Daten gefunden.</div>';
                         meta.textContent = '';
-                        update.innerHTML = '❌ Error';
+                        update.innerHTML = '❌ Fehler';
                         return;
                     }
 
@@ -198,7 +198,7 @@
                         const nextMin = unique.nextSpawnMin;
                         const nextMax = unique.nextSpawnMax;
                         let countdownStr = '—';
-                        let status = { label: '❓ Unknown', class: 'unknown' };
+                        let status = { label: '❓ Unbekannt', class: 'unknown' };
                         let statusDot = 'unknown';
 
                         if (nextSpawn) {
@@ -211,12 +211,12 @@
                             const diffMin = nextMin.getTime() - now.getTime();
                             const diffMax = nextMax.getTime() - now.getTime();
                             if (diffMax < 0) {
-                                countdownStr = '⏰ now!';
-                                status = { label: '🟢 Now!', class: 'active' };
+                                countdownStr = '⏰ jetzt!';
+                                status = { label: '🟢 Jetzt!', class: 'active' };
                                 statusDot = 'active';
                             } else if (diffMin < 0) {
-                                countdownStr = `⏰ now – ${formatCountdown(diffMax)}`;
-                                status = { label: '🟡 Soon', class: 'soon' };
+                                countdownStr = `⏰ jetzt – ${formatCountdown(diffMax)}`;
+                                status = { label: '🟡 Bald', class: 'soon' };
                                 statusDot = 'soon';
                             } else {
                                 countdownStr = `${formatCountdown(diffMin)} – ${formatCountdown(diffMax)}`;
@@ -236,7 +236,7 @@
                         }
 
                         const lastKillStr = unique.lastKillTime
-                            ? unique.lastKillTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                            ? unique.lastKillTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
                             : '—';
 
                         html += `
@@ -260,17 +260,17 @@
 
                     // Serverzeit (UTC+3) anzeigen
                     const serverNow = getServerTime();
-                    const dateStr = serverNow.toLocaleDateString('en-US', { timeZone: 'UTC' });
-                    const timeStr = serverNow.toLocaleTimeString('en-US', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    const dateStr = serverNow.toLocaleDateString('de-DE', { timeZone: 'UTC' });
+                    const timeStr = serverNow.toLocaleTimeString('de-DE', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit' });
                     const serverTimeStr = `${dateStr}, ${timeStr} (UTC+3)`;
 
-                    meta.textContent = `${withData}/${spawns.length} with data · Server time: ${serverTimeStr}`;
+                    meta.textContent = `${withData}/${spawns.length} mit Daten · Serverzeit: ${serverTimeStr}`;
                     update.innerHTML = `🕐 <span class="update-time">${serverTimeStr}</span>`;
                 })
                 .catch(err => {
-                    container.innerHTML = `<div class="tracker-empty">Error loading kill data: ${err.message}</div>`;
+                    container.innerHTML = `<div class="tracker-empty">Fehler beim Laden der Kill-Daten: ${err.message}</div>`;
                     meta.textContent = '';
-                    update.innerHTML = '❌ Error';
+                    update.innerHTML = '❌ Fehler';
                 });
         }
 
