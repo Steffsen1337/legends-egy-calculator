@@ -1,42 +1,48 @@
 {
-  "scraped_at": "2026-07-22T21:54:30.359086Z",
+  "scraped_at": "2026-07-22T22:01:36.143521Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Ancient Librarian",
+      "killer": "Honeyman69",
+      "killer_url": "/ranking/character-14170.html",
+      "time_ago": "2 mins ago"
+    },
     {
       "monster": "Taishan",
       "killer": "Vesphyra",
       "killer_url": "/ranking/character-48566.html",
-      "time_ago": "23 mins ago"
+      "time_ago": "29 mins ago"
     },
     {
       "monster": "SoSo The Black Viper [STR]",
       "killer": "LastArrow",
       "killer_url": "/ranking/character-39378.html",
-      "time_ago": "26 mins ago"
+      "time_ago": "32 mins ago"
     },
     {
       "monster": "SoSo The Black Viper",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "32 mins ago"
+      "time_ago": "38 mins ago"
     },
     {
       "monster": "Mangyang",
       "killer": "Fik",
       "killer_url": "/ranking/character-49121.html",
-      "time_ago": "51 mins ago"
+      "time_ago": "57 mins ago"
     },
     {
       "monster": "Yul Snake General [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "55 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Hew Snake General [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "59 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Jung Snake General [INT]",
@@ -114,12 +120,6 @@
       "monster": "Sand Monster [INT]",
       "killer": "Elrandir",
       "killer_url": "/ranking/character-40763.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Apis",
-      "killer": "Honeyman69",
-      "killer_url": "/ranking/character-14170.html",
       "time_ago": "2 hours ago"
     }
   ]
