@@ -87,13 +87,15 @@ def update_last_kills(kills, scraped_at_iso):
         if minutes is None:
             print(f"⚠️ Konnte Zeitangabe nicht parsen: '{time_ago}' für {monster}")
             continue
+        # Kill-Zeit in UTC berechnen
         kill_time_utc = scraped_at - timedelta(minutes=minutes)
         # Umrechnung auf UTC+3 (Serverzeit)
         kill_time_server = kill_time_utc + timedelta(hours=3)
-        # Speichern mit explizitem UTC+3-Suffix
+        # Speichern mit explizitem UTC+3-Suffix (OHNE doppelte Zeitzone)
         last_kills[monster] = kill_time_server.isoformat() + "+03:00"
         updated += 1
 
+    # WICHTIG: IMMER eine gültige JSON-Datei schreiben (auch wenn leer)
     with open(LAST_KILLS_FILE, "w", encoding="utf-8") as f:
         json.dump(last_kills, f, indent=2, ensure_ascii=False)
 

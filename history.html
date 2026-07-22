@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles/main.css" />
     <link rel="stylesheet" href="styles/menu.css" />
     <style>
-        /* (Ihre bestehenden Styles – unverändert) */
         .wrap { padding-top: 100px !important; }
         .tracker-container { margin-top: 20px; }
         .spawn-card {
@@ -87,7 +86,7 @@
     <script src="data/uniques_data.js"></script>
     <script>
         // ============================================================
-        //  TRACKER-LOGIK (Ihre bestehende Logik – nur Zeitanzeige auf UTC+3)
+        //  TRACKER-LOGIK (Serverzeit UTC+3)
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -98,13 +97,12 @@
             }
         });
 
-        // ---- NEU: Serverzeit = UTC + 3 Stunden ----
+        // Serverzeit = UTC + 3 Stunden
         function getServerTime() {
             const now = new Date();
             return new Date(now.getTime() + 3 * 3600000);
         }
 
-        // Ihre bestehenden Hilfsfunktionen (unverändert)
         function formatCountdown(ms) {
             if (ms < 0) return '⏰ now!';
             if (ms < 60000) return `${Math.floor(ms / 1000)}s`;
@@ -260,7 +258,7 @@
 
                     container.innerHTML = html;
 
-                    // ---- NEU: Serverzeit (UTC+3) anzeigen ----
+                    // Serverzeit (UTC+3) anzeigen
                     const serverNow = getServerTime();
                     const dateStr = serverNow.toLocaleDateString('en-US', { timeZone: 'UTC' });
                     const timeStr = serverNow.toLocaleTimeString('en-US', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit' });
