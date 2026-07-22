@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta  # <-- timedelta hinzugefügt
 import os
+import re
 
 URL = "https://playlegends.online/download.html"
 HISTORY_FILE = "unique_history.json"
@@ -45,7 +46,6 @@ def scrape_unique_kills():
 
 def parse_time_ago(time_ago):
     """Wandelt 'X mins ago' oder 'X hour ago' in Minuten um."""
-    import re
     match = re.match(r"(\d+)\s+(min|hour|hours?)\s+ago", time_ago)
     if not match:
         return None
@@ -59,7 +59,6 @@ def parse_time_ago(time_ago):
 
 def update_last_kills(kills, scraped_at_iso):
     """Aktualisiert die last_kills.json mit den Kill-Zeitpunkten."""
-    # Bestehende Datei laden
     if os.path.exists(LAST_KILLS_FILE):
         with open(LAST_KILLS_FILE, "r", encoding="utf-8") as f:
             last_kills = json.load(f)
@@ -74,24 +73,19 @@ def update_last_kills(kills, scraped_at_iso):
         minutes = parse_time_ago(time_ago)
         if minutes is None:
             continue
-        # Kill-Zeitpunkt = Scrape-Zeitpunkt - Minuten
-        kill_time = scraped_at - datetime.timedelta(minutes=minutes)
-        # Als ISO-String speichern (UTC)
+        kill_time = scraped_at - timedelta(minutes=minutes)   # jetzt korrekt
         last_kills[monster] = kill_time.isoformat() + "Z"
 
-    # Speichern
     with open(LAST_KILLS_FILE, "w", encoding="utf-8") as f:
         json.dump(last_kills, f, indent=2, ensure_ascii=False)
 
     return last_kills
 
 if __name__ == "__main__":
-    # 1. History scrapen
     data = scrape_unique_kills()
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     print(f"✅ {data['total']} Einträge in {HISTORY_FILE} gespeichert")
 
-    # 2. Persistente Kill-Zeiten aktualisieren
     last_kills = update_last_kills(data["kills"], data["scraped_at"])
     print(f"✅ {len(last_kills)} Unique-Einträge in {LAST_KILLS_FILE} gespeichert")
