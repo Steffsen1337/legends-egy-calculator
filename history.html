@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles/main.css" />
     <link rel="stylesheet" href="styles/menu.css" />
     <style>
-        /* (gleiche Styles wie zuvor – unverändert) */
         .wrap { padding-top: 100px !important; }
         .tracker-container { margin-top: 20px; }
         .spawn-card {
@@ -93,6 +92,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof renderMenu === 'function') {
                 renderMenu('history');
+            } else {
+                console.warn('menu.js nicht geladen');
             }
         });
 
@@ -147,12 +148,15 @@
 
                         const killTimeStr = lastKills[unique.name];
                         if (killTimeStr) {
-                            lastKillTime = new Date(killTimeStr);
-                            if (unique.intervalMinutes !== null) {
-                                nextSpawn = new Date(lastKillTime.getTime() + unique.intervalMinutes * 60000);
-                            } else if (unique.intervalMin !== undefined && unique.intervalMax !== undefined) {
-                                nextSpawnMin = new Date(lastKillTime.getTime() + unique.intervalMin * 60000);
-                                nextSpawnMax = new Date(lastKillTime.getTime() + unique.intervalMax * 60000);
+                            const d = new Date(killTimeStr);
+                            if (!isNaN(d.getTime())) {
+                                lastKillTime = d;
+                                if (unique.intervalMinutes !== null) {
+                                    nextSpawn = new Date(lastKillTime.getTime() + unique.intervalMinutes * 60000);
+                                } else if (unique.intervalMin !== undefined && unique.intervalMax !== undefined) {
+                                    nextSpawnMin = new Date(lastKillTime.getTime() + unique.intervalMin * 60000);
+                                    nextSpawnMax = new Date(lastKillTime.getTime() + unique.intervalMax * 60000);
+                                }
                             }
                         }
 
@@ -253,6 +257,7 @@
                 });
         }
 
+        // Initial rendern und dann alle 30 Sekunden aktualisieren
         document.addEventListener('DOMContentLoaded', function() {
             renderTracker();
             setInterval(renderTracker, 30000);
