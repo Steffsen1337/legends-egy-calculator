@@ -61,13 +61,12 @@ def scrape_unique_kills():
     }
 
 def update_last_kills(kills, scraped_at_iso):
-    # Lade bestehende last_kills – fallback bei leerer/ungültiger Datei
     last_kills = {}
     if os.path.exists(LAST_KILLS_FILE):
         try:
             with open(LAST_KILLS_FILE, "r", encoding="utf-8") as f:
                 content = f.read().strip()
-                if content:  # nur parsen, wenn nicht leer
+                if content:
                     last_kills = json.loads(content)
                 else:
                     print("⚠️ last_kills.json ist leer, starte mit leerem Dictionary.")
@@ -98,12 +97,10 @@ def update_last_kills(kills, scraped_at_iso):
     return last_kills
 
 if __name__ == "__main__":
-    # 1. History scrapen
     data = scrape_unique_kills()
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     print(f"✅ {data['total']} Einträge in {HISTORY_FILE} gespeichert")
 
-    # 2. Persistente Kill-Zeiten aktualisieren
     last_kills = update_last_kills(data["kills"], data["scraped_at"])
     print(f"✅ {len(last_kills)} Unique-Einträge in {LAST_KILLS_FILE} gespeichert")
