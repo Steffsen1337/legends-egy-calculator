@@ -1,30 +1,48 @@
 {
-  "scraped_at": "2026-07-22T19:36:35.940188Z",
+  "scraped_at": "2026-07-22T20:19:32.445882Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Sand Monster [STR]",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "17 mins ago"
+    },
+    {
+      "monster": "Sand Monster [INT]",
+      "killer": "Elrandir",
+      "killer_url": "/ranking/character-40763.html",
+      "time_ago": "23 mins ago"
+    },
+    {
+      "monster": "Apis",
+      "killer": "Honeyman69",
+      "killer_url": "/ranking/character-14170.html",
+      "time_ago": "36 mins ago"
+    },
     {
       "monster": "Lord Yarkan",
       "killer": "DeadShot",
       "killer_url": "/ranking/character-1984.html",
-      "time_ago": "1 min ago"
+      "time_ago": "43 mins ago"
     },
     {
       "monster": "Demon Shaitan",
       "killer": "warlockmensh",
       "killer_url": "/ranking/character-46305.html",
-      "time_ago": "1 min ago"
+      "time_ago": "43 mins ago"
     },
     {
       "monster": "Tiger Girl",
       "killer": "Gray",
       "killer_url": "/ranking/character-48937.html",
-      "time_ago": "10 mins ago"
+      "time_ago": "52 mins ago"
     },
     {
       "monster": "Desert Scorpion",
       "killer": "Vivu",
       "killer_url": "/ranking/character-48335.html",
-      "time_ago": "16 mins ago"
+      "time_ago": "58 mins ago"
     },
     {
       "monster": "Tai-Sui",
@@ -36,25 +54,25 @@
       "monster": "Isyutaru",
       "killer": "Yuisom",
       "killer_url": "/ranking/character-48294.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Isis",
       "killer": "OTILLO",
       "killer_url": "/ranking/character-4594.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Taishan",
       "killer": "Meno",
       "killer_url": "/ranking/character-47840.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Anubis",
       "killer": "BlackWiddow",
       "killer_url": "/ranking/character-16824.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Uruchi",
@@ -66,61 +84,43 @@
       "monster": "Goria",
       "killer": "Nyr",
       "killer_url": "/ranking/character-48965.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Nova Genie [INT]",
       "killer": "BlackWiddow",
       "killer_url": "/ranking/character-16824.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Cerberus",
       "killer": "ZareL_Feme",
       "killer_url": "/ranking/character-49028.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Nova Genie [STR]",
       "killer": "Dinorlaxx",
       "killer_url": "/ranking/character-40617.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Selket",
       "killer": "Jekku",
       "killer_url": "/ranking/character-34313.html",
-      "time_ago": "3 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Neith",
       "killer": "BlackWiddow",
       "killer_url": "/ranking/character-16824.html",
-      "time_ago": "3 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Fire Cerberus",
       "killer": "Letsdance",
       "killer_url": "/ranking/character-7049.html",
-      "time_ago": "6 hours ago"
-    },
-    {
-      "monster": "Apis",
-      "killer": "Kinesis",
-      "killer_url": "/ranking/character-46246.html",
-      "time_ago": "6 hours ago"
-    },
-    {
-      "monster": "Demon Shaitan",
-      "killer": "MagicKerz",
-      "killer_url": "/ranking/character-43223.html",
-      "time_ago": "6 hours ago"
-    },
-    {
-      "monster": "Desert Beast [STR]",
-      "killer": "Yoimiya",
-      "killer_url": "/ranking/character-40232.html",
-      "time_ago": "6 hours ago"
+      "time_ago": "7 hours ago"
     }
   ]
 }
