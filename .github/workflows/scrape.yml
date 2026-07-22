@@ -2,25 +2,35 @@ name: Scrape Unique History
 
 on:
   schedule:
-    - cron: '*/30 * * * *'
-  workflow_dispatch:
+    - cron: '*/30 * * * *'   # alle 30 Minuten
+  workflow_dispatch:         # manueller Start über GitHub-UI
 
 permissions:
-  contents: write   # <--- Wichtig für Push
+  contents: write            # Erlaubnis zum Pushen
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - run: pip install -r requirements.txt
-      - run: python scraper.py
-      - run: |
+
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements.txt
+
+      - name: Scraper ausführen
+        run: python scraper.py
+
+      - name: Änderungen committen & pushen
+        run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add unique_history.json
-          git diff --staged --quiet || git commit -m "Aktualisiere Unique History $(date '+%Y-%m-%d %H:%M')"
+          git add unique_history.json last_kills.json
+          git diff --staged --quiet || git commit -m "Aktualisiere Unique History und Kill-Zeiten $(date '+%Y-%m-%d %H:%M')"
           git push
