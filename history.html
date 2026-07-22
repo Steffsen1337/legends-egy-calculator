@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles/main.css" />
     <link rel="stylesheet" href="styles/menu.css" />
     <style>
+        /* (Ihre bestehenden Styles – unverändert) */
         .wrap { padding-top: 100px !important; }
         .tracker-container { margin-top: 20px; }
         .spawn-card {
@@ -43,28 +44,6 @@
         .tracker-empty { color: var(--muted); text-align: center; padding: 30px 0; }
         .tracker-loading { color: var(--muted); text-align: center; padding: 30px 0; }
         .pill .update-time { font-weight: 600; color: var(--text); }
-        .debug-info {
-            font-size: 0.75rem;
-            color: var(--muted);
-            background: var(--input-bg);
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin-top: 8px;
-            border: 1px solid var(--line);
-            white-space: pre-wrap;
-            word-break: break-all;
-            max-height: 400px;
-            overflow: auto;
-        }
-        .test-mode-banner {
-            background: rgba(251,191,36,.15);
-            border: 1px solid var(--warn);
-            border-radius: 8px;
-            padding: 6px 12px;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-            color: var(--warn);
-        }
         @media (max-width: 768px) {
             .spawn-card { flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
             .spawn-card .name { min-width: 100%; font-size: 1rem; }
@@ -96,13 +75,9 @@
                     <span class="sub" id="metaInfo">—</span>
                 </div>
                 <div class="panel-body">
-                    <div id="testModeBanner" class="test-mode-banner" style="display:none;">
-                        ⚠️ TEST MODE ACTIVE – Using fallback times for debugging.
-                    </div>
                     <div id="trackerContent">
                         <div class="tracker-loading">Loading data …</div>
                     </div>
-                    <div id="debugInfo" class="debug-info" style="display:none;"></div>
                 </div>
             </div>
         </div>
@@ -112,7 +87,7 @@
     <script src="data/uniques_data.js"></script>
     <script>
         // ============================================================
-        //  TRACKER-LOGIK (mit sicherer JSON-Parsing und Fallback)
+        //  TRACKER-LOGIK (Ihre bestehende Logik – nur Zeitanzeige auf UTC+3)
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -123,20 +98,13 @@
             }
         });
 
-        // Repariert einen defektiven ISO-String
-        function repairTimestamp(timestamp) {
-            if (!timestamp) return null;
-            let cleaned = timestamp.replace(/\+00:00Z/, 'Z');
-            cleaned = cleaned.replace(/\+00:00$/, 'Z');
-            cleaned = cleaned.replace(/\+\d{2}:\d{2}$/, 'Z');
-            return cleaned;
-        }
-
+        // ---- NEU: Serverzeit = UTC + 3 Stunden ----
         function getServerTime() {
             const now = new Date();
             return new Date(now.getTime() + 3 * 3600000);
         }
 
+        // Ihre bestehenden Hilfsfunktionen (unverändert)
         function formatCountdown(ms) {
             if (ms < 0) return '⏰ now!';
             if (ms < 60000) return `${Math.floor(ms / 1000)}s`;
@@ -152,106 +120,42 @@
             return { label: '⏳ Waiting', class: '' };
         }
 
-        function loadJsonSafely(response) {
-            // Liest den Response-Text und parst nur, wenn nicht leer
-            return response.text().then(text => {
-                if (!text || text.trim() === '') {
-                    return {};
-                }
-                try {
-                    return JSON.parse(text);
-                } catch (e) {
-                    console.warn('JSON parse error:', e);
-                    return {};
-                }
-            });
-        }
-
         function renderTracker() {
             const container = document.getElementById('trackerContent');
             const meta = document.getElementById('metaInfo');
             const update = document.getElementById('lastUpdate');
-            const debugEl = document.getElementById('debugInfo');
-            const testBanner = document.getElementById('testModeBanner');
 
-            // Versuche last_kills.json zu laden
             fetch('last_kills.json')
                 .then(res => {
-                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                    return loadJsonSafely(res);
-                })
-                .then(lastKills => {
-                    // Wenn lastKills leer ist, versuche Fallback auf unique_history.json
-                    if (Object.keys(lastKills).length === 0) {
-                        console.warn('last_kills.json leer, versuche Fallback auf unique_history.json');
-                        return fetch('unique_history.json')
-                            .then(res => {
-                                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                                return loadJsonSafely(res);
-                            })
-                            .then(historyData => {
-                                if (Object.keys(historyData).length === 0) {
-                                    return {};
-                                }
+                    if (!res.ok) {
+                        return fetch('unique_history.json').then(r => {
+                            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                            return r.json().then(data => {
                                 const lastKills = {};
-                                const scrapedAt = new Date(historyData.scraped_at);
-                                historyData.kills.forEach(kill => {
+                                const scrapedAt = new Date(data.scraped_at);
+                                data.kills.forEach(kill => {
                                     const minutes = parseTimeAgo(kill.time_ago);
-                                    if (minutes !== null && minutes <= 60) {
+                                    if (minutes !== null) {
                                         const killTime = new Date(scrapedAt.getTime() - minutes * 60000);
                                         lastKills[kill.monster] = killTime.toISOString();
                                     }
                                 });
                                 return lastKills;
                             });
+                        });
                     }
-                    return lastKills;
+                    return res.json();
                 })
                 .then(lastKills => {
-                    const keys = Object.keys(lastKills);
-                    debugEl.style.display = 'block';
-                    debugEl.textContent = `Loaded ${keys.length} entries from JSON.\nKeys: ${keys.join(', ')}`;
-
-                    // Testmodus: wenn keine Daten, füge Testdaten ein
-                    let useTestMode = false;
-                    if (keys.length === 0) {
-                        useTestMode = true;
-                        testBanner.style.display = 'block';
-                        const now = new Date();
-                        const testKills = {
-                            "Tai-Sui": new Date(now.getTime() - 10 * 60000).toISOString(),
-                            "Cerberus": new Date(now.getTime() - 25 * 60000).toISOString(),
-                            "Uruchi": new Date(now.getTime() - 45 * 60000).toISOString(),
-                            "Gonia": new Date(now.getTime() - 70 * 60000).toISOString()
-                        };
-                        for (const key of Object.keys(testKills)) {
-                            if (!lastKills[key]) {
-                                lastKills[key] = testKills[key];
-                            }
-                        }
-                        debugEl.textContent += '\n⚠️ TEST MODE: Added fallback times for Tai-Sui, Cerberus, Uruchi, Gonia.';
-                    }
-
-                    const now = getServerTime();
-                    debugEl.textContent += `\nCurrent server time (UTC+3): ${now.toISOString()}`;
-                    debugEl.textContent += `\n--- Sample timestamps from JSON ---`;
-                    const sampleKeys = keys.slice(0, 3);
-                    sampleKeys.forEach(key => {
-                        const raw = lastKills[key];
-                        const repaired = repairTimestamp(raw);
-                        const parsed = new Date(repaired);
-                        const valid = !isNaN(parsed.getTime());
-                        debugEl.textContent += `\n${key}: raw="${raw}" → repaired="${repaired}" → valid=${valid} → ${valid ? parsed.toISOString() : 'INVALID'}`;
-                    });
+                    const now = getServerTime(); // UTC+3
 
                     if (!UNIQUES_DATA || UNIQUES_DATA.length === 0) {
-                        container.innerHTML = '<div class="tracker-empty">No Unique data found. Please check <code>data/uniques_data.js</code>.</div>';
+                        container.innerHTML = '<div class="tracker-empty">No Unique data found.</div>';
                         meta.textContent = '';
                         update.innerHTML = '❌ Error';
                         return;
                     }
 
-                    // Für jedes Unique den nächsten Spawn berechnen
                     const spawns = UNIQUES_DATA.map(unique => {
                         let lastKillTime = null;
                         let nextSpawn = null;
@@ -260,8 +164,7 @@
 
                         const rawTimestamp = lastKills[unique.name];
                         if (rawTimestamp) {
-                            const repaired = repairTimestamp(rawTimestamp);
-                            const d = new Date(repaired);
+                            const d = new Date(rawTimestamp);
                             if (!isNaN(d.getTime())) {
                                 lastKillTime = d;
                                 if (unique.intervalMinutes !== null) {
@@ -283,7 +186,6 @@
                         };
                     });
 
-                    // Sortierung nach frühestmöglichem Spawn
                     spawns.sort((a, b) => {
                         const aTime = a.nextSpawn ? a.nextSpawn.getTime() : (a.nextSpawnMin ? a.nextSpawnMin.getTime() : Infinity);
                         const bTime = b.nextSpawn ? b.nextSpawn.getTime() : (b.nextSpawnMin ? b.nextSpawnMin.getTime() : Infinity);
@@ -358,20 +260,23 @@
 
                     container.innerHTML = html;
 
-                    const nowStr = new Date().toLocaleString('en-US', { timeZone: 'UTC' });
-                    meta.textContent = `${withData}/${spawns.length} with data · Updated: ${nowStr} UTC`;
-                    update.innerHTML = `🔄 <span class="update-time">${nowStr}</span>`;
+                    // ---- NEU: Serverzeit (UTC+3) anzeigen ----
+                    const serverNow = getServerTime();
+                    const dateStr = serverNow.toLocaleDateString('en-US', { timeZone: 'UTC' });
+                    const timeStr = serverNow.toLocaleTimeString('en-US', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    const serverTimeStr = `${dateStr}, ${timeStr} (UTC+3)`;
+
+                    meta.textContent = `${withData}/${spawns.length} with data · Server time: ${serverTimeStr}`;
+                    update.innerHTML = `🕐 <span class="update-time">${serverTimeStr}</span>`;
                 })
                 .catch(err => {
                     container.innerHTML = `<div class="tracker-empty">Error loading kill data: ${err.message}</div>`;
                     meta.textContent = '';
                     update.innerHTML = '❌ Error';
-                    debugEl.style.display = 'block';
-                    debugEl.textContent = `Debug: ${err.message}`;
                 });
         }
 
-        // Hilfsfunktion für Fallback (unique_history.json)
+        // Hilfsfunktion für Fallback
         function parseTimeAgo(text) {
             if (!text) return null;
             text = text.trim().toLowerCase();
