@@ -1,126 +1,126 @@
 {
-  "scraped_at": "2026-07-22T17:50:36.697068Z",
+  "scraped_at": "2026-07-22T19:36:35.940188Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Lord Yarkan",
+      "killer": "DeadShot",
+      "killer_url": "/ranking/character-1984.html",
+      "time_ago": "1 min ago"
+    },
+    {
+      "monster": "Demon Shaitan",
+      "killer": "warlockmensh",
+      "killer_url": "/ranking/character-46305.html",
+      "time_ago": "1 min ago"
+    },
+    {
+      "monster": "Tiger Girl",
+      "killer": "Gray",
+      "killer_url": "/ranking/character-48937.html",
+      "time_ago": "10 mins ago"
+    },
+    {
+      "monster": "Desert Scorpion",
+      "killer": "Vivu",
+      "killer_url": "/ranking/character-48335.html",
+      "time_ago": "16 mins ago"
+    },
+    {
+      "monster": "Tai-Sui",
+      "killer": "Erol",
+      "killer_url": "/ranking/character-44431.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Isyutaru",
+      "killer": "Yuisom",
+      "killer_url": "/ranking/character-48294.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Isis",
+      "killer": "OTILLO",
+      "killer_url": "/ranking/character-4594.html",
+      "time_ago": "1 hour ago"
+    },
     {
       "monster": "Taishan",
       "killer": "Meno",
       "killer_url": "/ranking/character-47840.html",
-      "time_ago": "11 seconds ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Anubis",
       "killer": "BlackWiddow",
       "killer_url": "/ranking/character-16824.html",
-      "time_ago": "6 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Uruchi",
       "killer": "Nyr",
       "killer_url": "/ranking/character-48965.html",
-      "time_ago": "26 mins ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Goria",
       "killer": "Nyr",
       "killer_url": "/ranking/character-48965.html",
-      "time_ago": "45 mins ago"
+      "time_ago": "2 hours ago"
     },
     {
-      "monster": "Sun Genie [INT]",
+      "monster": "Nova Genie [INT]",
       "killer": "BlackWiddow",
       "killer_url": "/ranking/character-16824.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Cerberus",
       "killer": "ZareL_Feme",
       "killer_url": "/ranking/character-49028.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
-      "monster": "Sun Genie [STR]",
+      "monster": "Nova Genie [STR]",
       "killer": "Dinorlaxx",
       "killer_url": "/ranking/character-40617.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Selket",
       "killer": "Jekku",
       "killer_url": "/ranking/character-34313.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Neith",
       "killer": "BlackWiddow",
       "killer_url": "/ranking/character-16824.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Fire Cerberus",
       "killer": "Letsdance",
       "killer_url": "/ranking/character-7049.html",
-      "time_ago": "4 hours ago"
+      "time_ago": "6 hours ago"
     },
     {
       "monster": "Apis",
       "killer": "Kinesis",
       "killer_url": "/ranking/character-46246.html",
-      "time_ago": "4 hours ago"
+      "time_ago": "6 hours ago"
     },
     {
       "monster": "Demon Shaitan",
       "killer": "MagicKerz",
       "killer_url": "/ranking/character-43223.html",
-      "time_ago": "4 hours ago"
+      "time_ago": "6 hours ago"
     },
     {
       "monster": "Desert Beast [STR]",
       "killer": "Yoimiya",
       "killer_url": "/ranking/character-40232.html",
-      "time_ago": "5 hours ago"
-    },
-    {
-      "monster": "Lord Yarkan",
-      "killer": "DearMaria",
-      "killer_url": "/ranking/character-41995.html",
-      "time_ago": "5 hours ago"
-    },
-    {
-      "monster": "Undine Water Element[INT]",
-      "killer": "Honeyman69",
-      "killer_url": "/ranking/character-14170.html",
-      "time_ago": "5 hours ago"
-    },
-    {
-      "monster": "Sylph Wind Element [INT]",
-      "killer": "Honeyman69",
-      "killer_url": "/ranking/character-14170.html",
-      "time_ago": "5 hours ago"
-    },
-    {
-      "monster": "Sphinx (STR)",
-      "killer": "Yoimiya",
-      "killer_url": "/ranking/character-40232.html",
-      "time_ago": "5 hours ago"
-    },
-    {
-      "monster": "Isyutaru",
-      "killer": "HUNgaroCELL",
-      "killer_url": "/ranking/character-29416.html",
-      "time_ago": "5 hours ago"
-    },
-    {
-      "monster": "Goria",
-      "killer": "Archmeno",
-      "killer_url": "/ranking/character-48250.html",
-      "time_ago": "5 hours ago"
-    },
-    {
-      "monster": "Isis",
-      "killer": "SKOPSKO",
-      "killer_url": "/ranking/character-10785.html",
-      "time_ago": "5 hours ago"
+      "time_ago": "6 hours ago"
     }
   ]
 }
