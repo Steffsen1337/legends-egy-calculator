@@ -61,6 +61,7 @@ def scrape_unique_kills():
     }
 
 def update_last_kills(kills, scraped_at_iso):
+    # Lade bestehende last_kills – fallback bei leerer/ungültiger Datei
     last_kills = {}
     if os.path.exists(LAST_KILLS_FILE):
         try:
@@ -86,21 +87,29 @@ def update_last_kills(kills, scraped_at_iso):
         if minutes is None:
             print(f"⚠️ Konnte Zeitangabe nicht parsen: '{time_ago}' für {monster}")
             continue
+        # Nur Kills innerhalb der letzten Stunde berücksichtigen
+        # (optional: filtert ältere Kills aus der last_kills.json)
+        if minutes > 60:
+            print(f"ℹ️ Überspringe {monster} (älter als 1 Stunde: {minutes} min)")
+            continue
         kill_time = scraped_at - timedelta(minutes=minutes)
         last_kills[monster] = kill_time.isoformat() + "Z"
         updated += 1
 
+    # Stelle sicher, dass die Datei immer gültiges JSON enthält (mindestens {})
     with open(LAST_KILLS_FILE, "w", encoding="utf-8") as f:
         json.dump(last_kills, f, indent=2, ensure_ascii=False)
 
-    print(f"ℹ️ {updated} von {len(kills)} Kills verarbeitet.")
+    print(f"ℹ️ {updated} von {len(kills)} Kills verarbeitet (nur Kills ≤ 1 Stunde).")
     return last_kills
 
 if __name__ == "__main__":
+    # 1. History scrapen
     data = scrape_unique_kills()
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     print(f"✅ {data['total']} Einträge in {HISTORY_FILE} gespeichert")
 
+    # 2. Persistente Kill-Zeiten aktualisieren (nur Kills ≤ 1 Stunde)
     last_kills = update_last_kills(data["kills"], data["scraped_at"])
     print(f"✅ {len(last_kills)} Unique-Einträge in {LAST_KILLS_FILE} gespeichert")

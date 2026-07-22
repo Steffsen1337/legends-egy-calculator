@@ -56,6 +56,15 @@
             max-height: 400px;
             overflow: auto;
         }
+        .test-mode-banner {
+            background: rgba(251,191,36,.15);
+            border: 1px solid var(--warn);
+            border-radius: 8px;
+            padding: 6px 12px;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            color: var(--warn);
+        }
         @media (max-width: 768px) {
             .spawn-card { flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
             .spawn-card .name { min-width: 100%; font-size: 1rem; }
@@ -73,7 +82,7 @@
         <header class="hero">
             <div class="hero-left">
                 <h1>⏳ Unique Spawn Tracker</h1>
-                <p class="lead">When will the next Unique bosses spawn? Based on the latest kills (within last hour).</p>
+                <p class="lead">When will the next Unique bosses spawn? Based on the latest kills.</p>
             </div>
             <div class="hero-actions">
                 <span class="pill" id="lastUpdate">🔄 loading …</span>
@@ -87,6 +96,9 @@
                     <span class="sub" id="metaInfo">—</span>
                 </div>
                 <div class="panel-body">
+                    <div id="testModeBanner" class="test-mode-banner" style="display:none;">
+                        ⚠️ TEST MODE ACTIVE – Using fallback times for debugging.
+                    </div>
                     <div id="trackerContent">
                         <div class="tracker-loading">Loading data …</div>
                     </div>
@@ -100,7 +112,7 @@
     <script src="data/uniques_data.js"></script>
     <script>
         // ============================================================
-        //  TRACKER-LOGIK mit Filter (nur Kills < 1 Stunde alt)
+        //  TRACKER-LOGIK (mit sicherer JSON-Parsing und Fallback)
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -110,6 +122,15 @@
                 console.warn('menu.js not loaded');
             }
         });
+
+        // Repariert einen defektiven ISO-String
+        function repairTimestamp(timestamp) {
+            if (!timestamp) return null;
+            let cleaned = timestamp.replace(/\+00:00Z/, 'Z');
+            cleaned = cleaned.replace(/\+00:00$/, 'Z');
+            cleaned = cleaned.replace(/\+\d{2}:\d{2}$/, 'Z');
+            return cleaned;
+        }
 
         function getServerTime() {
             const now = new Date();
@@ -131,18 +152,19 @@
             return { label: '⏳ Waiting', class: '' };
         }
 
-        // Hilfsfunktion: parst "X mins ago" oder "X hour ago" etc.
-        function parseTimeAgo(text) {
-            if (!text) return null;
-            text = text.trim().toLowerCase();
-            text = text.replace(/\s+ago$/, '');
-            const match = text.match(/^(\d+)\s*(min|hour|hours?|h|minute|minutes?)/);
-            if (!match) return null;
-            const num = parseInt(match[1]);
-            const unit = match[2];
-            if (unit.startsWith('min')) return num;
-            if (unit.startsWith('hour') || unit === 'h') return num * 60;
-            return null;
+        function loadJsonSafely(response) {
+            // Liest den Response-Text und parst nur, wenn nicht leer
+            return response.text().then(text => {
+                if (!text || text.trim() === '') {
+                    return {};
+                }
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.warn('JSON parse error:', e);
+                    return {};
+                }
+            });
         }
 
         function renderTracker() {
@@ -150,67 +172,77 @@
             const meta = document.getElementById('metaInfo');
             const update = document.getElementById('lastUpdate');
             const debugEl = document.getElementById('debugInfo');
+            const testBanner = document.getElementById('testModeBanner');
 
-            // Versuche last_kills.json zu laden – mit Fehlerbehandlung
-            let fetchPromise = fetch('last_kills.json')
+            // Versuche last_kills.json zu laden
+            fetch('last_kills.json')
                 .then(res => {
                     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                    return res.text(); // erst als Text, um leere Datei zu erkennen
+                    return loadJsonSafely(res);
                 })
-                .then(text => {
-                    if (!text || text.trim() === '') {
-                        throw new Error('last_kills.json is empty');
-                    }
-                    return JSON.parse(text);
-                })
-                .catch(err => {
-                    console.warn('Fehler beim Laden von last_kills.json:', err.message);
-                    // Fallback: unique_history.json
-                    return fetch('unique_history.json')
-                        .then(r => {
-                            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                            return r.json();
-                        })
-                        .then(data => {
-                            const lastKills = {};
-                            const scrapedAt = new Date(data.scraped_at);
-                            data.kills.forEach(kill => {
-                                const minutes = parseTimeAgo(kill.time_ago);
-                                if (minutes !== null) {
-                                    const killTime = new Date(scrapedAt.getTime() - minutes * 60000);
-                                    lastKills[kill.monster] = killTime.toISOString();
+                .then(lastKills => {
+                    // Wenn lastKills leer ist, versuche Fallback auf unique_history.json
+                    if (Object.keys(lastKills).length === 0) {
+                        console.warn('last_kills.json leer, versuche Fallback auf unique_history.json');
+                        return fetch('unique_history.json')
+                            .then(res => {
+                                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                                return loadJsonSafely(res);
+                            })
+                            .then(historyData => {
+                                if (Object.keys(historyData).length === 0) {
+                                    return {};
                                 }
+                                const lastKills = {};
+                                const scrapedAt = new Date(historyData.scraped_at);
+                                historyData.kills.forEach(kill => {
+                                    const minutes = parseTimeAgo(kill.time_ago);
+                                    if (minutes !== null && minutes <= 60) {
+                                        const killTime = new Date(scrapedAt.getTime() - minutes * 60000);
+                                        lastKills[kill.monster] = killTime.toISOString();
+                                    }
+                                });
+                                return lastKills;
                             });
-                            return lastKills;
-                        });
-                });
-
-            fetchPromise
+                    }
+                    return lastKills;
+                })
                 .then(lastKills => {
                     const keys = Object.keys(lastKills);
                     debugEl.style.display = 'block';
                     debugEl.textContent = `Loaded ${keys.length} entries from JSON.\nKeys: ${keys.join(', ')}`;
 
-                    const now = getServerTime();
-
-                    // --- FILTER: Nur Kills, die weniger als 1 Stunde alt sind ---
-                    const MAX_AGE_MS = 60 * 60 * 1000; // 1 Stunde
-                    const filteredKills = {};
-                    let filteredCount = 0;
-                    let totalEntries = 0;
-
-                    for (const [name, timestamp] of Object.entries(lastKills)) {
-                        totalEntries++;
-                        const killDate = new Date(timestamp);
-                        if (isNaN(killDate.getTime())) continue;
-                        const age = now.getTime() - killDate.getTime();
-                        if (age >= 0 && age <= MAX_AGE_MS) {
-                            filteredKills[name] = timestamp;
-                            filteredCount++;
+                    // Testmodus: wenn keine Daten, füge Testdaten ein
+                    let useTestMode = false;
+                    if (keys.length === 0) {
+                        useTestMode = true;
+                        testBanner.style.display = 'block';
+                        const now = new Date();
+                        const testKills = {
+                            "Tai-Sui": new Date(now.getTime() - 10 * 60000).toISOString(),
+                            "Cerberus": new Date(now.getTime() - 25 * 60000).toISOString(),
+                            "Uruchi": new Date(now.getTime() - 45 * 60000).toISOString(),
+                            "Gonia": new Date(now.getTime() - 70 * 60000).toISOString()
+                        };
+                        for (const key of Object.keys(testKills)) {
+                            if (!lastKills[key]) {
+                                lastKills[key] = testKills[key];
+                            }
                         }
+                        debugEl.textContent += '\n⚠️ TEST MODE: Added fallback times for Tai-Sui, Cerberus, Uruchi, Gonia.';
                     }
 
-                    debugEl.textContent += `\nFiltered: ${filteredCount} of ${totalEntries} entries (only ≤ 1 hour old).`;
+                    const now = getServerTime();
+                    debugEl.textContent += `\nCurrent server time (UTC+3): ${now.toISOString()}`;
+                    debugEl.textContent += `\n--- Sample timestamps from JSON ---`;
+                    const sampleKeys = keys.slice(0, 3);
+                    sampleKeys.forEach(key => {
+                        const raw = lastKills[key];
+                        const repaired = repairTimestamp(raw);
+                        const parsed = new Date(repaired);
+                        const valid = !isNaN(parsed.getTime());
+                        debugEl.textContent += `\n${key}: raw="${raw}" → repaired="${repaired}" → valid=${valid} → ${valid ? parsed.toISOString() : 'INVALID'}`;
+                    });
 
                     if (!UNIQUES_DATA || UNIQUES_DATA.length === 0) {
                         container.innerHTML = '<div class="tracker-empty">No Unique data found. Please check <code>data/uniques_data.js</code>.</div>';
@@ -219,16 +251,17 @@
                         return;
                     }
 
-                    // Für jedes Unique den nächsten Spawn berechnen (basierend auf gefilterten Kills)
+                    // Für jedes Unique den nächsten Spawn berechnen
                     const spawns = UNIQUES_DATA.map(unique => {
                         let lastKillTime = null;
                         let nextSpawn = null;
                         let nextSpawnMin = null;
                         let nextSpawnMax = null;
 
-                        const rawTimestamp = filteredKills[unique.name];
+                        const rawTimestamp = lastKills[unique.name];
                         if (rawTimestamp) {
-                            const d = new Date(rawTimestamp);
+                            const repaired = repairTimestamp(rawTimestamp);
+                            const d = new Date(repaired);
                             if (!isNaN(d.getTime())) {
                                 lastKillTime = d;
                                 if (unique.intervalMinutes !== null) {
@@ -326,7 +359,7 @@
                     container.innerHTML = html;
 
                     const nowStr = new Date().toLocaleString('en-US', { timeZone: 'UTC' });
-                    meta.textContent = `${withData}/${spawns.length} with data (filtered) · Updated: ${nowStr} UTC`;
+                    meta.textContent = `${withData}/${spawns.length} with data · Updated: ${nowStr} UTC`;
                     update.innerHTML = `🔄 <span class="update-time">${nowStr}</span>`;
                 })
                 .catch(err => {
@@ -336,6 +369,20 @@
                     debugEl.style.display = 'block';
                     debugEl.textContent = `Debug: ${err.message}`;
                 });
+        }
+
+        // Hilfsfunktion für Fallback (unique_history.json)
+        function parseTimeAgo(text) {
+            if (!text) return null;
+            text = text.trim().toLowerCase();
+            text = text.replace(/\s+ago$/, '');
+            const match = text.match(/^(\d+)\s*(min|hour|hours?|h|minute|minutes?)/);
+            if (!match) return null;
+            const num = parseInt(match[1]);
+            const unit = match[2];
+            if (unit.startsWith('min')) return num;
+            if (unit.startsWith('hour') || unit === 'h') return num * 60;
+            return null;
         }
 
         document.addEventListener('DOMContentLoaded', function() {
