@@ -10,23 +10,10 @@ HISTORY_FILE = "unique_history.json"
 LAST_KILLS_FILE = "last_kills.json"
 
 def parse_time_ago(text):
-    """
-    Parst Zeitangaben wie:
-    - "4 mins ago"
-    - "1 hour ago"
-    - "2 hours ago"
-    - "25 mins ago"
-    - "1h ago"
-    - "1 minute ago"
-    - "7 hours ago"
-    Gibt Minuten als int zurück oder None.
-    """
     if not text:
         return None
     text = text.strip().lower()
-    # Entferne "ago" am Ende
     text = re.sub(r'\s+ago$', '', text)
-    # Muster: Zahl + (min|hour|hours?|h|minute|minutes?)
     match = re.match(r"(\d+)\s*(min|hour|hours?|h|minute|minutes?)", text)
     if not match:
         return None
@@ -74,13 +61,13 @@ def scrape_unique_kills():
     }
 
 def update_last_kills(kills, scraped_at_iso):
-    """Aktualisiert die last_kills.json mit den Kill-Zeitpunkten."""
     if os.path.exists(LAST_KILLS_FILE):
         with open(LAST_KILLS_FILE, "r", encoding="utf-8") as f:
             last_kills = json.load(f)
     else:
         last_kills = {}
 
+    # scraped_at_iso endet mit 'Z', das ist UTC
     scraped_at = datetime.fromisoformat(scraped_at_iso.replace("Z", "+00:00"))
     updated = 0
 
@@ -92,6 +79,7 @@ def update_last_kills(kills, scraped_at_iso):
             print(f"⚠️ Konnte Zeitangabe nicht parsen: '{time_ago}' für {monster}")
             continue
         kill_time = scraped_at - timedelta(minutes=minutes)
+        # Speichere als ISO-String mit 'Z' (UTC), ohne zusätzliche Zeitzone
         last_kills[monster] = kill_time.isoformat() + "Z"
         updated += 1
 
@@ -102,12 +90,10 @@ def update_last_kills(kills, scraped_at_iso):
     return last_kills
 
 if __name__ == "__main__":
-    # 1. History scrapen
     data = scrape_unique_kills()
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     print(f"✅ {data['total']} Einträge in {HISTORY_FILE} gespeichert")
 
-    # 2. Persistente Kill-Zeiten aktualisieren
     last_kills = update_last_kills(data["kills"], data["scraped_at"])
     print(f"✅ {len(last_kills)} Unique-Einträge in {LAST_KILLS_FILE} gespeichert")

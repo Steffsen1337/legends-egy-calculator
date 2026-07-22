@@ -100,7 +100,7 @@
     <script src="data/uniques_data.js"></script>
     <script>
         // ============================================================
-        //  TRACKER-LOGIK (mit Namensnormalisierung und Debug)
+        //  TRACKER-LOGIK (mit korrekter Zeitzonenbehandlung)
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -111,15 +111,10 @@
             }
         });
 
-        // Normalisiert einen Namen: klein, keine Leerzeichen, keine Klammern, keine Sonderzeichen
-        function normalizeName(name) {
-            return name.toLowerCase().replace(/\s+/g, '').replace(/[\[\]()]/g, '');
-        }
-
+        // Serverzeit = UTC + 3 Stunden
         function getServerTime() {
             const now = new Date();
-            const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-            return new Date(utc + 3 * 3600000);
+            return new Date(now.getTime() + 3 * 3600000);
         }
 
         function formatCountdown(ms) {
@@ -172,6 +167,7 @@
                     debugEl.textContent = `Loaded ${keys.length} entries from JSON.\nKeys: ${keys.join(', ')}`;
 
                     const now = getServerTime();
+                    debugEl.textContent += `\nCurrent server time (UTC+3): ${now.toISOString()}`;
 
                     if (!UNIQUES_DATA || UNIQUES_DATA.length === 0) {
                         container.innerHTML = '<div class="tracker-empty">No Unique data found. Please check <code>data/uniques_data.js</code>.</div>';
@@ -180,24 +176,15 @@
                         return;
                     }
 
-                    // Erstelle eine Map der normalisierten JSON-Keys für schnellen Zugriff
-                    const normalizedKeys = {};
-                    keys.forEach(key => {
-                        normalizedKeys[normalizeName(key)] = key;
-                    });
-
-                    // Debug-Ausgabe: Zeige alle normalisierten Unique-Namen und ob sie gematcht werden
-                    let matchDebug = [];
+                    // Für jedes Unique den nächsten Spawn berechnen
                     const spawns = UNIQUES_DATA.map(unique => {
-                        const normUnique = normalizeName(unique.name);
-                        const matchedKey = normalizedKeys[normUnique] || null;
                         let lastKillTime = null;
                         let nextSpawn = null;
                         let nextSpawnMin = null;
                         let nextSpawnMax = null;
 
-                        if (matchedKey) {
-                            const killTimeStr = lastKills[matchedKey];
+                        const killTimeStr = lastKills[unique.name];
+                        if (killTimeStr) {
                             const d = new Date(killTimeStr);
                             if (!isNaN(d.getTime())) {
                                 lastKillTime = d;
@@ -210,12 +197,6 @@
                             }
                         }
 
-                        matchDebug.push({
-                            unique: unique.name,
-                            normalized: normUnique,
-                            matched: matchedKey || '❌ NO MATCH'
-                        });
-
                         return {
                             ...unique,
                             lastKillTime,
@@ -225,10 +206,6 @@
                             hasData: !!lastKillTime
                         };
                     });
-
-                    // Debug: Zeige Match-Infos
-                    const matchInfo = matchDebug.map(m => `${m.unique} → ${m.matched}`).join('\n');
-                    debugEl.textContent += `\n\nMatch details:\n${matchInfo}`;
 
                     // Sortierung nach frühestmöglichem Spawn
                     spawns.sort((a, b) => {
@@ -305,7 +282,6 @@
 
                     container.innerHTML = html;
 
-                    // Metadaten
                     const nowStr = new Date().toLocaleString('en-US', { timeZone: 'UTC' });
                     meta.textContent = `${withData}/${spawns.length} with data · Updated: ${nowStr} UTC`;
                     update.innerHTML = `🔄 <span class="update-time">${nowStr}</span>`;
@@ -333,7 +309,6 @@
             return null;
         }
 
-        // Initial rendern und dann alle 30 Sekunden aktualisieren
         document.addEventListener('DOMContentLoaded', function() {
             renderTracker();
             setInterval(renderTracker, 30000);
