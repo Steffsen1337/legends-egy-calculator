@@ -1,36 +1,60 @@
 {
-  "scraped_at": "2026-07-22T22:01:36.143521Z",
+  "scraped_at": "2026-07-22T22:35:24.883463Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Lost Pharaoh",
+      "killer": "Honeyman69",
+      "killer_url": "/ranking/character-14170.html",
+      "time_ago": "4 mins ago"
+    },
+    {
+      "monster": "Goria",
+      "killer": "Archmeno",
+      "killer_url": "/ranking/character-48250.html",
+      "time_ago": "11 mins ago"
+    },
+    {
+      "monster": "Isyutaru",
+      "killer": "Yuisom",
+      "killer_url": "/ranking/character-48294.html",
+      "time_ago": "23 mins ago"
+    },
+    {
+      "monster": "Uruchi",
+      "killer": "Archmeno",
+      "killer_url": "/ranking/character-48250.html",
+      "time_ago": "30 mins ago"
+    },
     {
       "monster": "Ancient Librarian",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "2 mins ago"
+      "time_ago": "35 mins ago"
     },
     {
       "monster": "Taishan",
       "killer": "Vesphyra",
       "killer_url": "/ranking/character-48566.html",
-      "time_ago": "29 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "SoSo The Black Viper [STR]",
       "killer": "LastArrow",
       "killer_url": "/ranking/character-39378.html",
-      "time_ago": "32 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "SoSo The Black Viper",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "38 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Mangyang",
       "killer": "Fik",
       "killer_url": "/ranking/character-49121.html",
-      "time_ago": "57 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Yul Snake General [STR]",
@@ -72,54 +96,30 @@
       "monster": "Gnome Earth Element [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Tomb General Hyun",
       "killer": "SilentShade",
       "killer_url": "/ranking/character-35555.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Fire Demon",
       "killer": "LastArrow",
       "killer_url": "/ranking/character-39378.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Movia",
       "killer": "Meiyun",
       "killer_url": "/ranking/character-49104.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Salamander Fire Element [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Sylph Wind Element [INT]",
-      "killer": "Cristin",
-      "killer_url": "/ranking/character-40288.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Undine Water Element[INT]",
-      "killer": "Honeyman69",
-      "killer_url": "/ranking/character-14170.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Sand Monster [STR]",
-      "killer": "CaptainBlack",
-      "killer_url": "/ranking/character-23013.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Sand Monster [INT]",
-      "killer": "Elrandir",
-      "killer_url": "/ranking/character-40763.html",
       "time_ago": "2 hours ago"
     }
   ]
