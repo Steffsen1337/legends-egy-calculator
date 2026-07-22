@@ -53,7 +53,7 @@
             border: 1px solid var(--line);
             white-space: pre-wrap;
             word-break: break-all;
-            max-height: 200px;
+            max-height: 300px;
             overflow: auto;
         }
         @media (max-width: 768px) {
@@ -100,7 +100,7 @@
     <script src="data/uniques_data.js"></script>
     <script>
         // ============================================================
-        //  TRACKER-LOGIK (mit Namensnormalisierung)
+        //  TRACKER-LOGIK (mit Namensnormalisierung und Debug)
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -111,9 +111,9 @@
             }
         });
 
-        // Normalisiert einen Namen: klein, keine Leerzeichen, keine Klammern
+        // Normalisiert einen Namen: klein, keine Leerzeichen, keine Klammern, keine Sonderzeichen
         function normalizeName(name) {
-            return name.toLowerCase().replace(/\s+/g, '').replace(/[\[\]]/g, '');
+            return name.toLowerCase().replace(/\s+/g, '').replace(/[\[\]()]/g, '');
         }
 
         function getServerTime() {
@@ -151,7 +151,6 @@
                         return fetch('unique_history.json').then(r => {
                             if (!r.ok) throw new Error(`HTTP ${r.status}`);
                             return r.json().then(data => {
-                                // Konvertiere history in last_kills-Format
                                 const lastKills = {};
                                 const scrapedAt = new Date(data.scraped_at);
                                 data.kills.forEach(kill => {
@@ -168,7 +167,6 @@
                     return res.json();
                 })
                 .then(lastKills => {
-                    // Debug: Zeige die geladenen Keys
                     const keys = Object.keys(lastKills);
                     debugEl.style.display = 'block';
                     debugEl.textContent = `Loaded ${keys.length} entries from JSON.\nKeys: ${keys.join(', ')}`;
@@ -182,22 +180,21 @@
                         return;
                     }
 
-                    // Für jedes Unique den nächsten Spawn berechnen mit normalisierten Namen
+                    // Erstelle eine Map der normalisierten JSON-Keys für schnellen Zugriff
+                    const normalizedKeys = {};
+                    keys.forEach(key => {
+                        normalizedKeys[normalizeName(key)] = key;
+                    });
+
+                    // Debug-Ausgabe: Zeige alle normalisierten Unique-Namen und ob sie gematcht werden
+                    let matchDebug = [];
                     const spawns = UNIQUES_DATA.map(unique => {
+                        const normUnique = normalizeName(unique.name);
+                        const matchedKey = normalizedKeys[normUnique] || null;
                         let lastKillTime = null;
                         let nextSpawn = null;
                         let nextSpawnMin = null;
                         let nextSpawnMax = null;
-
-                        // Suche nach normalisiertem Namen in lastKills
-                        const normalizedUnique = normalizeName(unique.name);
-                        let matchedKey = null;
-                        for (const key of keys) {
-                            if (normalizeName(key) === normalizedUnique) {
-                                matchedKey = key;
-                                break;
-                            }
-                        }
 
                         if (matchedKey) {
                             const killTimeStr = lastKills[matchedKey];
@@ -213,6 +210,12 @@
                             }
                         }
 
+                        matchDebug.push({
+                            unique: unique.name,
+                            normalized: normUnique,
+                            matched: matchedKey || '❌ NO MATCH'
+                        });
+
                         return {
                             ...unique,
                             lastKillTime,
@@ -222,6 +225,10 @@
                             hasData: !!lastKillTime
                         };
                     });
+
+                    // Debug: Zeige Match-Infos
+                    const matchInfo = matchDebug.map(m => `${m.unique} → ${m.matched}`).join('\n');
+                    debugEl.textContent += `\n\nMatch details:\n${matchInfo}`;
 
                     // Sortierung nach frühestmöglichem Spawn
                     spawns.sort((a, b) => {
