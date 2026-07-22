@@ -1,126 +1,126 @@
 {
-  "scraped_at": "2026-07-22T14:36:08.338697Z",
+  "scraped_at": "2026-07-22T16:25:31.373945Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Selket",
+      "killer": "Jekku",
+      "killer_url": "/ranking/character-34313.html",
+      "time_ago": "36 mins ago"
+    },
+    {
+      "monster": "Neith",
+      "killer": "BlackWiddow",
+      "killer_url": "/ranking/character-16824.html",
+      "time_ago": "45 mins ago"
+    },
     {
       "monster": "Fire Cerberus",
       "killer": "Letsdance",
       "killer_url": "/ranking/character-7049.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Apis",
       "killer": "Kinesis",
       "killer_url": "/ranking/character-46246.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Demon Shaitan",
       "killer": "MagicKerz",
       "killer_url": "/ranking/character-43223.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Desert Beast [STR]",
       "killer": "Yoimiya",
       "killer_url": "/ranking/character-40232.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Lord Yarkan",
       "killer": "DearMaria",
       "killer_url": "/ranking/character-41995.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Undine Water Element[INT]",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Sylph Wind Element [INT]",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Sphinx (STR)",
       "killer": "Yoimiya",
       "killer_url": "/ranking/character-40232.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Isyutaru",
       "killer": "HUNgaroCELL",
       "killer_url": "/ranking/character-29416.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Goria",
       "killer": "Archmeno",
       "killer_url": "/ranking/character-48250.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Isis",
       "killer": "SKOPSKO",
       "killer_url": "/ranking/character-10785.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Sphinx (INT)",
       "killer": "Letsdance",
       "killer_url": "/ranking/character-7049.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Anubis",
       "killer": "OTILLO",
       "killer_url": "/ranking/character-4594.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "SoSo The Black Viper [STR]",
       "killer": "Cuthalion",
       "killer_url": "/ranking/character-28132.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Taishan",
       "killer": "AlixienTR",
       "killer_url": "/ranking/character-46230.html",
-      "time_ago": "3 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Sand Monster [INT]",
       "killer": "VN_M4D",
       "killer_url": "/ranking/character-41678.html",
-      "time_ago": "3 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "SoSo The Black Viper",
       "killer": "Cuthalion",
       "killer_url": "/ranking/character-28132.html",
-      "time_ago": "3 hours ago"
+      "time_ago": "5 hours ago"
     },
     {
       "monster": "Tomb General Ho",
       "killer": "DeinVadda",
       "killer_url": "/ranking/character-47252.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Tomb General Jin",
-      "killer": "Musclemania",
-      "killer_url": "/ranking/character-48382.html",
-      "time_ago": "4 hours ago"
-    },
-    {
-      "monster": "Gnome Earth Element [STR]",
-      "killer": "BloodyKiss",
-      "killer_url": "/ranking/character-46029.html",
-      "time_ago": "4 hours ago"
+      "time_ago": "5 hours ago"
     }
   ]
 }
