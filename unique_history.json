@@ -1,54 +1,96 @@
 {
-  "scraped_at": "2026-07-22T20:19:32.445882Z",
+  "scraped_at": "2026-07-22T20:33:38.630013Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Gnome Earth Element [STR]",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "6 mins ago"
+    },
+    {
+      "monster": "Tomb General Hyun",
+      "killer": "SilentShade",
+      "killer_url": "/ranking/character-35555.html",
+      "time_ago": "7 mins ago"
+    },
+    {
+      "monster": "Fire Demon",
+      "killer": "LastArrow",
+      "killer_url": "/ranking/character-39378.html",
+      "time_ago": "8 mins ago"
+    },
+    {
+      "monster": "Movia",
+      "killer": "Meiyun",
+      "killer_url": "/ranking/character-49104.html",
+      "time_ago": "8 mins ago"
+    },
+    {
+      "monster": "Salamander Fire Element [STR]",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "10 mins ago"
+    },
+    {
+      "monster": "Sylph Wind Element [INT]",
+      "killer": "Cristin",
+      "killer_url": "/ranking/character-40288.html",
+      "time_ago": "11 mins ago"
+    },
+    {
+      "monster": "Undine Water Element[INT]",
+      "killer": "Honeyman69",
+      "killer_url": "/ranking/character-14170.html",
+      "time_ago": "12 mins ago"
+    },
     {
       "monster": "Sand Monster [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "17 mins ago"
+      "time_ago": "32 mins ago"
     },
     {
       "monster": "Sand Monster [INT]",
       "killer": "Elrandir",
       "killer_url": "/ranking/character-40763.html",
-      "time_ago": "23 mins ago"
+      "time_ago": "38 mins ago"
     },
     {
       "monster": "Apis",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "36 mins ago"
+      "time_ago": "51 mins ago"
     },
     {
       "monster": "Lord Yarkan",
       "killer": "DeadShot",
       "killer_url": "/ranking/character-1984.html",
-      "time_ago": "43 mins ago"
+      "time_ago": "58 mins ago"
     },
     {
       "monster": "Demon Shaitan",
       "killer": "warlockmensh",
       "killer_url": "/ranking/character-46305.html",
-      "time_ago": "43 mins ago"
+      "time_ago": "58 mins ago"
     },
     {
       "monster": "Tiger Girl",
       "killer": "Gray",
       "killer_url": "/ranking/character-48937.html",
-      "time_ago": "52 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Desert Scorpion",
       "killer": "Vivu",
       "killer_url": "/ranking/character-48335.html",
-      "time_ago": "58 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Tai-Sui",
       "killer": "Erol",
       "killer_url": "/ranking/character-44431.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Isyutaru",
@@ -78,49 +120,7 @@
       "monster": "Uruchi",
       "killer": "Nyr",
       "killer_url": "/ranking/character-48965.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Goria",
-      "killer": "Nyr",
-      "killer_url": "/ranking/character-48965.html",
       "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Nova Genie [INT]",
-      "killer": "BlackWiddow",
-      "killer_url": "/ranking/character-16824.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Cerberus",
-      "killer": "ZareL_Feme",
-      "killer_url": "/ranking/character-49028.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Nova Genie [STR]",
-      "killer": "Dinorlaxx",
-      "killer_url": "/ranking/character-40617.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Selket",
-      "killer": "Jekku",
-      "killer_url": "/ranking/character-34313.html",
-      "time_ago": "4 hours ago"
-    },
-    {
-      "monster": "Neith",
-      "killer": "BlackWiddow",
-      "killer_url": "/ranking/character-16824.html",
-      "time_ago": "4 hours ago"
-    },
-    {
-      "monster": "Fire Cerberus",
-      "killer": "Letsdance",
-      "killer_url": "/ranking/character-7049.html",
-      "time_ago": "7 hours ago"
     }
   ]
 }
