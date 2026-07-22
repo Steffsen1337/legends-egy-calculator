@@ -61,13 +61,22 @@ def scrape_unique_kills():
     }
 
 def update_last_kills(kills, scraped_at_iso):
+    # Lade bestehende last_kills – fallback bei leerer/ungültiger Datei
+    last_kills = {}
     if os.path.exists(LAST_KILLS_FILE):
-        with open(LAST_KILLS_FILE, "r", encoding="utf-8") as f:
-            last_kills = json.load(f)
+        try:
+            with open(LAST_KILLS_FILE, "r", encoding="utf-8") as f:
+                content = f.read().strip()
+                if content:  # nur parsen, wenn nicht leer
+                    last_kills = json.loads(content)
+                else:
+                    print("⚠️ last_kills.json ist leer, starte mit leerem Dictionary.")
+        except (json.JSONDecodeError, ValueError) as e:
+            print(f"⚠️ last_kills.json war ungültig ({e}), starte mit leerem Dictionary.")
+            last_kills = {}
     else:
-        last_kills = {}
+        print("ℹ️ last_kills.json existiert noch nicht, wird neu erstellt.")
 
-    # scraped_at_iso endet mit 'Z', das ist UTC
     scraped_at = datetime.fromisoformat(scraped_at_iso.replace("Z", "+00:00"))
     updated = 0
 
@@ -79,7 +88,6 @@ def update_last_kills(kills, scraped_at_iso):
             print(f"⚠️ Konnte Zeitangabe nicht parsen: '{time_ago}' für {monster}")
             continue
         kill_time = scraped_at - timedelta(minutes=minutes)
-        # Speichere als ISO-String mit 'Z' (UTC), ohne zusätzliche Zeitzone
         last_kills[monster] = kill_time.isoformat() + "Z"
         updated += 1
 
@@ -90,10 +98,12 @@ def update_last_kills(kills, scraped_at_iso):
     return last_kills
 
 if __name__ == "__main__":
+    # 1. History scrapen
     data = scrape_unique_kills()
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     print(f"✅ {data['total']} Einträge in {HISTORY_FILE} gespeichert")
 
+    # 2. Persistente Kill-Zeiten aktualisieren
     last_kills = update_last_kills(data["kills"], data["scraped_at"])
     print(f"✅ {len(last_kills)} Unique-Einträge in {LAST_KILLS_FILE} gespeichert")
