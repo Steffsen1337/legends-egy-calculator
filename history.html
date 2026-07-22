@@ -1,121 +1,300 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Unique History – Legends Online</title>
-  <link rel="stylesheet" href="styles/main.css" />
-  <link rel="stylesheet" href="styles/menu.css" />
-  <style>
-    /* spezifische Styles für History, ähnlich wie in events.html */
-    .wrap { padding-top: 100px !important; }
-    .history-container { margin-top: 20px; }
-    .kill-card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 10px;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      transition: background .4s ease, border-color .4s ease;
-    }
-    .kill-card .monster { font-weight: 700; flex: 1; }
-    .kill-card .killer { color: var(--muted); }
-    .kill-card .killer a { color: var(--accent); text-decoration: none; }
-    .kill-card .killer a:hover { text-decoration: underline; }
-    .kill-card .time { color: var(--muted); font-size: 0.9rem; background: var(--item-bg); padding: 2px 12px; border-radius: 20px; white-space: nowrap; }
-    .history-meta { font-size: 0.85rem; color: var(--muted); text-align: right; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
-    .history-empty { color: var(--muted); text-align: center; padding: 30px 0; }
-    .history-loading { color: var(--muted); text-align: center; padding: 30px 0; }
-    .pill .update-time { font-weight: 600; color: var(--text); }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Unique Spawn Tracker – Legends Online</title>
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/menu.css" />
+    <style>
+        /* (gleiche Styles wie zuvor – unverändert) */
+        .wrap { padding-top: 100px !important; }
+        .tracker-container { margin-top: 20px; }
+        .spawn-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 14px 20px;
+            margin-bottom: 8px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: background .4s ease, border-color .4s ease;
+        }
+        [data-theme="light"] .spawn-card { border-color: rgba(0,0,0,.06); }
+        .spawn-card .name { font-weight: 700; min-width: 200px; color: var(--text); }
+        .spawn-card .name .level { font-weight: 400; color: var(--muted); font-size: 0.85rem; }
+        .spawn-card .interval { color: var(--muted); font-size: 0.85rem; min-width: 80px; }
+        .spawn-card .last-kill { color: var(--muted); font-size: 0.85rem; min-width: 100px; }
+        .spawn-card .next-spawn { flex: 1; font-weight: 600; text-align: center; font-size: 1.1rem; }
+        .spawn-card .next-spawn.soon { color: var(--warn); }
+        .spawn-card .next-spawn.active { color: var(--success); }
+        .spawn-card .next-spawn.unknown { color: var(--muted); font-weight: 400; }
+        .spawn-card .countdown { min-width: 100px; text-align: right; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+        .spawn-card .countdown.soon { color: var(--warn); }
+        .spawn-card .countdown.active { color: var(--success); }
+        .spawn-card .countdown.unknown { color: var(--muted); font-weight: 400; }
+        .spawn-card .status-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+        .spawn-card .status-dot.soon { background: var(--warn); }
+        .spawn-card .status-dot.active { background: var(--success); animation: pulse-dot 1.5s ease-in-out infinite; }
+        .spawn-card .status-dot.unknown { background: var(--muted); }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
+        .tracker-meta { font-size: 0.85rem; color: var(--muted); text-align: right; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+        .tracker-empty { color: var(--muted); text-align: center; padding: 30px 0; }
+        .tracker-loading { color: var(--muted); text-align: center; padding: 30px 0; }
+        .pill .update-time { font-weight: 600; color: var(--text); }
+        @media (max-width: 768px) {
+            .spawn-card { flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
+            .spawn-card .name { min-width: 100%; font-size: 1rem; }
+            .spawn-card .next-spawn { flex: 1 1 100%; text-align: left; font-size: 1rem; }
+            .spawn-card .countdown { min-width: 80px; text-align: right; font-size: 0.9rem; }
+            .spawn-card .interval, .spawn-card .last-kill { font-size: 0.8rem; min-width: auto; }
+        }
+    </style>
 </head>
 <body>
-  <div id="menuContainer"></div>
-  <div class="wrap">
-    <header class="hero">
-      <div class="hero-left">
-        <h1>⚔️ Unique History</h1>
-        <p class="lead">Die letzten besiegten Bosse – live aus dem Spiel.</p>
-      </div>
-      <div class="hero-actions">
-        <span class="pill" id="lastUpdate">🔄 lädt …</span>
-      </div>
-    </header>
-    <div class="history-container">
-      <div class="panel">
-        <div class="panel-head">
-          <h2>Letzte Kills</h2>
-          <span class="sub" id="metaInfo">—</span>
-        </div>
-        <div class="panel-body">
-          <div id="historyContent">
-            <div class="history-loading">Daten werden geladen …</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script src="menu.js"></script>
-  <script>
-    // Menü rendern
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof renderMenu === 'function') {
-        renderMenu('history');
-      }
-    });
 
-    // Daten laden und anzeigen
-    fetch('unique_history.json')
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then(data => {
-        const container = document.getElementById('historyContent');
-        const meta = document.getElementById('metaInfo');
-        const update = document.getElementById('lastUpdate');
+    <div id="menuContainer"></div>
 
-        if (!data.kills || data.kills.length === 0) {
-          container.innerHTML = '<div class="history-empty">Keine Einträge gefunden.</div>';
-          meta.textContent = '';
-          update.innerHTML = '📭 keine Daten';
-          return;
-        }
-
-        let html = '';
-        data.kills.forEach(k => {
-          const killerLink = k.killer_url
-            ? `<a href="https://playlegends.online${k.killer_url}" target="_blank">${k.killer}</a>`
-            : k.killer || 'unbekannt';
-          html += `
-            <div class="kill-card">
-              <span class="monster">${k.monster}</span>
-              <span class="killer">getötet von ${killerLink}</span>
-              <span class="time">${k.time_ago}</span>
+    <div class="wrap" role="main">
+        <header class="hero">
+            <div class="hero-left">
+                <h1>⏳ Unique Spawn Tracker</h1>
+                <p class="lead">Wann spawnen die nächsten Unique-Bosse? Basierend auf den letzten Kills.</p>
             </div>
-          `;
+            <div class="hero-actions">
+                <span class="pill" id="lastUpdate">🔄 lädt …</span>
+            </div>
+        </header>
+
+        <div class="tracker-container">
+            <div class="panel">
+                <div class="panel-head">
+                    <h2>Nächste Spawns</h2>
+                    <span class="sub" id="metaInfo">—</span>
+                </div>
+                <div class="panel-body">
+                    <div id="trackerContent">
+                        <div class="tracker-loading">Daten werden geladen …</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="menu.js"></script>
+    <script src="data/uniques_data.js"></script>
+    <script>
+        // ============================================================
+        //  TRACKER-LOGIK (mit Unterstützung für Intervallbereiche)
+        // ============================================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof renderMenu === 'function') {
+                renderMenu('history');
+            }
         });
 
-        container.innerHTML = html;
+        function getServerTime() {
+            const now = new Date();
+            const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+            return new Date(utc + 3 * 3600000);
+        }
 
-        const d = new Date(data.scraped_at);
-        const dateStr = d.toLocaleDateString('de-DE', { timeZone: 'UTC' });
-        const timeStr = d.toLocaleTimeString('de-DE', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        const fullDate = `${dateStr}, ${timeStr} UTC`;
+        function parseTimeAgo(timeStr) {
+            const match = timeStr.match(/(\d+)\s+(min|hour|hours|minute|minutes?)\s+ago/);
+            if (!match) return null;
+            const num = parseInt(match[1]);
+            const unit = match[2];
+            let minutes = 0;
+            if (unit.startsWith('min')) minutes = num;
+            else if (unit.startsWith('hour')) minutes = num * 60;
+            return minutes;
+        }
 
-        meta.textContent = `${data.total} Einträge · Stand: ${fullDate}`;
-        update.innerHTML = `🔄 <span class="update-time">${fullDate}</span>`;
-      })
-      .catch(err => {
-        document.getElementById('historyContent').innerHTML =
-          `<div class="history-empty">Fehler beim Laden: ${err.message}</div>`;
-        document.getElementById('metaInfo').textContent = '';
-        document.getElementById('lastUpdate').innerHTML = '❌ Fehler';
-      });
-  </script>
+        function findLastKill(kills, monsterName) {
+            for (const kill of kills) {
+                if (kill.monster === monsterName) return kill;
+            }
+            return null;
+        }
+
+        function formatCountdown(ms) {
+            if (ms < 0) return '⏰ jetzt!';
+            if (ms < 60000) return `${Math.floor(ms / 1000)}s`;
+            if (ms < 3600000) return `${Math.floor(ms / 60000)}m`;
+            if (ms < 86400000) return `${Math.floor(ms / 3600000)}h ${Math.floor((ms % 3600000) / 60000)}m`;
+            return `${Math.floor(ms / 86400000)}d ${Math.floor((ms % 86400000) / 3600000)}h`;
+        }
+
+        function getSpawnStatus(ms) {
+            if (ms < 0) return { label: '🟢 Jetzt!', class: 'active' };
+            if (ms < 300000) return { label: '🟡 Sehr bald', class: 'soon' };
+            if (ms < 600000) return { label: '🟡 Bald', class: 'soon' };
+            return { label: '⏳ Warten', class: '' };
+        }
+
+        function renderTracker() {
+            const container = document.getElementById('trackerContent');
+            const meta = document.getElementById('metaInfo');
+            const update = document.getElementById('lastUpdate');
+
+            fetch('unique_history.json')
+                .then(res => {
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    return res.json();
+                })
+                .then(historyData => {
+                    const kills = historyData.kills || [];
+                    const now = getServerTime();
+
+                    if (!UNIQUES_DATA || UNIQUES_DATA.length === 0) {
+                        container.innerHTML = '<div class="tracker-empty">Keine Unique-Daten. Bitte <code>data/uniques_data.js</code> prüfen.</div>';
+                        meta.textContent = '';
+                        update.innerHTML = '❌ Fehler';
+                        return;
+                    }
+
+                    // Für jedes Unique berechnen
+                    const spawns = UNIQUES_DATA.map(unique => {
+                        const lastKill = findLastKill(kills, unique.name);
+                        let lastKillTime = null;
+                        let nextSpawn = null;
+                        let nextSpawnMin = null;   // für Bereiche
+                        let nextSpawnMax = null;
+
+                        if (lastKill) {
+                            const scrapedAt = new Date(historyData.scraped_at);
+                            const minutesAgo = parseTimeAgo(lastKill.time_ago);
+                            if (minutesAgo !== null) {
+                                lastKillTime = new Date(scrapedAt.getTime() - minutesAgo * 60000);
+
+                                if (unique.intervalMinutes !== null) {
+                                    // Fester Intervall
+                                    nextSpawn = new Date(lastKillTime.getTime() + unique.intervalMinutes * 60000);
+                                } else if (unique.intervalMin !== undefined && unique.intervalMax !== undefined) {
+                                    // Bereich (Apis)
+                                    nextSpawnMin = new Date(lastKillTime.getTime() + unique.intervalMin * 60000);
+                                    nextSpawnMax = new Date(lastKillTime.getTime() + unique.intervalMax * 60000);
+                                }
+                            }
+                        }
+
+                        return {
+                            ...unique,
+                            lastKillTime,
+                            nextSpawn,
+                            nextSpawnMin,
+                            nextSpawnMax,
+                            hasData: !!lastKillTime
+                        };
+                    });
+
+                    // Sortierung: zuerst nach frühestmöglichem Spawn (nextSpawn oder nextSpawnMin)
+                    spawns.sort((a, b) => {
+                        const aTime = a.nextSpawn ? a.nextSpawn.getTime() : (a.nextSpawnMin ? a.nextSpawnMin.getTime() : Infinity);
+                        const bTime = b.nextSpawn ? b.nextSpawn.getTime() : (b.nextSpawnMin ? b.nextSpawnMin.getTime() : Infinity);
+                        return aTime - bTime;
+                    });
+
+                    let html = '';
+                    let withData = 0;
+
+                    spawns.forEach(unique => {
+                        const nextSpawn = unique.nextSpawn;
+                        const nextMin = unique.nextSpawnMin;
+                        const nextMax = unique.nextSpawnMax;
+                        let countdownStr = '—';
+                        let status = { label: '❓ Unbekannt', class: 'unknown' };
+                        let statusDot = 'unknown';
+
+                        // Fall: fester Intervall
+                        if (nextSpawn) {
+                            const diff = nextSpawn.getTime() - now.getTime();
+                            status = getSpawnStatus(diff);
+                            countdownStr = formatCountdown(diff);
+                            statusDot = status.class || 'unknown';
+                            withData++;
+                        }
+                        // Fall: Bereich (Apis)
+                        else if (nextMin && nextMax) {
+                            const diffMin = nextMin.getTime() - now.getTime();
+                            const diffMax = nextMax.getTime() - now.getTime();
+                            // Zeige den Bereich an: "in X–Y"
+                            if (diffMax < 0) {
+                                // Wenn der späteste Spawn schon vorbei ist, dann "Jetzt!"
+                                countdownStr = '⏰ jetzt!';
+                                status = { label: '🟢 Jetzt!', class: 'active' };
+                                statusDot = 'active';
+                            } else if (diffMin < 0) {
+                                // Wenn der früheste vorbei ist, aber der späteste noch nicht: "bald (max X)"
+                                countdownStr = `⏰ jetzt – ${formatCountdown(diffMax)}`;
+                                status = { label: '🟡 Bald', class: 'soon' };
+                                statusDot = 'soon';
+                            } else {
+                                const minStr = formatCountdown(diffMin);
+                                const maxStr = formatCountdown(diffMax);
+                                countdownStr = `${minStr} – ${maxStr}`;
+                                // Status anhand des frühesten
+                                const st = getSpawnStatus(diffMin);
+                                status = st;
+                                statusDot = st.class || 'unknown';
+                            }
+                            withData++;
+                        }
+
+                        // Anzeige des Intervalls im Text
+                        let intervalDisplay = '';
+                        if (unique.intervalMinutes !== null) {
+                            const mins = unique.intervalMinutes;
+                            intervalDisplay = mins < 60 ? `${mins} min` : `${mins / 60} h`;
+                        } else if (unique.intervalMin !== undefined && unique.intervalMax !== undefined) {
+                            intervalDisplay = `${unique.intervalMin / 60}–${unique.intervalMax / 60} h`;
+                        }
+
+                        const lastKillStr = unique.lastKillTime
+                            ? unique.lastKillTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
+                            : '—';
+
+                        html += `
+                            <div class="spawn-card">
+                                <span class="name">
+                                    ${unique.name}
+                                    <span class="level">(Lv.${unique.level})</span>
+                                </span>
+                                <span class="interval">🔄 ${intervalDisplay}</span>
+                                <span class="last-kill">💀 ${lastKillStr}</span>
+                                <span class="next-spawn ${status.class}">
+                                    <span class="status-dot ${statusDot}"></span>
+                                    ${status.label}
+                                </span>
+                                <span class="countdown ${status.class}">${countdownStr}</span>
+                            </div>
+                        `;
+                    });
+
+                    container.innerHTML = html;
+
+                    const d = new Date(historyData.scraped_at);
+                    const dateStr = d.toLocaleDateString('de-DE', { timeZone: 'UTC' });
+                    const timeStr = d.toLocaleTimeString('de-DE', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    const fullDate = `${dateStr}, ${timeStr} UTC`;
+
+                    meta.textContent = `${withData}/${spawns.length} mit Daten · Stand: ${fullDate}`;
+                    update.innerHTML = `🔄 <span class="update-time">${fullDate}</span>`;
+                })
+                .catch(err => {
+                    container.innerHTML = `<div class="tracker-empty">Fehler beim Laden: ${err.message}</div>`;
+                    meta.textContent = '';
+                    update.innerHTML = '❌ Fehler';
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTracker();
+            setInterval(renderTracker, 30000);
+        });
+    </script>
 </body>
 </html>
