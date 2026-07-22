@@ -16,16 +16,18 @@ def parse_time_ago(text):
     - "1 hour ago"
     - "2 hours ago"
     - "25 mins ago"
-    - "1h ago" (optional)
+    - "1h ago"
     - "1 minute ago"
+    - "7 hours ago"
     Gibt Minuten als int zurück oder None.
     """
+    if not text:
+        return None
     text = text.strip().lower()
-    # Muster: Zahl + (min|hour|hours?|h) + ago
-    match = re.match(r"(\d+)\s*(min|hour|hours?|h)\s+ago", text)
-    if not match:
-        # Versuche ohne "ago" (falls vorhanden)
-        match = re.match(r"(\d+)\s*(min|hour|hours?|h)", text)
+    # Entferne "ago" am Ende
+    text = re.sub(r'\s+ago$', '', text)
+    # Muster: Zahl + (min|hour|hours?|h|minute|minutes?)
+    match = re.match(r"(\d+)\s*(min|hour|hours?|h|minute|minutes?)", text)
     if not match:
         return None
     num = int(match.group(1))
@@ -87,7 +89,6 @@ def update_last_kills(kills, scraped_at_iso):
         time_ago = kill["time_ago"]
         minutes = parse_time_ago(time_ago)
         if minutes is None:
-            # Debug-Ausgabe im Workflow-Log
             print(f"⚠️ Konnte Zeitangabe nicht parsen: '{time_ago}' für {monster}")
             continue
         kill_time = scraped_at - timedelta(minutes=minutes)
@@ -101,10 +102,12 @@ def update_last_kills(kills, scraped_at_iso):
     return last_kills
 
 if __name__ == "__main__":
+    # 1. History scrapen
     data = scrape_unique_kills()
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     print(f"✅ {data['total']} Einträge in {HISTORY_FILE} gespeichert")
 
+    # 2. Persistente Kill-Zeiten aktualisieren
     last_kills = update_last_kills(data["kills"], data["scraped_at"])
     print(f"✅ {len(last_kills)} Unique-Einträge in {LAST_KILLS_FILE} gespeichert")
