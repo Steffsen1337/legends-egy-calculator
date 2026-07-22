@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -43,7 +43,19 @@
         .tracker-empty { color: var(--muted); text-align: center; padding: 30px 0; }
         .tracker-loading { color: var(--muted); text-align: center; padding: 30px 0; }
         .pill .update-time { font-weight: 600; color: var(--text); }
-        .debug-info { font-size: 0.75rem; color: var(--muted); background: var(--input-bg); padding: 8px 12px; border-radius: 8px; margin-top: 8px; border: 1px solid var(--line); }
+        .debug-info {
+            font-size: 0.75rem;
+            color: var(--muted);
+            background: var(--input-bg);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 8px;
+            border: 1px solid var(--line);
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 200px;
+            overflow: auto;
+        }
         @media (max-width: 768px) {
             .spawn-card { flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
             .spawn-card .name { min-width: 100%; font-size: 1rem; }
@@ -61,22 +73,22 @@
         <header class="hero">
             <div class="hero-left">
                 <h1>⏳ Unique Spawn Tracker</h1>
-                <p class="lead">Wann spawnen die nächsten Unique-Bosse? Basierend auf den letzten Kills.</p>
+                <p class="lead">When will the next Unique bosses spawn? Based on the latest kills.</p>
             </div>
             <div class="hero-actions">
-                <span class="pill" id="lastUpdate">🔄 lädt …</span>
+                <span class="pill" id="lastUpdate">🔄 loading …</span>
             </div>
         </header>
 
         <div class="tracker-container">
             <div class="panel">
                 <div class="panel-head">
-                    <h2>Nächste Spawns</h2>
+                    <h2>Next Spawns</h2>
                     <span class="sub" id="metaInfo">—</span>
                 </div>
                 <div class="panel-body">
                     <div id="trackerContent">
-                        <div class="tracker-loading">Daten werden geladen …</div>
+                        <div class="tracker-loading">Loading data …</div>
                     </div>
                     <div id="debugInfo" class="debug-info" style="display:none;"></div>
                 </div>
@@ -88,16 +100,21 @@
     <script src="data/uniques_data.js"></script>
     <script>
         // ============================================================
-        //  TRACKER-LOGIK (nutzt last_kills.json)
+        //  TRACKER-LOGIK (mit Namensnormalisierung)
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof renderMenu === 'function') {
                 renderMenu('history');
             } else {
-                console.warn('menu.js nicht geladen');
+                console.warn('menu.js not loaded');
             }
         });
+
+        // Normalisiert einen Namen: klein, keine Leerzeichen, keine Klammern
+        function normalizeName(name) {
+            return name.toLowerCase().replace(/\s+/g, '').replace(/[\[\]]/g, '');
+        }
 
         function getServerTime() {
             const now = new Date();
@@ -106,7 +123,7 @@
         }
 
         function formatCountdown(ms) {
-            if (ms < 0) return '⏰ jetzt!';
+            if (ms < 0) return '⏰ now!';
             if (ms < 60000) return `${Math.floor(ms / 1000)}s`;
             if (ms < 3600000) return `${Math.floor(ms / 60000)}m`;
             if (ms < 86400000) return `${Math.floor(ms / 3600000)}h ${Math.floor((ms % 3600000) / 60000)}m`;
@@ -114,10 +131,10 @@
         }
 
         function getSpawnStatus(ms) {
-            if (ms < 0) return { label: '🟢 Jetzt!', class: 'active' };
-            if (ms < 300000) return { label: '🟡 Sehr bald', class: 'soon' };
-            if (ms < 600000) return { label: '🟡 Bald', class: 'soon' };
-            return { label: '⏳ Warten', class: '' };
+            if (ms < 0) return { label: '🟢 Now!', class: 'active' };
+            if (ms < 300000) return { label: '🟡 Very soon', class: 'soon' };
+            if (ms < 600000) return { label: '🟡 Soon', class: 'soon' };
+            return { label: '⏳ Waiting', class: '' };
         }
 
         function renderTracker() {
@@ -126,12 +143,11 @@
             const update = document.getElementById('lastUpdate');
             const debugEl = document.getElementById('debugInfo');
 
-            // Versuche zuerst last_kills.json zu laden
+            // Versuche last_kills.json zu laden, Fallback auf unique_history.json
             fetch('last_kills.json')
                 .then(res => {
                     if (!res.ok) {
-                        // Fallback: Lade unique_history.json
-                        console.warn('last_kills.json nicht gefunden, verwende unique_history.json');
+                        console.warn('last_kills.json not found, falling back to unique_history.json');
                         return fetch('unique_history.json').then(r => {
                             if (!r.ok) throw new Error(`HTTP ${r.status}`);
                             return r.json().then(data => {
@@ -152,25 +168,39 @@
                     return res.json();
                 })
                 .then(lastKills => {
-                    debugEl.style.display = 'none';
+                    // Debug: Zeige die geladenen Keys
+                    const keys = Object.keys(lastKills);
+                    debugEl.style.display = 'block';
+                    debugEl.textContent = `Loaded ${keys.length} entries from JSON.\nKeys: ${keys.join(', ')}`;
+
                     const now = getServerTime();
 
                     if (!UNIQUES_DATA || UNIQUES_DATA.length === 0) {
-                        container.innerHTML = '<div class="tracker-empty">Keine Unique-Daten. Bitte <code>data/uniques_data.js</code> prüfen.</div>';
+                        container.innerHTML = '<div class="tracker-empty">No Unique data found. Please check <code>data/uniques_data.js</code>.</div>';
                         meta.textContent = '';
-                        update.innerHTML = '❌ Fehler';
+                        update.innerHTML = '❌ Error';
                         return;
                     }
 
-                    // Für jedes Unique den nächsten Spawn berechnen
+                    // Für jedes Unique den nächsten Spawn berechnen mit normalisierten Namen
                     const spawns = UNIQUES_DATA.map(unique => {
                         let lastKillTime = null;
                         let nextSpawn = null;
                         let nextSpawnMin = null;
                         let nextSpawnMax = null;
 
-                        const killTimeStr = lastKills[unique.name];
-                        if (killTimeStr) {
+                        // Suche nach normalisiertem Namen in lastKills
+                        const normalizedUnique = normalizeName(unique.name);
+                        let matchedKey = null;
+                        for (const key of keys) {
+                            if (normalizeName(key) === normalizedUnique) {
+                                matchedKey = key;
+                                break;
+                            }
+                        }
+
+                        if (matchedKey) {
+                            const killTimeStr = lastKills[matchedKey];
                             const d = new Date(killTimeStr);
                             if (!isNaN(d.getTime())) {
                                 lastKillTime = d;
@@ -208,7 +238,7 @@
                         const nextMin = unique.nextSpawnMin;
                         const nextMax = unique.nextSpawnMax;
                         let countdownStr = '—';
-                        let status = { label: '❓ Unbekannt', class: 'unknown' };
+                        let status = { label: '❓ Unknown', class: 'unknown' };
                         let statusDot = 'unknown';
 
                         if (nextSpawn) {
@@ -221,12 +251,12 @@
                             const diffMin = nextMin.getTime() - now.getTime();
                             const diffMax = nextMax.getTime() - now.getTime();
                             if (diffMax < 0) {
-                                countdownStr = '⏰ jetzt!';
-                                status = { label: '🟢 Jetzt!', class: 'active' };
+                                countdownStr = '⏰ now!';
+                                status = { label: '🟢 Now!', class: 'active' };
                                 statusDot = 'active';
                             } else if (diffMin < 0) {
-                                countdownStr = `⏰ jetzt – ${formatCountdown(diffMax)}`;
-                                status = { label: '🟡 Bald', class: 'soon' };
+                                countdownStr = `⏰ now – ${formatCountdown(diffMax)}`;
+                                status = { label: '🟡 Soon', class: 'soon' };
                                 statusDot = 'soon';
                             } else {
                                 countdownStr = `${formatCountdown(diffMin)} – ${formatCountdown(diffMax)}`;
@@ -246,7 +276,7 @@
                         }
 
                         const lastKillStr = unique.lastKillTime
-                            ? unique.lastKillTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
+                            ? unique.lastKillTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
                             : '—';
 
                         html += `
@@ -269,20 +299,20 @@
                     container.innerHTML = html;
 
                     // Metadaten
-                    const nowStr = new Date().toLocaleString('de-DE', { timeZone: 'UTC' });
-                    meta.textContent = `${withData}/${spawns.length} mit Daten · Stand: ${nowStr} UTC`;
+                    const nowStr = new Date().toLocaleString('en-US', { timeZone: 'UTC' });
+                    meta.textContent = `${withData}/${spawns.length} with data · Updated: ${nowStr} UTC`;
                     update.innerHTML = `🔄 <span class="update-time">${nowStr}</span>`;
                 })
                 .catch(err => {
-                    container.innerHTML = `<div class="tracker-empty">Fehler beim Laden der Kill-Daten: ${err.message}</div>`;
+                    container.innerHTML = `<div class="tracker-empty">Error loading kill data: ${err.message}</div>`;
                     meta.textContent = '';
-                    update.innerHTML = '❌ Fehler';
+                    update.innerHTML = '❌ Error';
                     debugEl.style.display = 'block';
                     debugEl.textContent = `Debug: ${err.message}`;
                 });
         }
 
-        // Hilfsfunktion für Fallback
+        // Hilfsfunktion für Fallback (unique_history.json)
         function parseTimeAgo(text) {
             if (!text) return null;
             text = text.trim().toLowerCase();
