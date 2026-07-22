@@ -53,8 +53,17 @@
             border: 1px solid var(--line);
             white-space: pre-wrap;
             word-break: break-all;
-            max-height: 300px;
+            max-height: 400px;
             overflow: auto;
+        }
+        .test-mode-banner {
+            background: rgba(251,191,36,.15);
+            border: 1px solid var(--warn);
+            border-radius: 8px;
+            padding: 6px 12px;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            color: var(--warn);
         }
         @media (max-width: 768px) {
             .spawn-card { flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
@@ -87,6 +96,9 @@
                     <span class="sub" id="metaInfo">—</span>
                 </div>
                 <div class="panel-body">
+                    <div id="testModeBanner" class="test-mode-banner" style="display:none;">
+                        ⚠️ TEST MODE ACTIVE – Using fallback times for debugging.
+                    </div>
                     <div id="trackerContent">
                         <div class="tracker-loading">Loading data …</div>
                     </div>
@@ -100,7 +112,7 @@
     <script src="data/uniques_data.js"></script>
     <script>
         // ============================================================
-        //  TRACKER-LOGIK (mit korrekter Zeitzonenbehandlung)
+        //  TRACKER-LOGIK (mit Zeitstempel-Reparatur und Testmodus)
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -111,7 +123,18 @@
             }
         });
 
-        // Serverzeit = UTC + 3 Stunden
+        // Repariert einen defektiven ISO-String (entfernt doppelte Zeitzone)
+        function repairTimestamp(timestamp) {
+            if (!timestamp) return null;
+            // Entferne '+00:00Z' → 'Z'
+            let cleaned = timestamp.replace(/\+00:00Z/, 'Z');
+            // Falls nur '+00:00' am Ende, ersetze mit 'Z'
+            cleaned = cleaned.replace(/\+00:00$/, 'Z');
+            // Falls 'Z' fehlt, aber '+00:00' vorhanden, ersetzen
+            cleaned = cleaned.replace(/\+\d{2}:\d{2}$/, 'Z');
+            return cleaned;
+        }
+
         function getServerTime() {
             const now = new Date();
             return new Date(now.getTime() + 3 * 3600000);
@@ -137,8 +160,9 @@
             const meta = document.getElementById('metaInfo');
             const update = document.getElementById('lastUpdate');
             const debugEl = document.getElementById('debugInfo');
+            const testBanner = document.getElementById('testModeBanner');
 
-            // Versuche last_kills.json zu laden, Fallback auf unique_history.json
+            // Lade last_kills.json
             fetch('last_kills.json')
                 .then(res => {
                     if (!res.ok) {
@@ -166,8 +190,40 @@
                     debugEl.style.display = 'block';
                     debugEl.textContent = `Loaded ${keys.length} entries from JSON.\nKeys: ${keys.join(', ')}`;
 
+                    // —— Testmodus: Falls nur wenige Einträge oder keine Daten, füge Testdaten ein ——
+                    let useTestMode = false;
+                    if (keys.length < 5) {
+                        useTestMode = true;
+                        testBanner.style.display = 'block';
+                        // Füge einige Test-Einträge hinzu (aktuelle Zeit - 10 Minuten)
+                        const now = new Date();
+                        const testKills = {
+                            "Tai-Sui": new Date(now.getTime() - 10 * 60000).toISOString(),
+                            "Cerberus": new Date(now.getTime() - 25 * 60000).toISOString(),
+                            "Uruchi": new Date(now.getTime() - 45 * 60000).toISOString(),
+                            "Gonia": new Date(now.getTime() - 70 * 60000).toISOString()
+                        };
+                        // Überschreibe leere lastKills mit Testdaten
+                        for (const key of Object.keys(testKills)) {
+                            if (!lastKills[key]) {
+                                lastKills[key] = testKills[key];
+                            }
+                        }
+                        debugEl.textContent += '\n⚠️ TEST MODE: Added fallback times for Tai-Sui, Cerberus, Uruchi, Gonia.';
+                    }
+
                     const now = getServerTime();
                     debugEl.textContent += `\nCurrent server time (UTC+3): ${now.toISOString()}`;
+                    debugEl.textContent += `\n--- Sample timestamps from JSON ---`;
+                    // Zeige die ersten 3 Zeitstempel mit Reparatur
+                    const sampleKeys = keys.slice(0, 3);
+                    sampleKeys.forEach(key => {
+                        const raw = lastKills[key];
+                        const repaired = repairTimestamp(raw);
+                        const parsed = new Date(repaired);
+                        const valid = !isNaN(parsed.getTime());
+                        debugEl.textContent += `\n${key}: raw="${raw}" → repaired="${repaired}" → valid=${valid} → ${valid ? parsed.toISOString() : 'INVALID'}`;
+                    });
 
                     if (!UNIQUES_DATA || UNIQUES_DATA.length === 0) {
                         container.innerHTML = '<div class="tracker-empty">No Unique data found. Please check <code>data/uniques_data.js</code>.</div>';
@@ -183,9 +239,10 @@
                         let nextSpawnMin = null;
                         let nextSpawnMax = null;
 
-                        const killTimeStr = lastKills[unique.name];
-                        if (killTimeStr) {
-                            const d = new Date(killTimeStr);
+                        const rawTimestamp = lastKills[unique.name];
+                        if (rawTimestamp) {
+                            const repaired = repairTimestamp(rawTimestamp);
+                            const d = new Date(repaired);
                             if (!isNaN(d.getTime())) {
                                 lastKillTime = d;
                                 if (unique.intervalMinutes !== null) {
