@@ -1,126 +1,126 @@
 {
-  "scraped_at": "2026-07-23T11:28:07.661072Z",
+  "scraped_at": "2026-07-23T13:07:54.181783Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Hew Snake General [STR]",
+      "killer": "MzToOkMuL",
+      "killer_url": "/ranking/character-32951.html",
+      "time_ago": "15 mins ago"
+    },
+    {
+      "monster": "Desert Scorpion",
+      "killer": "Yeomjee",
+      "killer_url": "/ranking/character-48619.html",
+      "time_ago": "49 mins ago"
+    },
+    {
+      "monster": "Isis",
+      "killer": "Cutie",
+      "killer_url": "/ranking/character-33326.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Yul Snake General [STR]",
+      "killer": "BloodyKiss",
+      "killer_url": "/ranking/character-46029.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Anubis",
+      "killer": "Cutie",
+      "killer_url": "/ranking/character-33326.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Ki Snake General [INT]",
+      "killer": "MzTuKMuL",
+      "killer_url": "/ranking/character-33304.html",
+      "time_ago": "1 hour ago"
+    },
     {
       "monster": "Jung Snake General [INT]",
       "killer": "MzTuKMuL",
       "killer_url": "/ranking/character-33304.html",
-      "time_ago": "14 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Tomb General Jin",
       "killer": "MagicKerz",
       "killer_url": "/ranking/character-43223.html",
-      "time_ago": "21 mins ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Desert Beast [INT]",
       "killer": "KelThuzad",
       "killer_url": "/ranking/character-46418.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Isyutaru",
       "killer": "Skarmory",
       "killer_url": "/ranking/character-47911.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Salamander Fire Element [STR]",
       "killer": "Jrhakotako",
       "killer_url": "/ranking/character-42591.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Tomb General Hyun",
       "killer": "DeinVadda",
       "killer_url": "/ranking/character-47252.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Gnome Earth Element [STR]",
       "killer": "DanyakroQc",
       "killer_url": "/ranking/character-39655.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Tomb General Ho",
       "killer": "PrincessShea",
       "killer_url": "/ranking/character-36960.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Selket",
       "killer": "OTILLO",
       "killer_url": "/ranking/character-4594.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Taishan",
       "killer": "AlixienTR",
       "killer_url": "/ranking/character-46230.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Neith",
       "killer": "Haesi",
       "killer_url": "/ranking/character-42720.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Undine Water Element[INT]",
       "killer": "Jekku",
       "killer_url": "/ranking/character-34313.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Sylph Wind Element [INT]",
       "killer": "Jekku",
       "killer_url": "/ranking/character-34313.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Apis",
       "killer": "Unfriendly",
       "killer_url": "/ranking/character-37727.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Tomb General Bi",
-      "killer": "Lux_",
-      "killer_url": "/ranking/character-44777.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Desert Beast [STR]",
-      "killer": "FREED00M",
-      "killer_url": "/ranking/character-47334.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Fire Demon",
-      "killer": "SKOPSKO",
-      "killer_url": "/ranking/character-10785.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Sand Monster [STR]",
-      "killer": "SOFI",
-      "killer_url": "/ranking/character-6122.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Sphinx (STR)",
-      "killer": "RoyalBolt",
-      "killer_url": "/ranking/character-45252.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Sphinx (INT)",
-      "killer": "Jekku",
-      "killer_url": "/ranking/character-34313.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     }
   ]
 }
