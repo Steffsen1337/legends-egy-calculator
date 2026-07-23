@@ -1,126 +1,126 @@
 {
-  "scraped_at": "2026-07-23T17:38:02.028972Z",
+  "scraped_at": "2026-07-23T19:35:58.299857Z",
   "total": 20,
   "kills": [
     {
+      "monster": "Taishan",
+      "killer": "Bauce",
+      "killer_url": "/ranking/character-48223.html",
+      "time_ago": "19 mins ago"
+    },
+    {
+      "monster": "Ki Snake General [INT]",
+      "killer": "Kakan",
+      "killer_url": "/ranking/character-38437.html",
+      "time_ago": "28 mins ago"
+    },
+    {
+      "monster": "Jung Snake General [INT]",
+      "killer": "Kakan",
+      "killer_url": "/ranking/character-38437.html",
+      "time_ago": "34 mins ago"
+    },
+    {
+      "monster": "Yul Snake General [STR]",
+      "killer": "Tytan",
+      "killer_url": "/ranking/character-45700.html",
+      "time_ago": "37 mins ago"
+    },
+    {
+      "monster": "Desert Beast [STR]",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "41 mins ago"
+    },
+    {
+      "monster": "Cerberus",
+      "killer": "Moxa",
+      "killer_url": "/ranking/character-49009.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Isyutaru",
+      "killer": "Yuisom",
+      "killer_url": "/ranking/character-48294.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Isis",
+      "killer": "Dinorlaxx",
+      "killer_url": "/ranking/character-40617.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Sphinx (INT)",
+      "killer": "LitWizZ",
+      "killer_url": "/ranking/character-44973.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Sphinx (STR)",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Anubis",
+      "killer": "Embedded",
+      "killer_url": "/ranking/character-39609.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Uruchi",
+      "killer": "BowMasta",
+      "killer_url": "/ranking/character-48607.html",
+      "time_ago": "1 hour ago"
+    },
+    {
       "monster": "Salamander Fire Element [STR]",
       "killer": "DanyakroQc",
-      "killer_url": "/index.php/ranking/character-39655.html",
-      "time_ago": "14 mins ago"
+      "killer_url": "/ranking/character-39655.html",
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Tomb General Jin",
       "killer": "Drakknia",
-      "killer_url": "/index.php/ranking/character-47100.html",
-      "time_ago": "16 mins ago"
+      "killer_url": "/ranking/character-47100.html",
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Desert Scorpion",
       "killer": "LUCIFERS",
-      "killer_url": "/index.php/ranking/character-45654.html",
-      "time_ago": "38 mins ago"
+      "killer_url": "/ranking/character-45654.html",
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Nova Genie [STR]",
       "killer": "Embedded",
-      "killer_url": "/index.php/ranking/character-39609.html",
-      "time_ago": "56 mins ago"
+      "killer_url": "/ranking/character-39609.html",
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Nova Genie [INT]",
       "killer": "Coffee",
-      "killer_url": "/index.php/ranking/character-11431.html",
-      "time_ago": "57 mins ago"
+      "killer_url": "/ranking/character-11431.html",
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Tomb General Hyun",
       "killer": "Drento",
-      "killer_url": "/index.php/ranking/character-47153.html",
-      "time_ago": "1 hour ago"
+      "killer_url": "/ranking/character-47153.html",
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Gnome Earth Element [STR]",
       "killer": "FREED00M",
-      "killer_url": "/index.php/ranking/character-47334.html",
-      "time_ago": "1 hour ago"
+      "killer_url": "/ranking/character-47334.html",
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Undine Water Element[INT]",
       "killer": "Cristin",
-      "killer_url": "/index.php/ranking/character-40288.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Sylph Wind Element [INT]",
-      "killer": "Cristin",
-      "killer_url": "/index.php/ranking/character-40288.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Lost Pharaoh",
-      "killer": "Haesi",
-      "killer_url": "/index.php/ranking/character-42720.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Tomb General Bi",
-      "killer": "Drento",
-      "killer_url": "/index.php/ranking/character-47153.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Tomb General Ho",
-      "killer": "MagicKerz",
-      "killer_url": "/index.php/ranking/character-43223.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Neith",
-      "killer": "Anamaria",
-      "killer_url": "/index.php/ranking/character-10978.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Goria",
-      "killer": "jia_",
-      "killer_url": "/index.php/ranking/character-48918.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Selket",
-      "killer": "Jekku",
-      "killer_url": "/index.php/ranking/character-34313.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Salt Desert Demon",
-      "killer": "Cuthalion",
-      "killer_url": "/index.php/ranking/character-28132.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Taishan",
-      "killer": "Archmeno",
-      "killer_url": "/index.php/ranking/character-48250.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Apis",
-      "killer": "Cristin",
-      "killer_url": "/index.php/ranking/character-40288.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Fire Demon",
-      "killer": "Arsenic",
-      "killer_url": "/index.php/ranking/character-37205.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Sand Monster [STR]",
-      "killer": "Cryolite_",
-      "killer_url": "/index.php/ranking/character-42076.html",
-      "time_ago": "2 hours ago"
+      "killer_url": "/ranking/character-40288.html",
+      "time_ago": "3 hours ago"
     }
   ]
 }
