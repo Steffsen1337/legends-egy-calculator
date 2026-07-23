@@ -1,125 +1,125 @@
 {
-  "scraped_at": "2026-07-23T19:35:58.299857Z",
+  "scraped_at": "2026-07-23T21:12:50.045107Z",
   "total": 20,
   "kills": [
     {
-      "monster": "Taishan",
-      "killer": "Bauce",
-      "killer_url": "/ranking/character-48223.html",
-      "time_ago": "19 mins ago"
-    },
-    {
-      "monster": "Ki Snake General [INT]",
-      "killer": "Kakan",
-      "killer_url": "/ranking/character-38437.html",
-      "time_ago": "28 mins ago"
-    },
-    {
-      "monster": "Jung Snake General [INT]",
-      "killer": "Kakan",
-      "killer_url": "/ranking/character-38437.html",
-      "time_ago": "34 mins ago"
-    },
-    {
-      "monster": "Yul Snake General [STR]",
-      "killer": "Tytan",
-      "killer_url": "/ranking/character-45700.html",
-      "time_ago": "37 mins ago"
-    },
-    {
-      "monster": "Desert Beast [STR]",
+      "monster": "Sand Monster [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "41 mins ago"
+      "time_ago": "1 min ago"
+    },
+    {
+      "monster": "Goria",
+      "killer": "BowMasta",
+      "killer_url": "/ranking/character-48607.html",
+      "time_ago": "37 mins ago"
     },
     {
       "monster": "Cerberus",
       "killer": "Moxa",
       "killer_url": "/ranking/character-49009.html",
+      "time_ago": "47 mins ago"
+    },
+    {
+      "monster": "Demon Shaitan",
+      "killer": "DeinVadda",
+      "killer_url": "/ranking/character-47252.html",
       "time_ago": "1 hour ago"
     },
     {
-      "monster": "Isyutaru",
-      "killer": "Yuisom",
-      "killer_url": "/ranking/character-48294.html",
+      "monster": "Apis",
+      "killer": "AzrieL",
+      "killer_url": "/ranking/character-40783.html",
       "time_ago": "1 hour ago"
     },
     {
-      "monster": "Isis",
-      "killer": "Dinorlaxx",
-      "killer_url": "/ranking/character-40617.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Sphinx (INT)",
-      "killer": "LitWizZ",
-      "killer_url": "/ranking/character-44973.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Sphinx (STR)",
+      "monster": "Hew Snake General [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
       "time_ago": "1 hour ago"
     },
     {
+      "monster": "Desert Beast [INT]",
+      "killer": "Fertixiana",
+      "killer_url": "/ranking/character-30393.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Movia",
+      "killer": "Sufficatu",
+      "killer_url": "/ranking/character-49160.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Taishan",
+      "killer": "Bauce",
+      "killer_url": "/ranking/character-48223.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Ki Snake General [INT]",
+      "killer": "Kakan",
+      "killer_url": "/ranking/character-38437.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Jung Snake General [INT]",
+      "killer": "Kakan",
+      "killer_url": "/ranking/character-38437.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Yul Snake General [STR]",
+      "killer": "Tytan",
+      "killer_url": "/ranking/character-45700.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Desert Beast [STR]",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Cerberus",
+      "killer": "Moxa",
+      "killer_url": "/ranking/character-49009.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Isyutaru",
+      "killer": "Yuisom",
+      "killer_url": "/ranking/character-48294.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Isis",
+      "killer": "Dinorlaxx",
+      "killer_url": "/ranking/character-40617.html",
+      "time_ago": "3 hours ago"
+    },
+    {
+      "monster": "Sphinx (INT)",
+      "killer": "LitWizZ",
+      "killer_url": "/ranking/character-44973.html",
+      "time_ago": "3 hours ago"
+    },
+    {
+      "monster": "Sphinx (STR)",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "3 hours ago"
+    },
+    {
       "monster": "Anubis",
       "killer": "Embedded",
       "killer_url": "/ranking/character-39609.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Uruchi",
       "killer": "BowMasta",
       "killer_url": "/ranking/character-48607.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Salamander Fire Element [STR]",
-      "killer": "DanyakroQc",
-      "killer_url": "/ranking/character-39655.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Tomb General Jin",
-      "killer": "Drakknia",
-      "killer_url": "/ranking/character-47100.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Desert Scorpion",
-      "killer": "LUCIFERS",
-      "killer_url": "/ranking/character-45654.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Nova Genie [STR]",
-      "killer": "Embedded",
-      "killer_url": "/ranking/character-39609.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Nova Genie [INT]",
-      "killer": "Coffee",
-      "killer_url": "/ranking/character-11431.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Tomb General Hyun",
-      "killer": "Drento",
-      "killer_url": "/ranking/character-47153.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Gnome Earth Element [STR]",
-      "killer": "FREED00M",
-      "killer_url": "/ranking/character-47334.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Undine Water Element[INT]",
-      "killer": "Cristin",
-      "killer_url": "/ranking/character-40288.html",
       "time_ago": "3 hours ago"
     }
   ]
