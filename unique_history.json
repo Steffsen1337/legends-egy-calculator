@@ -1,126 +1,126 @@
 {
-  "scraped_at": "2026-07-24T22:11:15.599258Z",
+  "scraped_at": "2026-07-24T23:35:10.270244Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Ancient Librarian",
+      "killer": "Kakan",
+      "killer_url": "/ranking/character-38437.html",
+      "time_ago": "33 mins ago"
+    },
+    {
+      "monster": "Desert Scorpion",
+      "killer": "Silvara",
+      "killer_url": "/ranking/character-48629.html",
+      "time_ago": "37 mins ago"
+    },
+    {
+      "monster": "Salamander Fire Element [STR]",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "57 mins ago"
+    },
+    {
+      "monster": "Sand Monster [INT]",
+      "killer": "Kakan",
+      "killer_url": "/ranking/character-38437.html",
+      "time_ago": "58 mins ago"
+    },
+    {
+      "monster": "Sphinx (STR)",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Tai-Sui",
+      "killer": "EzShooter",
+      "killer_url": "/ranking/character-49201.html",
+      "time_ago": "1 hour ago"
+    },
     {
       "monster": "Sphinx (INT)",
       "killer": "Sea_Smoke",
       "killer_url": "/ranking/character-14215.html",
-      "time_ago": "17 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Cerberus",
       "killer": "HyperWitch",
       "killer_url": "/ranking/character-48795.html",
-      "time_ago": "17 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "SoSo The Black Viper",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "51 mins ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Demon Shaitan",
       "killer": "MagicKerz",
       "killer_url": "/ranking/character-43223.html",
-      "time_ago": "59 mins ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Taishan",
       "killer": "IlI",
       "killer_url": "/ranking/character-49077.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Lord Yarkan",
       "killer": "Ellin",
       "killer_url": "/ranking/character-36384.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Apis",
       "killer": "PitterSilvaX",
       "killer_url": "/ranking/character-46268.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "SoSo The Hades Viper",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "BeakYung The White Viper [STR]",
       "killer": "Monty",
       "killer_url": "/ranking/character-28458.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Isyutaru",
       "killer": "Relium",
       "killer_url": "/ranking/character-49074.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Undine Water Element[INT]",
       "killer": "AzrieL",
       "killer_url": "/ranking/character-40783.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Sylph Wind Element [INT]",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "BeakYung The White Viper",
       "killer": "justadance",
       "killer_url": "/ranking/character-11107.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Hew Snake General",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Yul Snake General",
-      "killer": "Honeyman69",
-      "killer_url": "/ranking/character-14170.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Captain Ivy",
-      "killer": "Deodora",
-      "killer_url": "/ranking/character-48970.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Jung Snake General",
-      "killer": "Honeyman69",
-      "killer_url": "/ranking/character-14170.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Ki Snake General",
-      "killer": "Honeyman69",
-      "killer_url": "/ranking/character-14170.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Gnome Earth Element [STR]",
-      "killer": "CaptainBlack",
-      "killer_url": "/ranking/character-23013.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "ShinMoo The man of Flames",
-      "killer": "Kakan",
-      "killer_url": "/ranking/character-38437.html",
-      "time_ago": "3 hours ago"
+      "time_ago": "4 hours ago"
     }
   ]
 }
