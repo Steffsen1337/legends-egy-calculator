@@ -1,900 +1,904 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  
-  <script>
-    (function() {
-      if (window.location.protocol === 'file:') return;
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
-      if (window.location.hostname.includes('.local')) return;
-      if (location.protocol !== 'https:') {
-        location.href = 'https:' + location.href.substring(location.protocol.length);
-      }
-    })();
-  </script>
-  
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="theme-color" content="#0a1628" />
-  <meta name="description" content="Event timer for Legends Online" />
-  
-  <title>Legends Online Events</title>
-  
-  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVneSBDYWxjdWxhdG9yIiwKICAic2hvcnRfbmFtZSI6ICJFZ3kgQ2FsYyIsCiAgImRlc2NyaXB0aW9uIjogIkNhbGN1bGF0b3IgZm9yIE5vdmEvRWd5IGVxdWlwbWVudCB1cGdyYWRlcyIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGExNjI4IiwKICAidGhlbWVfY29sb3IiOiAiIzBhMTYyOCIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nNjQnIGZpbGw9JyMwYTE2MjgnLz48dGV4dCB4PScyNTYnIHk9JzI4MCcgZm9udC1mYW1pbHk9J3NhbnMtc2VyaWYnIGZbnQtc2l6ZT0nMjUwJyBmaWxsPScjN2M5Y2ZmJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJz5FPC90ZXh0Pjwvc3ZnPg=="LAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9" />
-  
-  <link rel="stylesheet" href="styles/main.css" />
-  <link rel="stylesheet" href="styles/menu.css" />
-  
-  <style>
-    .wrap { padding-top: 100px !important; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    .events-container { margin-top: 20px; }
-    
-    .server-time {
-      text-align: center;
-      padding: 16px;
-      margin-bottom: 20px;
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      transition: background .4s ease, border-color .4s ease;
-    }
-    .server-time .label { color: var(--muted); font-size: 13px; }
-    .server-time .time {
-      font-size: 32px;
-      font-weight: 900;
-      color: var(--accent2);
-      margin-top: 4px;
-      font-variant-numeric: tabular-nums;
-    }
-    .server-time .timezone-info {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 6px;
-      opacity: 0.7;
-    }
+    <script>
+        (function() {
+            if (window.location.protocol === 'file:') return;
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
+            if (window.location.hostname.includes('.local')) return;
+            if (location.protocol !== 'https:') {
+                location.href = 'https:' + location.href.substring(location.protocol.length);
+            }
+        })();
+    </script>
 
-    .timezone-selector {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      padding: 12px 16px;
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      flex-wrap: wrap;
-    }
-    .timezone-selector label {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-    }
-    /* Timezone select styling moved to styles/main.css for consistency */
-    .timezone-selector .offset-display {
-      font-size: 13px;
-      color: var(--muted);
-      margin-left: auto;
-    }
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#0a1628" />
+    <meta name="description" content="Event timer for Legends Online" />
 
-    .events-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-bottom: 30px;
-    }
+    <title>Legends Online Events</title>
 
-    .event-card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow-sm);
-      transition: background .4s ease, border-color .4s ease;
-    }
-    [data-theme="light"] .event-card { border-color: rgba(0,0,0,.06); }
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVneSBDYWxjdWxhdG9yIiwKICAic2hvcnRfbmFtZSI6ICJFZ3kgQ2FsYyIsCiAgImRlc2NyaXB0aW9uIjogIkNhbGN1bGF0b3IgZm9yIE5vdmEvRWd5IGVxdWlwbWVudCB1cGdyYWRlcyIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGExNjI4IiwKICAidGhlbWVfY29sb3IiOiAiIzBhMTYyOCIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nNjQnIGZpbGw9JyMwYTE2MjgnLz48dGV4dCB4PScyNTYnIHk9JzI4MCcgZm9udC1mYW1pbHk9J3NhbnMtc2VyaWYnIGZbnQtc2l6ZT0nMjUwJyBmaWxsPScjN2M5Y2ZmJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJz5FPC90ZXh0Pjwvc3ZnPg=="LAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9" />
 
-    .event-card .event-name {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .event-card .event-name .icon { font-size: 20px; }
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/menu.css" />
 
-    .event-card .event-times {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
+    <style>
+        .wrap {
+            padding-top: 100px !important;
+        }
 
-    .event-card .event-times .time-badge {
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
-      background: var(--item-bg);
-      border: 1px solid var(--line);
-      transition: background .4s ease, border-color .4s ease;
-    }
+        .events-container {
+            margin-top: 20px;
+        }
 
-    .event-card .event-times .time-badge.active {
-      background: rgba(110,231,183,.20);
-      border-color: rgba(110,231,183,.30);
-      color: var(--success);
-      animation: pulse-active 1.5s ease-in-out infinite;
-    }
+        .server-time {
+            text-align: center;
+            padding: 16px;
+            margin-bottom: 20px;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: background .4s ease, border-color .4s ease;
+        }
+        .server-time .label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+        .server-time .time {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--accent2);
+            margin-top: 4px;
+            font-variant-numeric: tabular-nums;
+        }
+        .server-time .timezone-info {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+            opacity: 0.7;
+        }
 
-    .event-card .event-times .time-badge.passed {
-      opacity: 0.35;
-    }
+        .timezone-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            flex-wrap: wrap;
+        }
+        .timezone-selector label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .timezone-selector .offset-display {
+            font-size: 13px;
+            color: var(--muted);
+            margin-left: auto;
+        }
 
-    .event-card .event-next {
-      margin-top: 8px;
-      font-size: 13px;
-      color: var(--muted);
-    }
+        .events-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 30px;
+        }
 
-    .event-card .event-next .highlight {
-      color: var(--warn);
-      font-weight: 600;
-    }
+        .event-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: background .4s ease, border-color .4s ease;
+        }
+        [data-theme="light"] .event-card {
+            border-color: rgba(0, 0, 0, .06);
+        }
 
-    .event-card .event-note {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 8px;
-      opacity: 0.7;
-    }
+        .event-card .event-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .event-card .event-name .icon {
+            font-size: 20px;
+        }
 
-    @keyframes pulse-active {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(0.98); }
-    }
+        .event-card .event-times {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
 
-    .sorted-section {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 2px solid var(--line);
-    }
+        .event-card .event-times .time-badge {
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            background: var(--item-bg);
+            border: 1px solid var(--line);
+            transition: background .4s ease, border-color .4s ease;
+        }
 
-    .sorted-section h2 {
-      font-size: 18px;
-      margin-bottom: 12px;
-    }
+        .event-card .event-times .time-badge.active {
+            background: rgba(110, 231, 183, .20);
+            border-color: rgba(110, 231, 183, .30);
+            color: var(--success);
+            animation: pulse-active 1.5s ease-in-out infinite;
+        }
 
-    .sorted-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
+        .event-card .event-times .time-badge.passed {
+            opacity: 0.35;
+        }
 
-    .sorted-table th {
-      text-align: left;
-      padding: 10px 12px;
-      color: var(--muted);
-      font-weight: 600;
-      border-bottom: 2px solid var(--line);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
+        .event-card .event-next {
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--muted);
+        }
 
-    .sorted-table td {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--line);
-      transition: border-color .4s ease;
-    }
+        .event-card .event-next .highlight {
+            color: var(--warn);
+            font-weight: 600;
+        }
 
-    .sorted-table tr:hover td {
-      background: var(--item-bg-hover);
-    }
+        .event-card .event-note {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 8px;
+            opacity: 0.7;
+        }
 
-    .sorted-table .event-name-cell {
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        @keyframes pulse-active {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(0.98);
+            }
+        }
 
-    .sorted-table .event-name-cell .icon {
-      font-size: 16px;
-    }
+        .sorted-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--line);
+        }
 
-    .sorted-table .status-cell {
-      font-weight: 600;
-    }
+        .sorted-section h2 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
 
-    .sorted-table .status-cell.active {
-      color: var(--success);
-    }
+        .sorted-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
 
-    .sorted-table .status-cell.soon {
-      color: var(--warn);
-    }
+        .sorted-table th {
+            text-align: left;
+            padding: 10px 12px;
+            color: var(--muted);
+            font-weight: 600;
+            border-bottom: 2px solid var(--line);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
 
-    .sorted-table .status-cell.upcoming {
-      color: var(--accent2);
-    }
+        .sorted-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--line);
+            transition: border-color .4s ease;
+        }
 
-    .sorted-table .time-cell {
-      font-weight: 600;
-      font-variant-numeric: tabular-nums;
-    }
+        .sorted-table tr:hover td {
+            background: var(--item-bg-hover);
+        }
 
-    .sorted-table .time-cell.soon {
-      color: var(--warn);
-    }
+        .sorted-table .event-name-cell {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .sorted-table .time-cell.active {
-      color: var(--success);
-    }
+        .sorted-table .event-name-cell .icon {
+            font-size: 16px;
+        }
 
-    @media (max-width: 768px) {
-      .events-grid { grid-template-columns: 1fr; gap: 12px; }
-      .server-time .time { font-size: 24px; }
-      
-      .sorted-table {
-        font-size: 12px;
-      }
-      .sorted-table th,
-      .sorted-table td {
-        padding: 6px 8px;
-      }
-      .sorted-table .event-name-cell .icon {
-        font-size: 14px;
-      }
-      .timezone-selector {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-      }
-      .timezone-selector .offset-display {
-        margin-left: 0;
-        text-align: center;
-      }
-    }
-  </style>
+        .sorted-table .status-cell {
+            font-weight: 600;
+        }
+
+        .sorted-table .status-cell.active {
+            color: var(--success);
+        }
+
+        .sorted-table .status-cell.soon {
+            color: var(--warn);
+        }
+
+        .sorted-table .status-cell.upcoming {
+            color: var(--accent2);
+        }
+
+        .sorted-table .time-cell {
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .sorted-table .time-cell.soon {
+            color: var(--warn);
+        }
+
+        .sorted-table .time-cell.active {
+            color: var(--success);
+        }
+
+        @media (max-width: 768px) {
+            .events-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .server-time .time {
+                font-size: 24px;
+            }
+
+            .sorted-table {
+                font-size: 12px;
+            }
+            .sorted-table th,
+            .sorted-table td {
+                padding: 6px 8px;
+            }
+            .sorted-table .event-name-cell .icon {
+                font-size: 14px;
+            }
+            .timezone-selector {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .timezone-selector .offset-display {
+                margin-left: 0;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="menuContainer"></div>
+    <div id="menuContainer"></div>
 
-  <div class="wrap" role="main">
-    <header class="hero">
-      <div class="hero-left">
-        <h1>Event Timer</h1>
-        <p class="lead">Server time and event countdowns for <strong>Legends Online</strong>.</p>
-      </div>
-      <div class="hero-actions"></div>
-    </header>
-
-    <div class="events-container" id="eventsContainer">
-      <div class="server-time">
-        <div class="label">🕐 Server Time (UTC/GMT+3)</div>
-        <div class="time" id="serverTime">--:--:--</div>
-        <div class="timezone-info" id="localTimeInfo">Time in UTC+3 (Server): --:--:--</div>
-      </div>
-
-      <div class="timezone-selector">
-        <label for="timezoneSelect">🌍 Timezone:</label>
-        <select id="timezoneSelect">
-          <option value="-12">UTC-12</option>
-          <option value="-11">UTC-11</option>
-          <option value="-10">UTC-10</option>
-          <option value="-9">UTC-9</option>
-          <option value="-8">UTC-8</option>
-          <option value="-7">UTC-7</option>
-          <option value="-6">UTC-6</option>
-          <option value="-5">UTC-5</option>
-          <option value="-4">UTC-4</option>
-          <option value="-3">UTC-3</option>
-          <option value="-2">UTC-2</option>
-          <option value="-1">UTC-1</option>
-          <option value="0">UTC±0</option>
-          <option value="1">UTC+1</option>
-          <option value="2">UTC+2</option>
-          <option value="3" selected>UTC+3 (Server)</option>
-          <option value="4">UTC+4</option>
-          <option value="5">UTC+5</option>
-          <option value="6">UTC+6</option>
-          <option value="7">UTC+7</option>
-          <option value="8">UTC+8</option>
-          <option value="9">UTC+9</option>
-          <option value="10">UTC+10</option>
-          <option value="11">UTC+11</option>
-          <option value="12">UTC+12</option>
-        </select>
-        <span class="offset-display" id="offsetDisplay">Displaying times in UTC+3 (Server)</span>
-      </div>
-
-      <div class="events-grid" id="eventsGrid"></div>
-
-      <div class="sorted-section" id="sortedSection">
-        <h2>📋 Upcoming Events (sorted by time)</h2>
-        <div id="sortedListContainer"></div>
-      </div>
-    </div>
-  </div>
-
-  <script src="menu.js"></script>
-  <script>
-    // ============================================================
-    //  EVENTS DATA
-    // ============================================================
-    const EVENTS = [
-      { 
-        name: 'Capture The Flag', 
-        icon: '🏴', 
-        times: ['01:00', '05:00', '09:00', '13:00', '17:00', '21:00'], 
-        days: [0, 1, 2, 3, 4, 5, 6],
-        note: '' 
-      },
-      { 
-        name: 'Battle Arena (Score)', 
-        icon: '⚔️', 
-        times: ['04:00', '08:00', '16:00'], 
-        days: [0, 1, 2, 3, 4, 5, 6],
-        note: '' 
-      },
-      { 
-        name: 'Battle Arena (Flag)', 
-        icon: '⚔️', 
-        times: ['12:00', '19:00'], 
-        days: [0, 1, 2, 3, 4, 5, 6],
-        note: '' 
-      },
-      { 
-        name: 'Survival Arena', 
-        icon: '🏟️', 
-        times: ['23:00', '11:00'], 
-        days: [0, 1, 2, 3, 4, 5, 6],
-        note: '' 
-      },
-      { 
-        name: 'Special Goods Time', 
-        icon: '🛒', 
-        times: ['09:30', '15:30', '21:30'], 
-        days: [0, 1, 2, 3, 4, 5, 6],
-        note: '' 
-      },
-      { 
-        name: 'Last Man Standing', 
-        icon: '👑', 
-        times: ['23:30', '11:30'], 
-        days: [0, 1, 2, 3, 4, 5, 6],
-        note: '' 
-      },
-      { 
-        name: 'War of Leagues', 
-        icon: '⚔️', 
-        times: ['20:00'], 
-        days: [0, 1, 2, 3, 4, 5, 6],
-        note: '' 
-      },
-      { 
-        name: 'Selket & Neith', 
-        icon: '👹', 
-        times: ['06:30', '12:30', '18:30'], 
-        days: [0, 1, 2, 3, 4, 5, 6],
-        skipTimesOnDays: { 0: ['18:30'] },
-        note: '%s not available on Sundays' 
-      },
-      { 
-        name: 'Isis & Anubis', 
-        icon: '👹', 
-        times: ['07:30', '14:30', '20:30'], 
-        days: [0, 1, 2, 3, 4, 5, 6],
-        skipTimesOnDays: { 0: ['20:30'] },
-        note: '%s not available on Sundays' 
-      },
-      { 
-        name: 'Tower Defense', 
-        icon: '🗼', 
-        times: ['17:30'], 
-        days: [5, 6, 0],
-        note: '' 
-      },
-      { 
-        name: 'Beakyung The White Viper', 
-        icon: '🐍', 
-        times: ['21:30'], 
-        days: [5],
-        note: '' 
-      },
-      { 
-        name: 'The Roc', 
-        icon: '🦅', 
-        times: ['21:30'], 
-        days: [6],
-        note: '' 
-      },
-      { 
-        name: 'Haroeris & Seth', 
-        icon: '👹', 
-        times: ['18:30'], 
-        days: [0],
-        note: '' 
-      },
-      { 
-        name: 'Guild Wars', 
-        icon: '⚔️', 
-        times: ['20:30'], 
-        days: [0],
-        note: '' 
-      },
-      { 
-        name: 'Fortress War', 
-        icon: '🏰', 
-        times: ['21:30'], 
-        days: [0],
-        note: '' 
-      }
-    ];
-
-    // ============================================================
-    //  HELPERS
-    // ============================================================
-    const SERVER_TIMEZONE_OFFSET = 3;
-    const MINUTE_MS = 60000;
-    let displayTimezoneOffset = 3;
-
-    function getServerTime() {
-      const now = new Date();
-      const utc = now.getTime() + now.getTimezoneOffset() * MINUTE_MS;
-      return new Date(utc + SERVER_TIMEZONE_OFFSET * 3600000);
-    }
-
-    function getServerTimeStr() {
-      return getServerTime().toTimeString().slice(0, 8);
-    }
-
-    function getCurrentServerMinutes() {
-      const t = getServerTime();
-      return t.getHours() * 60 + t.getMinutes();
-    }
-
-    function getServerDay() {
-      return getServerTime().getDay();
-    }
-
-    function getDisplayTime() {
-      const serverTime = getServerTime();
-      const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
-      return new Date(serverTime.getTime() + offsetDiff * 3600000);
-    }
-
-    function getDisplayDay() {
-      return getDisplayTime().getDay();
-    }
-
-    function getCurrentDisplayMinutes() {
-      const t = getDisplayTime();
-      return t.getHours() * 60 + t.getMinutes();
-    }
-
-    function getSelectedTimezoneTime() {
-      const serverTime = getServerTime();
-      const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
-      const displayTime = new Date(serverTime.getTime() + offsetDiff * 3600000);
-      return displayTime.toTimeString().slice(0, 8);
-    }
-
-    function parseTimeToMinutes(timeStr) {
-      const [h, m] = timeStr.split(':').map(Number);
-      return h * 60 + m;
-    }
-
-    function formatTimeForDisplay(minutes) {
-      const hours = Math.floor(minutes / 60) % 24;
-      const mins = minutes % 60;
-      return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
-    }
-
-    function convertServerTimeToDisplay(serverMinutes) {
-      const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
-      let displayMinutes = serverMinutes + offsetDiff * 60;
-      displayMinutes = ((displayMinutes % 1440) + 1440) % 1440;
-      return displayMinutes;
-    }
-
-    // ===== KORREKTE Funktion für den lokalen Tag =====
-    function getLocalDayForEvent(serverEventMinutes, dayOffset) {
-      // Aktuelle Server-Zeit als Basis
-      const serverTime = getServerTime();
-      
-      // Server-Zeit des Events: Aktuelle Server-Zeit + dayOffset Tage + Event-Uhrzeit
-      const eventServerDate = new Date(serverTime);
-      eventServerDate.setDate(eventServerDate.getDate() + dayOffset);
-      eventServerDate.setHours(Math.floor(serverEventMinutes / 60), serverEventMinutes % 60, 0, 0);
-      
-      // In lokale Zeit umrechnen
-      const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
-      const eventLocalDate = new Date(eventServerDate.getTime() + offsetDiff * 3600000);
-      
-      // Lokalen Tag zurückgeben
-      return eventLocalDate.getDay();
-    }
-
-    function getNextEventTime(event) {
-      const current = getCurrentServerMinutes();
-      const serverDay = getServerDay();
-      
-      let best = null;
-      let bestDiff = Infinity;
-
-      for (let dayOffset = 0; dayOffset <= 7; dayOffset++) {
-        const checkDay = (serverDay + dayOffset) % 7;
-        if (!event.days.includes(checkDay)) continue;
-        
-        const skipTimes = event.skipTimesOnDays ? event.skipTimesOnDays[checkDay] || [] : [];
-        const timesForDay = event.times.filter(time => !skipTimes.includes(time));
-        
-        if (timesForDay.length === 0) continue;
-        
-        for (const time of timesForDay) {
-          const target = parseTimeToMinutes(time);
-          let diff = target - current;
-          if (dayOffset > 0) {
-            diff += dayOffset * 1440;
-          } else if (dayOffset === 0 && diff < 0) {
-            continue;
-          }
-          
-          if (diff >= 0 && diff < bestDiff) {
-            bestDiff = diff;
-            best = { 
-              time, 
-              diff, 
-              target, 
-              day: checkDay, 
-              dayOffset,
-              displayTime: convertServerTimeToDisplay(target)
-            };
-          }
-        }
-      }
-
-      return best;
-    }
-
-    function getDayName(day) {
-      const names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      return names[day];
-    }
-
-    function formatTime(diff) {
-      if (diff === 0) return 'NOW!';
-      if (diff < 0) return 'Passed';
-      
-      const totalMinutes = diff;
-      const days = Math.floor(totalMinutes / 1440);
-      const hours = Math.floor((totalMinutes % 1440) / 60);
-      const minutes = totalMinutes % 60;
-      
-      if (days === 0 && hours === 0) {
-        return `${minutes}m`;
-      }
-      if (days === 0) {
-        return `${hours}h ${minutes}m`;
-      }
-      if (days === 1) {
-        return `1d ${hours}h ${minutes}m`;
-      }
-      return `${days}d ${hours}h ${minutes}m`;
-    }
-
-    function getStatus(diff) {
-      if (diff <= 5) return { label: '🔴 NOW!', class: 'active' };
-      if (diff <= 60) return { label: 'Soon', class: 'soon' };
-      return { label: 'Upcoming', class: 'upcoming' };
-    }
-
-    function getDynamicNote(event) {
-      if (!event.note) return '';
-      
-      if (event.note.includes('%s')) {
-        const skippedTimes = event.skipTimesOnDays?.[0] || [];
-        if (skippedTimes.length > 0) {
-          const serverMinutes = parseTimeToMinutes(skippedTimes[0]);
-          const displayMinutes = convertServerTimeToDisplay(serverMinutes);
-          const displayTimeStr = formatTimeForDisplay(displayMinutes);
-          
-          const serverDay = 0;
-          const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
-          let localDayForSunday = (0 + Math.floor((offsetDiff * 60 + serverMinutes) / 1440)) % 7;
-          if (localDayForSunday < 0) localDayForSunday += 7;
-          
-          const localDayName = getDayName(localDayForSunday);
-          
-          let noteText = event.note.replace('%s', displayTimeStr);
-          noteText = noteText.replace('Sundays', localDayName + 's');
-          
-          return noteText;
-        }
-      }
-      
-      return event.note;
-    }
-
-    // ============================================================
-    //  RENDER
-    // ============================================================
-    function renderEvents() {
-      const grid = document.getElementById('eventsGrid');
-      grid.innerHTML = '';
-
-      const sortedEvents = [];
-
-      EVENTS.forEach(event => {
-        const card = document.createElement('div');
-        card.className = 'event-card';
-
-        const next = getNextEventTime(event);
-
-        let nameHTML = `<span class="icon">${event.icon}</span> ${event.name}`;
-        
-        // Prüfe, ob das Event heute in der LOKALEN Zeitzone verfügbar ist
-        const displayDay = getDisplayDay();
-        const isAvailableToday = event.days.includes(displayDay);
-        
-        let hasFutureTimeToday = false;
-        if (isAvailableToday) {
-          const currentDisplayMinutes = getCurrentDisplayMinutes();
-          const serverTimeNow = getServerTime();
-          const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
-
-          // For each scheduled server-time, check if there exists an occurrence
-          // that falls on the current DISPLAY local date and is not skipped on the
-          // corresponding SERVER day. We consider day offsets -1..+1 to catch
-          // events that cross midnight between zones.
-          for (const time of event.times) {
-            const [th, tm] = time.split(':').map(Number);
-            for (let dayOffset = -1; dayOffset <= 1; dayOffset++) {
-              const evtServerDate = new Date(serverTimeNow);
-              evtServerDate.setDate(evtServerDate.getDate() + dayOffset);
-              evtServerDate.setHours(th, tm, 0, 0);
-
-              const evtLocalDate = new Date(evtServerDate.getTime() + offsetDiff * 3600000);
-              if (evtLocalDate.toDateString() !== getDisplayTime().toDateString()) continue;
-
-              const serverDayOfEvent = evtServerDate.getDay();
-              const skippedOnServer = event.skipTimesOnDays && event.skipTimesOnDays[serverDayOfEvent] && event.skipTimesOnDays[serverDayOfEvent].includes(time);
-              if (skippedOnServer) continue;
-
-              const displayMinutesForEvt = evtLocalDate.getHours() * 60 + evtLocalDate.getMinutes();
-              if (displayMinutesForEvt > currentDisplayMinutes) {
-                hasFutureTimeToday = true;
-                break;
-              }
-            }
-            if (hasFutureTimeToday) break;
-          }
-        }
-        
-        if (!hasFutureTimeToday && isAvailableToday) {
-          nameHTML += ` <span style="font-size:11px;color:var(--muted);opacity:0.5;">(Already passed today)</span>`;
-        } else if (!isAvailableToday) {
-          nameHTML += ` <span style="font-size:11px;color:var(--muted);opacity:0.5;">(Not available today)</span>`;
-        }
-
-        // Times
-        let timesHTML = '';
-        const currentServer = getCurrentServerMinutes();
-        const serverDay = getServerDay();
-        const isTodayOnServer = event.days.includes(serverDay);
-        
-        event.times.forEach(time => {
-          const target = parseTimeToMinutes(time);
-          const displayTime = convertServerTimeToDisplay(target);
-          const displayTimeStr = formatTimeForDisplay(displayTime);
-
-          let diff = target - currentServer;
-
-          // Determine whether this specific occurrence is skipped for the
-          // DISPLAY local date by checking server-day(s) whose event maps to
-          // the current display date.
-          const serverTimeNow = getServerTime();
-          const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
-          let isSkipped = false;
-          let isActive = false;
-
-          for (let dayOffset = -1; dayOffset <= 1; dayOffset++) {
-            const evtServerDate = new Date(serverTimeNow);
-            evtServerDate.setDate(evtServerDate.getDate() + dayOffset);
-            evtServerDate.setHours(Math.floor(target / 60), target % 60, 0, 0);
-
-            const evtLocalDate = new Date(evtServerDate.getTime() + offsetDiff * 3600000);
-            if (evtLocalDate.toDateString() !== getDisplayTime().toDateString()) continue;
-
-            const serverDayOfEvent = evtServerDate.getDay();
-            const skippedOnServer = event.skipTimesOnDays && event.skipTimesOnDays[serverDayOfEvent] && event.skipTimesOnDays[serverDayOfEvent].includes(time);
-            if (skippedOnServer) { isSkipped = true; break; }
-
-            // If this occurrence maps to local today and is within NOW window
-            // relative to server minutes, mark active.
-            let diffForThis = target - currentServer;
-            if (dayOffset > 0) diffForThis += dayOffset * 1440;
-            else if (dayOffset === 0 && diffForThis < 0) continue;
-            if (diffForThis >= 0 && diffForThis <= 5) { isActive = true; break; }
-          }
-
-          let cls = 'time-badge';
-          if (isActive) cls += ' active';
-          else if (!isTodayOnServer || isSkipped) cls += ' passed';
-
-          let label = displayTimeStr;
-          if (isActive) label = `🔴 ${displayTimeStr} (NOW!)`;
-          if (isSkipped) label = `${displayTimeStr} (skipped today)`;
-
-          timesHTML += `<span class="${cls}">${label}</span>`;
-        });
-
-        // Next event
-        let nextHTML = '';
-        if (next) {
-          const diff = next.diff;
-          const isNow = diff <= 5;
-          const hours = Math.floor(diff / 60);
-          const minutes = diff % 60;
-          const days = Math.floor(hours / 24);
-
-          let label = '';
-          if (isNow) {
-            label = '🔴 Starts now!';
-          } else if (days === 1 && hours < 24) {
-            const remHours = hours % 24;
-            label = `Tomorrow at ${remHours}h ${minutes}m`;
-          } else if (days === 0 && hours === 0) {
-            label = `Starts in ${minutes}m`;
-          } else if (days === 0 && hours < 24) {
-            label = `Starts in ${hours}h ${minutes}m`;
-          } else {
-            const remHours = hours % 24;
-            label = `Starts in ${days}d ${remHours}h ${minutes}m`;
-          }
-
-          const targetMinutes = parseTimeToMinutes(next.time);
-          const eventServerDate = new Date(getServerTime());
-          eventServerDate.setDate(eventServerDate.getDate() + next.dayOffset);
-          eventServerDate.setHours(Math.floor(targetMinutes / 60), targetMinutes % 60, 0, 0);
-          const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
-          const eventLocalDate = new Date(eventServerDate.getTime() + offsetDiff * 3600000);
-          const isSameLocalDate = eventLocalDate.toDateString() === getDisplayTime().toDateString();
-          const dayName = isSameLocalDate ? 'Today' : getDayName(eventLocalDate.getDay());
-
-          const displayTimeStr = formatTimeForDisplay(next.displayTime);
-          nextHTML = `
-            <div class="event-next">
-              Next: <span class="highlight">${displayTimeStr}</span> (${dayName}) — ${label}
+    <div class="wrap" role="main">
+        <header class="hero">
+            <div class="hero-left">
+                <h1>Event Timer</h1>
+                <p class="lead">Server time and event countdowns for <strong>Legends Online</strong>.</p>
             </div>
-          `;
+            <div class="hero-actions"></div>
+        </header>
+
+        <div class="events-container" id="eventsContainer">
+            <div class="server-time">
+                <div class="label">🕐 Server Time (UTC/GMT+3)</div>
+                <div class="time" id="serverTime">--:--:--</div>
+                <div class="timezone-info" id="localTimeInfo">Time in UTC+3 (Server): --:--:--</div>
+            </div>
+
+            <div class="timezone-selector">
+                <label for="timezoneSelect">🌍 Timezone:</label>
+                <select id="timezoneSelect">
+                    <option value="-12">UTC-12</option>
+                    <option value="-11">UTC-11</option>
+                    <option value="-10">UTC-10</option>
+                    <option value="-9">UTC-9</option>
+                    <option value="-8">UTC-8</option>
+                    <option value="-7">UTC-7</option>
+                    <option value="-6">UTC-6</option>
+                    <option value="-5">UTC-5</option>
+                    <option value="-4">UTC-4</option>
+                    <option value="-3">UTC-3</option>
+                    <option value="-2">UTC-2</option>
+                    <option value="-1">UTC-1</option>
+                    <option value="0">UTC±0</option>
+                    <option value="1">UTC+1</option>
+                    <option value="2">UTC+2</option>
+                    <option value="3" selected>UTC+3 (Server)</option>
+                    <option value="4">UTC+4</option>
+                    <option value="5">UTC+5</option>
+                    <option value="6">UTC+6</option>
+                    <option value="7">UTC+7</option>
+                    <option value="8">UTC+8</option>
+                    <option value="9">UTC+9</option>
+                    <option value="10">UTC+10</option>
+                    <option value="11">UTC+11</option>
+                    <option value="12">UTC+12</option>
+                </select>
+                <span class="offset-display" id="offsetDisplay">Displaying times in UTC+3 (Server)</span>
+            </div>
+
+            <div class="events-grid" id="eventsGrid"></div>
+
+            <div class="sorted-section" id="sortedSection">
+                <h2>📋 Upcoming Events (sorted by time)</h2>
+                <div id="sortedListContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="menu.js">
+    </script>
+    <script>
+        // ============================================================
+        //  EVENTS DATA  — UPDATED with new times + Summer Unique Party
+        // ============================================================
+        const EVENTS = [{
+            name: 'Capture The Flag',
+            icon: '🏴',
+            times: ['01:00', '05:00', '09:00', '13:00', '17:00', '21:00'],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            note: ''
+        }, {
+            name: 'Battle Arena (Score)',
+            icon: '⚔️',
+            times: ['04:00', '08:00', '16:00'],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            note: ''
+        }, {
+            name: 'Battle Arena (Flag)',
+            icon: '⚔️',
+            times: ['12:00', '19:00'],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            note: ''
+        }, {
+            name: 'Survival Arena',
+            icon: '🏟️',
+            times: ['22:00', '10:00'],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            note: ''
+        }, {
+            name: 'Special Goods Time',
+            icon: '🛒',
+            times: ['09:00', '15:00', '23:00'],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            note: ''
+        }, {
+            name: 'Thief Special Goods Time',
+            icon: '💰',
+            times: ['23:00', '23:30'],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            note: ''
+        }, {
+            name: 'Last Man Standing',
+            icon: '👑',
+            times: ['22:30', '10:30'],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            note: ''
+        }, {
+            name: 'War of Leagues',
+            icon: '⚔️',
+            times: ['20:00'],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            note: ''
+        }, {
+            name: 'Selket & Neith',
+            icon: '👹',
+            times: ['06:30', '12:30', '18:30'],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            skipTimesOnDays: { 0: ['18:30'] },
+            note: '%s not available on Sundays'
+        }, {
+            name: 'Isis & Anubis',
+            icon: '👹',
+            times: ['07:30', '14:30', '20:30'],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            skipTimesOnDays: { 0: ['20:30'] },
+            note: '%s not available on Sundays'
+        }, {
+            name: 'Tower Defense',
+            icon: '🗼',
+            times: ['17:30'],
+            days: [5, 6, 0],
+            note: ''
+        }, {
+            name: 'Beakyung The White Viper',
+            icon: '🐍',
+            times: ['21:30'],
+            days: [5],
+            note: ''
+        }, {
+            name: 'The Roc',
+            icon: '🦅',
+            times: ['21:30'],
+            days: [6],
+            note: ''
+        }, {
+            name: 'Haroeris & Seth',
+            icon: '👹',
+            times: ['18:30'],
+            days: [0],
+            note: ''
+        }, {
+            name: 'Guild Wars',
+            icon: '⚔️',
+            times: ['20:30'],
+            days: [0],
+            note: ''
+        }, {
+            name: 'Fortress War',
+            icon: '🏰',
+            times: ['21:30'],
+            days: [0],
+            note: ''
+        }, {
+            // NEW EVENT: Summer Unique Party Event – daily at 19:30
+            name: 'Summer Unique Party Event',
+            icon: '🎉',
+            times: ['19:30'],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            note: ''
+        }];
+
+        // ============================================================
+        //  HELPERS
+        // ============================================================
+        const SERVER_TIMEZONE_OFFSET = 3;
+        const MINUTE_MS = 60000;
+        let displayTimezoneOffset = 3;
+
+        function getServerTime() {
+            const now = new Date();
+            const utc = now.getTime() + now.getTimezoneOffset() * MINUTE_MS;
+            return new Date(utc + SERVER_TIMEZONE_OFFSET * 3600000);
         }
 
-        const noteText = getDynamicNote(event);
-
-        card.innerHTML = `
-          <div class="event-name">${nameHTML}</div>
-          <div class="event-times">${timesHTML}</div>
-          ${nextHTML}
-          ${noteText ? `<div class="event-note">${noteText}</div>` : ''}
-        `;
-        grid.appendChild(card);
-
-        if (next) {
-          sortedEvents.push({
-            event: event,
-            next: next,
-            diff: next.diff
-          });
+        function getServerTimeStr() {
+            return getServerTime().toTimeString().slice(0, 8);
         }
-      });
 
-      // ===== SORTIERTE LISTE =====
-      sortedEvents.sort((a, b) => a.diff - b.diff);
+        function getCurrentServerMinutes() {
+            const t = getServerTime();
+            return t.getHours() * 60 + t.getMinutes();
+        }
 
-      const container = document.getElementById('sortedListContainer');
-      if (sortedEvents.length === 0) {
-        container.innerHTML = '<p style="color:var(--muted);">No upcoming events found.</p>';
-        return;
-      }
+        function getServerDay() {
+            return getServerTime().getDay();
+        }
 
-      let tableHTML = `
-        <table class="sorted-table">
-          <thead>
-            <tr>
-              <th>Event</th>
-              <th>Next Time</th>
-              <th>Status</th>
-              <th>Remaining</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
+        function getDisplayTime() {
+            const serverTime = getServerTime();
+            const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+            return new Date(serverTime.getTime() + offsetDiff * 3600000);
+        }
 
-      sortedEvents.forEach(({ event, next, diff }) => {
-        const status = getStatus(diff);
-        
-        const targetMinutes = parseTimeToMinutes(next.time);
-        const eventServerDate = new Date(getServerTime());
-        eventServerDate.setDate(eventServerDate.getDate() + next.dayOffset);
-        eventServerDate.setHours(Math.floor(targetMinutes / 60), targetMinutes % 60, 0, 0);
-        const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
-        const eventLocalDate = new Date(eventServerDate.getTime() + offsetDiff * 3600000);
-        const isSameLocalDate = eventLocalDate.toDateString() === getDisplayTime().toDateString();
-        const dayName = isSameLocalDate ? 'Today' : getDayName(eventLocalDate.getDay());
+        function getDisplayDay() {
+            return getDisplayTime().getDay();
+        }
 
-        const displayTimeStr = formatTimeForDisplay(next.displayTime);
-        const timeDisplay = `${displayTimeStr} (${dayName})`;
-        
-        tableHTML += `
-          <tr>
-            <td>
-              <span class="event-name-cell">
-                <span class="icon">${event.icon}</span>
-                ${event.name}
-              </span>
-            </td>
-            <td class="time-cell">${timeDisplay}</td>
-            <td class="status-cell ${status.class}">${status.label}</td>
-            <td class="time-cell ${status.class}">${formatTime(diff)}</td>
-          </tr>
-        `;
-      });
+        function getCurrentDisplayMinutes() {
+            const t = getDisplayTime();
+            return t.getHours() * 60 + t.getMinutes();
+        }
 
-      tableHTML += `
-          </tbody>
-        </table>
-      `;
+        function getSelectedTimezoneTime() {
+            const serverTime = getServerTime();
+            const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+            const displayTime = new Date(serverTime.getTime() + offsetDiff * 3600000);
+            return displayTime.toTimeString().slice(0, 8);
+        }
 
-      container.innerHTML = tableHTML;
-    }
+        function parseTimeToMinutes(timeStr) {
+            const [h, m] = timeStr.split(':').map(Number);
+            return h * 60 + m;
+        }
 
-    function updateServerTime() {
-      document.getElementById('serverTime').textContent = getServerTimeStr();
-      const selectedTzTime = getSelectedTimezoneTime();
-      const offset = displayTimezoneOffset;
-      const label = offset === 3 ? 'UTC+3 (Server)' : `UTC${offset >= 0 ? '+' : ''}${offset}`;
-      document.getElementById('localTimeInfo').textContent = `Time in ${label}: ${selectedTzTime}`;
-    }
+        function formatTimeForDisplay(minutes) {
+            const hours = Math.floor(minutes / 60) % 24;
+            const mins = minutes % 60;
+            return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+        }
 
-    function updateOffsetDisplay() {
-      const offset = displayTimezoneOffset;
-      const label = offset === 3 ? 'UTC+3 (Server)' : `UTC${offset >= 0 ? '+' : ''}${offset}`;
-      document.getElementById('offsetDisplay').textContent = `Displaying times in ${label}`;
-    }
+        function convertServerTimeToDisplay(serverMinutes) {
+            const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+            let displayMinutes = serverMinutes + offsetDiff * 60;
+            displayMinutes = ((displayMinutes % 1440) + 1440) % 1440;
+            return displayMinutes;
+        }
 
-    function setupTimezoneSelector() {
-      const select = document.getElementById('timezoneSelect');
-      select.addEventListener('change', function() {
-        displayTimezoneOffset = parseInt(this.value);
-        updateOffsetDisplay();
-        updateServerTime();
-        renderEvents();
-      });
-    }
+        function getLocalDayForEvent(serverEventMinutes, dayOffset) {
+            const serverTime = getServerTime();
+            const eventServerDate = new Date(serverTime);
+            eventServerDate.setDate(eventServerDate.getDate() + dayOffset);
+            eventServerDate.setHours(Math.floor(serverEventMinutes / 60), serverEventMinutes % 60, 0, 0);
+            const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+            const eventLocalDate = new Date(eventServerDate.getTime() + offsetDiff * 3600000);
+            return eventLocalDate.getDay();
+        }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof renderMenu === 'function') {
-        renderMenu('events');
-      }
+        function getNextEventTime(event) {
+            const current = getCurrentServerMinutes();
+            const serverDay = getServerDay();
 
-      document.getElementById('timezoneSelect').value = '3';
-      displayTimezoneOffset = 3;
-      updateOffsetDisplay();
+            let best = null;
+            let bestDiff = Infinity;
 
-      updateServerTime();
-      renderEvents();
-      setupTimezoneSelector();
+            for (let dayOffset = 0; dayOffset <= 7; dayOffset++) {
+                const checkDay = (serverDay + dayOffset) % 7;
+                if (!event.days.includes(checkDay)) continue;
 
-      setInterval(updateServerTime, 1000);
-      setInterval(renderEvents, 60000);
-    });
-  </script>
+                const skipTimes = event.skipTimesOnDays ? event.skipTimesOnDays[checkDay] || [] : [];
+                const timesForDay = event.times.filter(time => !skipTimes.includes(time));
+
+                if (timesForDay.length === 0) continue;
+
+                for (const time of timesForDay) {
+                    const target = parseTimeToMinutes(time);
+                    let diff = target - current;
+                    if (dayOffset > 0) {
+                        diff += dayOffset * 1440;
+                    } else if (dayOffset === 0 && diff < 0) {
+                        continue;
+                    }
+
+                    if (diff >= 0 && diff < bestDiff) {
+                        bestDiff = diff;
+                        best = {
+                            time,
+                            diff,
+                            target,
+                            day: checkDay,
+                            dayOffset,
+                            displayTime: convertServerTimeToDisplay(target)
+                        };
+                    }
+                }
+            }
+
+            return best;
+        }
+
+        function getDayName(day) {
+            const names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            return names[day];
+        }
+
+        function formatTime(diff) {
+            if (diff === 0) return 'NOW!';
+            if (diff < 0) return 'Passed';
+
+            const totalMinutes = diff;
+            const days = Math.floor(totalMinutes / 1440);
+            const hours = Math.floor((totalMinutes % 1440) / 60);
+            const minutes = totalMinutes % 60;
+
+            if (days === 0 && hours === 0) {
+                return `${minutes}m`;
+            }
+            if (days === 0) {
+                return `${hours}h ${minutes}m`;
+            }
+            if (days === 1) {
+                return `1d ${hours}h ${minutes}m`;
+            }
+            return `${days}d ${hours}h ${minutes}m`;
+        }
+
+        function getStatus(diff) {
+            if (diff <= 5) return { label: '🔴 NOW!', class: 'active' };
+            if (diff <= 60) return { label: 'Soon', class: 'soon' };
+            return { label: 'Upcoming', class: 'upcoming' };
+        }
+
+        function getDynamicNote(event) {
+            if (!event.note) return '';
+
+            if (event.note.includes('%s')) {
+                const skippedTimes = event.skipTimesOnDays?.[0] || [];
+                if (skippedTimes.length > 0) {
+                    const serverMinutes = parseTimeToMinutes(skippedTimes[0]);
+                    const displayMinutes = convertServerTimeToDisplay(serverMinutes);
+                    const displayTimeStr = formatTimeForDisplay(displayMinutes);
+
+                    const serverDay = 0;
+                    const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+                    let localDayForSunday = (0 + Math.floor((offsetDiff * 60 + serverMinutes) / 1440)) % 7;
+                    if (localDayForSunday < 0) localDayForSunday += 7;
+
+                    const localDayName = getDayName(localDayForSunday);
+
+                    let noteText = event.note.replace('%s', displayTimeStr);
+                    noteText = noteText.replace('Sundays', localDayName + 's');
+
+                    return noteText;
+                }
+            }
+
+            return event.note;
+        }
+
+        // ============================================================
+        //  RENDER
+        // ============================================================
+        function renderEvents() {
+            const grid = document.getElementById('eventsGrid');
+            grid.innerHTML = '';
+
+            const sortedEvents = [];
+
+            EVENTS.forEach(event => {
+                const card = document.createElement('div');
+                card.className = 'event-card';
+
+                const next = getNextEventTime(event);
+
+                let nameHTML = `<span class="icon">${event.icon}</span> ${event.name}`;
+
+                const displayDay = getDisplayDay();
+                const isAvailableToday = event.days.includes(displayDay);
+
+                let hasFutureTimeToday = false;
+                if (isAvailableToday) {
+                    const currentDisplayMinutes = getCurrentDisplayMinutes();
+                    const serverTimeNow = getServerTime();
+                    const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+
+                    for (const time of event.times) {
+                        const [th, tm] = time.split(':').map(Number);
+                        for (let dayOffset = -1; dayOffset <= 1; dayOffset++) {
+                            const evtServerDate = new Date(serverTimeNow);
+                            evtServerDate.setDate(evtServerDate.getDate() + dayOffset);
+                            evtServerDate.setHours(th, tm, 0, 0);
+
+                            const evtLocalDate = new Date(evtServerDate.getTime() + offsetDiff * 3600000);
+                            if (evtLocalDate.toDateString() !== getDisplayTime().toDateString()) continue;
+
+                            const serverDayOfEvent = evtServerDate.getDay();
+                            const skippedOnServer = event.skipTimesOnDays && event.skipTimesOnDays[serverDayOfEvent] &&
+                                event.skipTimesOnDays[serverDayOfEvent].includes(time);
+                            if (skippedOnServer) continue;
+
+                            const displayMinutesForEvt = evtLocalDate.getHours() * 60 + evtLocalDate.getMinutes();
+                            if (displayMinutesForEvt > currentDisplayMinutes) {
+                                hasFutureTimeToday = true;
+                                break;
+                            }
+                        }
+                        if (hasFutureTimeToday) break;
+                    }
+                }
+
+                if (!hasFutureTimeToday && isAvailableToday) {
+                    nameHTML +=
+                        ` <span style="font-size:11px;color:var(--muted);opacity:0.5;">(Already passed today)</span>`;
+                } else if (!isAvailableToday) {
+                    nameHTML +=
+                    ` <span style="font-size:11px;color:var(--muted);opacity:0.5;">(Not available today)</span>`;
+                }
+
+                let timesHTML = '';
+                const currentServer = getCurrentServerMinutes();
+                const serverDay = getServerDay();
+                const isTodayOnServer = event.days.includes(serverDay);
+
+                event.times.forEach(time => {
+                    const target = parseTimeToMinutes(time);
+                    const displayTime = convertServerTimeToDisplay(target);
+                    const displayTimeStr = formatTimeForDisplay(displayTime);
+
+                    let diff = target - currentServer;
+
+                    const serverTimeNow = getServerTime();
+                    const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+                    let isSkipped = false;
+                    let isActive = false;
+
+                    for (let dayOffset = -1; dayOffset <= 1; dayOffset++) {
+                        const evtServerDate = new Date(serverTimeNow);
+                        evtServerDate.setDate(evtServerDate.getDate() + dayOffset);
+                        evtServerDate.setHours(Math.floor(target / 60), target % 60, 0, 0);
+
+                        const evtLocalDate = new Date(evtServerDate.getTime() + offsetDiff * 3600000);
+                        if (evtLocalDate.toDateString() !== getDisplayTime().toDateString()) continue;
+
+                        const serverDayOfEvent = evtServerDate.getDay();
+                        const skippedOnServer = event.skipTimesOnDays && event.skipTimesOnDays[serverDayOfEvent] &&
+                            event.skipTimesOnDays[serverDayOfEvent].includes(time);
+                        if (skippedOnServer) { isSkipped = true; break; }
+
+                        let diffForThis = target - currentServer;
+                        if (dayOffset > 0) diffForThis += dayOffset * 1440;
+                        else if (dayOffset === 0 && diffForThis < 0) continue;
+                        if (diffForThis >= 0 && diffForThis <= 5) { isActive = true; break; }
+                    }
+
+                    let cls = 'time-badge';
+                    if (isActive) cls += ' active';
+                    else if (!isTodayOnServer || isSkipped) cls += ' passed';
+
+                    let label = displayTimeStr;
+                    if (isActive) label = `🔴 ${displayTimeStr} (NOW!)`;
+                    if (isSkipped) label = `${displayTimeStr} (skipped today)`;
+
+                    timesHTML += `<span class="${cls}">${label}</span>`;
+                });
+
+                let nextHTML = '';
+                if (next) {
+                    const diff = next.diff;
+                    const isNow = diff <= 5;
+                    const hours = Math.floor(diff / 60);
+                    const minutes = diff % 60;
+                    const days = Math.floor(hours / 24);
+
+                    let label = '';
+                    if (isNow) {
+                        label = '🔴 Starts now!';
+                    } else if (days === 1 && hours < 24) {
+                        const remHours = hours % 24;
+                        label = `Tomorrow at ${remHours}h ${minutes}m`;
+                    } else if (days === 0 && hours === 0) {
+                        label = `Starts in ${minutes}m`;
+                    } else if (days === 0 && hours < 24) {
+                        label = `Starts in ${hours}h ${minutes}m`;
+                    } else {
+                        const remHours = hours % 24;
+                        label = `Starts in ${days}d ${remHours}h ${minutes}m`;
+                    }
+
+                    const targetMinutes = parseTimeToMinutes(next.time);
+                    const eventServerDate = new Date(getServerTime());
+                    eventServerDate.setDate(eventServerDate.getDate() + next.dayOffset);
+                    eventServerDate.setHours(Math.floor(targetMinutes / 60), targetMinutes % 60, 0, 0);
+                    const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+                    const eventLocalDate = new Date(eventServerDate.getTime() + offsetDiff * 3600000);
+                    const isSameLocalDate = eventLocalDate.toDateString() === getDisplayTime().toDateString();
+                    const dayName = isSameLocalDate ? 'Today' : getDayName(eventLocalDate.getDay());
+
+                    const displayTimeStr = formatTimeForDisplay(next.displayTime);
+                    nextHTML = `
+                            <div class="event-next">
+                              Next: <span class="highlight">${displayTimeStr}</span> (${dayName}) — ${label}
+                            </div>
+                          `;
+                }
+
+                const noteText = getDynamicNote(event);
+
+                card.innerHTML = `
+                          <div class="event-name">${nameHTML}</div>
+                          <div class="event-times">${timesHTML}</div>
+                          ${nextHTML}
+                          ${noteText ? `<div class="event-note">${noteText}</div>` : ''}
+                        `;
+                grid.appendChild(card);
+
+                if (next) {
+                    sortedEvents.push({
+                        event: event,
+                        next: next,
+                        diff: next.diff
+                    });
+                }
+            });
+
+            // ===== SORTED LIST =====
+            sortedEvents.sort((a, b) => a.diff - b.diff);
+
+            const container = document.getElementById('sortedListContainer');
+            if (sortedEvents.length === 0) {
+                container.innerHTML = '<p style="color:var(--muted);">No upcoming events found.</p>';
+                return;
+            }
+
+            let tableHTML = `
+                        <table class="sorted-table">
+                          <thead>
+                            <tr>
+                              <th>Event</th>
+                              <th>Next Time</th>
+                              <th>Status</th>
+                              <th>Remaining</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                      `;
+
+            sortedEvents.forEach(({ event, next, diff }) => {
+                const status = getStatus(diff);
+
+                const targetMinutes = parseTimeToMinutes(next.time);
+                const eventServerDate = new Date(getServerTime());
+                eventServerDate.setDate(eventServerDate.getDate() + next.dayOffset);
+                eventServerDate.setHours(Math.floor(targetMinutes / 60), targetMinutes % 60, 0, 0);
+                const offsetDiff = displayTimezoneOffset - SERVER_TIMEZONE_OFFSET;
+                const eventLocalDate = new Date(eventServerDate.getTime() + offsetDiff * 3600000);
+                const isSameLocalDate = eventLocalDate.toDateString() === getDisplayTime().toDateString();
+                const dayName = isSameLocalDate ? 'Today' : getDayName(eventLocalDate.getDay());
+
+                const displayTimeStr = formatTimeForDisplay(next.displayTime);
+                const timeDisplay = `${displayTimeStr} (${dayName})`;
+
+                tableHTML += `
+                          <tr>
+                            <td>
+                              <span class="event-name-cell">
+                                <span class="icon">${event.icon}</span>
+                                ${event.name}
+                              </span>
+                            </td>
+                            <td class="time-cell">${timeDisplay}</td>
+                            <td class="status-cell ${status.class}">${status.label}</td>
+                            <td class="time-cell ${status.class}">${formatTime(diff)}</td>
+                          </tr>
+                        `;
+            });
+
+            tableHTML += `
+                          </tbody>
+                        </table>
+                      `;
+
+            container.innerHTML = tableHTML;
+        }
+
+        function updateServerTime() {
+            document.getElementById('serverTime').textContent = getServerTimeStr();
+            const selectedTzTime = getSelectedTimezoneTime();
+            const offset = displayTimezoneOffset;
+            const label = offset === 3 ? 'UTC+3 (Server)' : `UTC${offset >= 0 ? '+' : ''}${offset}`;
+            document.getElementById('localTimeInfo').textContent = `Time in ${label}: ${selectedTzTime}`;
+        }
+
+        function updateOffsetDisplay() {
+            const offset = displayTimezoneOffset;
+            const label = offset === 3 ? 'UTC+3 (Server)' : `UTC${offset >= 0 ? '+' : ''}${offset}`;
+            document.getElementById('offsetDisplay').textContent = `Displaying times in ${label}`;
+        }
+
+        function setupTimezoneSelector() {
+            const select = document.getElementById('timezoneSelect');
+            select.addEventListener('change', function() {
+                displayTimezoneOffset = parseInt(this.value);
+                updateOffsetDisplay();
+                updateServerTime();
+                renderEvents();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof renderMenu === 'function') {
+                renderMenu('events');
+            }
+
+            document.getElementById('timezoneSelect').value = '3';
+            displayTimezoneOffset = 3;
+            updateOffsetDisplay();
+
+            updateServerTime();
+            renderEvents();
+            setupTimezoneSelector();
+
+            setInterval(updateServerTime, 1000);
+            setInterval(renderEvents, 60000);
+        });
+    </script>
 </body>
 </html>
