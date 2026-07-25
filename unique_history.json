@@ -1,126 +1,126 @@
 {
-  "scraped_at": "2026-07-25T15:42:44.543482Z",
+  "scraped_at": "2026-07-25T17:07:42.108222Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Nova Genie [INT]",
+      "killer": "Cristin",
+      "killer_url": "/ranking/character-40288.html",
+      "time_ago": "22 mins ago"
+    },
+    {
+      "monster": "Sphinx (STR)",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "22 mins ago"
+    },
+    {
+      "monster": "Captain Ivy",
+      "killer": "Parchita",
+      "killer_url": "/ranking/character-48542.html",
+      "time_ago": "27 mins ago"
+    },
+    {
+      "monster": "Sphinx (INT)",
+      "killer": "Kinesis",
+      "killer_url": "/ranking/character-46246.html",
+      "time_ago": "39 mins ago"
+    },
+    {
+      "monster": "Goria",
+      "killer": "Aealo",
+      "killer_url": "/ranking/character-44857.html",
+      "time_ago": "44 mins ago"
+    },
+    {
+      "monster": "Cerberus",
+      "killer": "Saskia",
+      "killer_url": "/ranking/character-49164.html",
+      "time_ago": "45 mins ago"
+    },
+    {
+      "monster": "Lord Yarkan",
+      "killer": "DearMaria",
+      "killer_url": "/ranking/character-41995.html",
+      "time_ago": "49 mins ago"
+    },
+    {
+      "monster": "Neith",
+      "killer": "Wildo",
+      "killer_url": "/ranking/character-44588.html",
+      "time_ago": "58 mins ago"
+    },
+    {
+      "monster": "SoSo The Black Viper [STR]",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Taishan",
+      "killer": "PeterZwiebi",
+      "killer_url": "/ranking/character-46666.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Uruchi",
+      "killer": "EzShooter",
+      "killer_url": "/ranking/character-49201.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Undine Water Element[INT]",
+      "killer": "AzrieL",
+      "killer_url": "/ranking/character-40783.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Selket",
+      "killer": "Wildo",
+      "killer_url": "/ranking/character-44588.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Sylph Wind Element [INT]",
+      "killer": "Cristin",
+      "killer_url": "/ranking/character-40288.html",
+      "time_ago": "1 hour ago"
+    },
     {
       "monster": "Lost Pharaoh",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "34 seconds ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Tomb General Ho",
       "killer": "AlbertRum",
       "killer_url": "/ranking/character-44848.html",
-      "time_ago": "1 min ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Movia",
       "killer": "Testerosa",
       "killer_url": "/ranking/character-49270.html",
-      "time_ago": "5 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Tai-Sui",
       "killer": "EzShooter",
       "killer_url": "/ranking/character-49201.html",
-      "time_ago": "13 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Ancient Librarian",
       "killer": "Honeyman69",
       "killer_url": "/ranking/character-14170.html",
-      "time_ago": "16 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Hew Snake General [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "31 mins ago"
-    },
-    {
-      "monster": "Desert Beast [INT]",
-      "killer": "AzrieL",
-      "killer_url": "/ranking/character-40783.html",
-      "time_ago": "34 mins ago"
-    },
-    {
-      "monster": "Yul Snake General [STR]",
-      "killer": "CaptainBlack",
-      "killer_url": "/ranking/character-23013.html",
-      "time_ago": "40 mins ago"
-    },
-    {
-      "monster": "Jung Snake General [INT]",
-      "killer": "Honeyman69",
-      "killer_url": "/ranking/character-14170.html",
-      "time_ago": "41 mins ago"
-    },
-    {
-      "monster": "Ki Snake General [INT]",
-      "killer": "Honeyman69",
-      "killer_url": "/ranking/character-14170.html",
-      "time_ago": "49 mins ago"
-    },
-    {
-      "monster": "Gnome Earth Element [STR]",
-      "killer": "CaptainBlack",
-      "killer_url": "/ranking/character-23013.html",
-      "time_ago": "52 mins ago"
-    },
-    {
-      "monster": "Fire Demon",
-      "killer": "justadance",
-      "killer_url": "/ranking/character-11107.html",
       "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Tomb General Jin",
-      "killer": "Labrys",
-      "killer_url": "/ranking/character-47528.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Desert Scorpion",
-      "killer": "xARLEKINGx",
-      "killer_url": "/ranking/character-46920.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Tomb General Bi",
-      "killer": "Drento",
-      "killer_url": "/ranking/character-47153.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Tiger Girl",
-      "killer": "JustFarming",
-      "killer_url": "/ranking/character-27144.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Apis",
-      "killer": "PitterSilvaX",
-      "killer_url": "/ranking/character-46268.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Salamander Fire Element [STR]",
-      "killer": "CaptainBlack",
-      "killer_url": "/ranking/character-23013.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "SoSo The Black Viper",
-      "killer": "Kakan",
-      "killer_url": "/ranking/character-38437.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Tai-Sui",
-      "killer": "EzShooter",
-      "killer_url": "/ranking/character-49201.html",
-      "time_ago": "2 hours ago"
     }
   ]
 }
