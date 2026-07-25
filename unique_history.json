@@ -1,126 +1,126 @@
 {
-  "scraped_at": "2026-07-25T19:48:55.378770Z",
+  "scraped_at": "2026-07-25T21:00:19.081712Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Fire Demon",
+      "killer": "Miru",
+      "killer_url": "/ranking/character-34032.html",
+      "time_ago": "2 mins ago"
+    },
+    {
+      "monster": "SoSo The Black Viper",
+      "killer": "RocknRose",
+      "killer_url": "/ranking/character-33888.html",
+      "time_ago": "6 mins ago"
+    },
+    {
+      "monster": "Captain Ivy",
+      "killer": "Moxa",
+      "killer_url": "/ranking/character-49009.html",
+      "time_ago": "8 mins ago"
+    },
+    {
+      "monster": "Desert Beast [STR]",
+      "killer": "CaptainBlack",
+      "killer_url": "/ranking/character-23013.html",
+      "time_ago": "14 mins ago"
+    },
+    {
+      "monster": "Salt Desert Demon",
+      "killer": "Miru",
+      "killer_url": "/ranking/character-34032.html",
+      "time_ago": "16 mins ago"
+    },
+    {
+      "monster": "Tomb General Jin",
+      "killer": "MagicKerz",
+      "killer_url": "/ranking/character-43223.html",
+      "time_ago": "20 mins ago"
+    },
+    {
+      "monster": "Tomb General Bi",
+      "killer": "wizlotus",
+      "killer_url": "/ranking/character-46967.html",
+      "time_ago": "39 mins ago"
+    },
+    {
+      "monster": "Goria",
+      "killer": "Theya",
+      "killer_url": "/ranking/character-48893.html",
+      "time_ago": "45 mins ago"
+    },
+    {
+      "monster": "Bone Roc [STR]",
+      "killer": "Tytan",
+      "killer_url": "/ranking/character-45700.html",
+      "time_ago": "54 mins ago"
+    },
+    {
+      "monster": "Cerberus",
+      "killer": "Moxa",
+      "killer_url": "/ranking/character-49009.html",
+      "time_ago": "1 hour ago"
+    },
     {
       "monster": "Salamander Fire Element [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "46 seconds ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Taishan",
       "killer": "Vesphyra",
       "killer_url": "/ranking/character-48566.html",
-      "time_ago": "1 min ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Fire Cerberus",
       "killer": "Jekku",
       "killer_url": "/ranking/character-34313.html",
-      "time_ago": "10 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Roc",
       "killer": "Miru",
       "killer_url": "/ranking/character-34032.html",
-      "time_ago": "14 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Desert Scorpion",
       "killer": "mrkntrci",
       "killer_url": "/ranking/character-43365.html",
-      "time_ago": "24 mins ago"
+      "time_ago": "1 hour ago"
     },
     {
       "monster": "Devil Shaitan",
       "killer": "Miru",
       "killer_url": "/ranking/character-34032.html",
-      "time_ago": "50 mins ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Sand Monster [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Demon Shaitan",
       "killer": "DeinVadda",
       "killer_url": "/ranking/character-47252.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Apis",
       "killer": "Letsdance",
       "killer_url": "/ranking/character-7049.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Isis",
       "killer": "Jekku",
       "killer_url": "/ranking/character-34313.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Tai-Sui",
-      "killer": "Bowel",
-      "killer_url": "/ranking/character-48931.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Tomb General Hyun",
-      "killer": "PrincessShea",
-      "killer_url": "/ranking/character-36960.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Anubis",
-      "killer": "Jekku",
-      "killer_url": "/ranking/character-34313.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Isyutaru",
-      "killer": "Relium",
-      "killer_url": "/ranking/character-49074.html",
       "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Illusionist",
-      "killer": "Jekku",
-      "killer_url": "/ranking/character-34313.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Sand Monster [INT]",
-      "killer": "Haesi",
-      "killer_url": "/ranking/character-42720.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Nova Genie [INT]",
-      "killer": "Cristin",
-      "killer_url": "/ranking/character-40288.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Sphinx (STR)",
-      "killer": "CaptainBlack",
-      "killer_url": "/ranking/character-23013.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Captain Ivy",
-      "killer": "Parchita",
-      "killer_url": "/ranking/character-48542.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Sphinx (INT)",
-      "killer": "Kinesis",
-      "killer_url": "/ranking/character-46246.html",
-      "time_ago": "3 hours ago"
     }
   ]
 }
