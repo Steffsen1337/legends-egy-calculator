@@ -1,126 +1,126 @@
 {
-  "scraped_at": "2026-07-25T22:28:40.630366Z",
+  "scraped_at": "2026-07-25T23:36:02.826001Z",
   "total": 20,
   "kills": [
     {
       "monster": "Tai-Sui",
+      "killer": "l_Malenia_l",
+      "killer_url": "/ranking/character-49039.html",
+      "time_ago": "3 mins ago"
+    },
+    {
+      "monster": "Cerberus",
+      "killer": "Colombia",
+      "killer_url": "/ranking/character-45365.html",
+      "time_ago": "20 mins ago"
+    },
+    {
+      "monster": "Tai-Sui",
       "killer": "Bowel",
       "killer_url": "/ranking/character-48931.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Fire Demon",
       "killer": "Miru",
       "killer_url": "/ranking/character-34032.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "SoSo The Black Viper",
       "killer": "RocknRose",
       "killer_url": "/ranking/character-33888.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Captain Ivy",
       "killer": "Moxa",
       "killer_url": "/ranking/character-49009.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Desert Beast [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Salt Desert Demon",
       "killer": "Miru",
       "killer_url": "/ranking/character-34032.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Tomb General Jin",
       "killer": "MagicKerz",
       "killer_url": "/ranking/character-43223.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Tomb General Bi",
       "killer": "wizlotus",
       "killer_url": "/ranking/character-46967.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Goria",
       "killer": "Theya",
       "killer_url": "/ranking/character-48893.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Bone Roc [STR]",
       "killer": "Tytan",
       "killer_url": "/ranking/character-45700.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Cerberus",
       "killer": "Moxa",
       "killer_url": "/ranking/character-49009.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Salamander Fire Element [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Taishan",
       "killer": "Vesphyra",
       "killer_url": "/ranking/character-48566.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Fire Cerberus",
       "killer": "Jekku",
       "killer_url": "/ranking/character-34313.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "3 hours ago"
     },
     {
       "monster": "Roc",
       "killer": "Miru",
       "killer_url": "/ranking/character-34032.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Desert Scorpion",
       "killer": "mrkntrci",
       "killer_url": "/ranking/character-43365.html",
-      "time_ago": "3 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Devil Shaitan",
       "killer": "Miru",
       "killer_url": "/ranking/character-34032.html",
-      "time_ago": "3 hours ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Sand Monster [STR]",
       "killer": "CaptainBlack",
       "killer_url": "/ranking/character-23013.html",
-      "time_ago": "4 hours ago"
-    },
-    {
-      "monster": "Demon Shaitan",
-      "killer": "DeinVadda",
-      "killer_url": "/ranking/character-47252.html",
-      "time_ago": "4 hours ago"
-    },
-    {
-      "monster": "Apis",
-      "killer": "Letsdance",
-      "killer_url": "/ranking/character-7049.html",
-      "time_ago": "4 hours ago"
+      "time_ago": "5 hours ago"
     }
   ]
 }
