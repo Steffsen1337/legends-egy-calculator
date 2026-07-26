@@ -1,126 +1,126 @@
 {
-  "scraped_at": "2026-07-26T09:19:33.872283Z",
+  "scraped_at": "2026-07-26T11:04:40.142406Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Goria",
+      "killer": "Eungyo",
+      "killer_url": "/ranking/character-31539.html",
+      "time_ago": "34 mins ago"
+    },
+    {
+      "monster": "Sylph Wind Element [INT]",
+      "killer": "Miru",
+      "killer_url": "/ranking/character-34032.html",
+      "time_ago": "44 mins ago"
+    },
+    {
+      "monster": "Undine Water Element[INT]",
+      "killer": "Kakan",
+      "killer_url": "/ranking/character-38437.html",
+      "time_ago": "46 mins ago"
+    },
+    {
+      "monster": "Sand Monster [STR]",
+      "killer": "Suri90",
+      "killer_url": "/ranking/character-4229.html",
+      "time_ago": "51 mins ago"
+    },
+    {
+      "monster": "Tomb General Hyun",
+      "killer": "PrincessShea",
+      "killer_url": "/ranking/character-36960.html",
+      "time_ago": "54 mins ago"
+    },
+    {
+      "monster": "Isyutaru",
+      "killer": "Solence",
+      "killer_url": "/ranking/character-48891.html",
+      "time_ago": "59 mins ago"
+    },
+    {
+      "monster": "Uruchi",
+      "killer": "Eungyo",
+      "killer_url": "/ranking/character-31539.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Lord Yarkan",
+      "killer": "TR_Woltron",
+      "killer_url": "/ranking/character-48625.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Tomb General Ho",
+      "killer": "Catastrophic",
+      "killer_url": "/ranking/character-47303.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Selket",
+      "killer": "Jekku",
+      "killer_url": "/ranking/character-34313.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Neith",
+      "killer": "Jekku",
+      "killer_url": "/ranking/character-34313.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Fire Demon",
+      "killer": "Fertixiana",
+      "killer_url": "/ranking/character-30393.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Tomb General Jin",
+      "killer": "Catastrophic",
+      "killer_url": "/ranking/character-47303.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Sand Monster [INT]",
+      "killer": "Letsdance",
+      "killer_url": "/ranking/character-7049.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Fire Cerberus",
+      "killer": "OTILLO",
+      "killer_url": "/ranking/character-4594.html",
+      "time_ago": "1 hour ago"
+    },
     {
       "monster": "Taishan",
       "killer": "Vitus",
       "killer_url": "/ranking/character-49027.html",
-      "time_ago": "31 mins ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Demon Shaitan",
       "killer": "Catastrophic",
       "killer_url": "/ranking/character-47303.html",
-      "time_ago": "34 mins ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Captain Ivy",
       "killer": "cocaev",
       "killer_url": "/ranking/character-49278.html",
-      "time_ago": "50 mins ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Apis",
       "killer": "Milan",
       "killer_url": "/ranking/character-26942.html",
-      "time_ago": "52 mins ago"
+      "time_ago": "2 hours ago"
     },
     {
       "monster": "Cerberus",
       "killer": "cocaev",
       "killer_url": "/ranking/character-49278.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Salt Desert Demon",
-      "killer": "VN_M4D",
-      "killer_url": "/ranking/character-41678.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Desert Beast [INT]",
-      "killer": "Kakan",
-      "killer_url": "/ranking/character-38437.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Goria",
-      "killer": "Theya",
-      "killer_url": "/ranking/character-48893.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Desert Beast [STR]",
-      "killer": "DanyakroQc",
-      "killer_url": "/ranking/character-39655.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Sphinx (INT)",
-      "killer": "Dumptruck",
-      "killer_url": "/ranking/character-46575.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Desert Scorpion",
-      "killer": "Relium",
-      "killer_url": "/ranking/character-49074.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Sphinx (STR)",
-      "killer": "IBRA",
-      "killer_url": "/ranking/character-37579.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Isyutaru",
-      "killer": "Relium",
-      "killer_url": "/ranking/character-49074.html",
       "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Lost Pharaoh",
-      "killer": "Samy",
-      "killer_url": "/ranking/character-24933.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Gnome Earth Element [STR]",
-      "killer": "DanyakroQc",
-      "killer_url": "/ranking/character-39655.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Salamander Fire Element [STR]",
-      "killer": "Bumbar",
-      "killer_url": "/ranking/character-36726.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Ancient Librarian",
-      "killer": "BrudnaCipa",
-      "killer_url": "/ranking/character-34921.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Isis",
-      "killer": "AzrieL",
-      "killer_url": "/ranking/character-40783.html",
-      "time_ago": "4 hours ago"
-    },
-    {
-      "monster": "SoSo The Black Viper [STR]",
-      "killer": "DanyakroQc",
-      "killer_url": "/ranking/character-39655.html",
-      "time_ago": "4 hours ago"
-    },
-    {
-      "monster": "Taishan",
-      "killer": "Vitus",
-      "killer_url": "/ranking/character-49027.html",
-      "time_ago": "4 hours ago"
     }
   ]
 }
