@@ -1,126 +1,126 @@
 {
-  "scraped_at": "2026-07-26T12:40:30.181599Z",
+  "scraped_at": "2026-07-26T14:41:25.104813Z",
   "total": 20,
   "kills": [
     {
-      "monster": "Apis",
-      "killer": "Jekku",
-      "killer_url": "/ranking/character-34313.html",
-      "time_ago": "5 mins ago"
+      "monster": "Isyutaru",
+      "killer": "Jernac",
+      "killer_url": "/ranking/character-30549.html",
+      "time_ago": "10 mins ago"
     },
     {
-      "monster": "SoSo The Black Viper",
-      "killer": "AzrieL",
-      "killer_url": "/ranking/character-40783.html",
-      "time_ago": "6 mins ago"
+      "monster": "Lost Pharaoh",
+      "killer": "Kinesis",
+      "killer_url": "/ranking/character-46246.html",
+      "time_ago": "15 mins ago"
     },
     {
-      "monster": "Gnome Earth Element [STR]",
-      "killer": "Cuthalion",
-      "killer_url": "/ranking/character-28132.html",
-      "time_ago": "24 mins ago"
+      "monster": "Movia",
+      "killer": "Hexen",
+      "killer_url": "/ranking/character-49319.html",
+      "time_ago": "30 mins ago"
     },
     {
-      "monster": "Isis",
-      "killer": "Vandflaskee",
-      "killer_url": "/ranking/character-44432.html",
-      "time_ago": "37 mins ago"
-    },
-    {
-      "monster": "Salamander Fire Element [STR]",
-      "killer": "Cuthalion",
-      "killer_url": "/ranking/character-28132.html",
-      "time_ago": "37 mins ago"
-    },
-    {
-      "monster": "Yul Snake General [STR]",
+      "monster": "SoSo The Black Viper [STR]",
       "killer": "DanyakroQc",
       "killer_url": "/ranking/character-39655.html",
-      "time_ago": "47 mins ago"
-    },
-    {
-      "monster": "Hew Snake General [STR]",
-      "killer": "DanyakroQc",
-      "killer_url": "/ranking/character-39655.html",
-      "time_ago": "54 mins ago"
-    },
-    {
-      "monster": "Anubis",
-      "killer": "Vandflaskee",
-      "killer_url": "/ranking/character-44432.html",
-      "time_ago": "54 mins ago"
-    },
-    {
-      "monster": "Desert Scorpion",
-      "killer": "Yeomjee",
-      "killer_url": "/ranking/character-48619.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Jung Snake General [INT]",
-      "killer": "AzrieL",
-      "killer_url": "/ranking/character-40783.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Ki Snake General [INT]",
-      "killer": "Honeyman69",
-      "killer_url": "/ranking/character-14170.html",
-      "time_ago": "1 hour ago"
-    },
-    {
-      "monster": "Tomb General Bi",
-      "killer": "PrincessShea",
-      "killer_url": "/ranking/character-36960.html",
-      "time_ago": "1 hour ago"
+      "time_ago": "56 mins ago"
     },
     {
       "monster": "Goria",
-      "killer": "Eungyo",
-      "killer_url": "/ranking/character-31539.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Sylph Wind Element [INT]",
-      "killer": "Miru",
-      "killer_url": "/ranking/character-34032.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Undine Water Element[INT]",
-      "killer": "Kakan",
-      "killer_url": "/ranking/character-38437.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Sand Monster [STR]",
-      "killer": "Suri90",
-      "killer_url": "/ranking/character-4229.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Tomb General Hyun",
-      "killer": "PrincessShea",
-      "killer_url": "/ranking/character-36960.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Isyutaru",
-      "killer": "Solence",
-      "killer_url": "/ranking/character-48891.html",
-      "time_ago": "2 hours ago"
+      "killer": "EzShooter",
+      "killer_url": "/ranking/character-49201.html",
+      "time_ago": "58 mins ago"
     },
     {
       "monster": "Uruchi",
       "killer": "Eungyo",
       "killer_url": "/ranking/character-31539.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Ancient Librarian",
+      "killer": "BrudnaCipa",
+      "killer_url": "/ranking/character-34921.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Taishan",
+      "killer": "Archmeno",
+      "killer_url": "/ranking/character-48250.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Tai-Sui",
+      "killer": "ZareL_Feme",
+      "killer_url": "/ranking/character-49028.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Apis",
+      "killer": "Jekku",
+      "killer_url": "/ranking/character-34313.html",
       "time_ago": "2 hours ago"
     },
     {
-      "monster": "Lord Yarkan",
-      "killer": "TR_Woltron",
-      "killer_url": "/ranking/character-48625.html",
+      "monster": "SoSo The Black Viper",
+      "killer": "AzrieL",
+      "killer_url": "/ranking/character-40783.html",
       "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Gnome Earth Element [STR]",
+      "killer": "Cuthalion",
+      "killer_url": "/ranking/character-28132.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Isis",
+      "killer": "Vandflaskee",
+      "killer_url": "/ranking/character-44432.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Salamander Fire Element [STR]",
+      "killer": "Cuthalion",
+      "killer_url": "/ranking/character-28132.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Yul Snake General [STR]",
+      "killer": "DanyakroQc",
+      "killer_url": "/ranking/character-39655.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Hew Snake General [STR]",
+      "killer": "DanyakroQc",
+      "killer_url": "/ranking/character-39655.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Anubis",
+      "killer": "Vandflaskee",
+      "killer_url": "/ranking/character-44432.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Desert Scorpion",
+      "killer": "Yeomjee",
+      "killer_url": "/ranking/character-48619.html",
+      "time_ago": "3 hours ago"
+    },
+    {
+      "monster": "Jung Snake General [INT]",
+      "killer": "AzrieL",
+      "killer_url": "/ranking/character-40783.html",
+      "time_ago": "3 hours ago"
+    },
+    {
+      "monster": "Ki Snake General [INT]",
+      "killer": "Honeyman69",
+      "killer_url": "/ranking/character-14170.html",
+      "time_ago": "3 hours ago"
     }
   ]
 }
