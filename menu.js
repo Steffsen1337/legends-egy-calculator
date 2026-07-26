@@ -20,10 +20,11 @@ function renderMenu(activePage) {
             <a href="/legends-egy-calculator/events" class="menu-link ${activePage === 'events' ? 'active' : ''}" data-page="events">
               <span class="menu-icon">📅</span><span class="menu-label">Events</span>
             </a>
-            <!-- NEU: History -->
+            <!-- History 
             <a href="/legends-egy-calculator/history" class="menu-link ${activePage === 'history' ? 'active' : ''}" data-page="history">
               <span class="menu-icon">⚔️</span><span class="menu-label">History</span>
             </a>
+            -->
           </div>
           <div class="menu-right">
             <button class="menu-theme-btn" id="menuThemeToggle">
