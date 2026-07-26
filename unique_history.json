@@ -1,126 +1,126 @@
 {
-  "scraped_at": "2026-07-25T23:36:02.826001Z",
+  "scraped_at": "2026-07-26T03:37:35.576109Z",
   "total": 20,
   "kills": [
+    {
+      "monster": "Tomb General Jin",
+      "killer": "MAGlC",
+      "killer_url": "/ranking/character-48961.html",
+      "time_ago": "6 mins ago"
+    },
+    {
+      "monster": "Sand Monster [INT]",
+      "killer": "Kinesis",
+      "killer_url": "/ranking/character-46246.html",
+      "time_ago": "15 mins ago"
+    },
+    {
+      "monster": "Fire Demon",
+      "killer": "Dooby",
+      "killer_url": "/ranking/character-35976.html",
+      "time_ago": "20 mins ago"
+    },
+    {
+      "monster": "Apis",
+      "killer": "Kinesis",
+      "killer_url": "/ranking/character-46246.html",
+      "time_ago": "26 mins ago"
+    },
+    {
+      "monster": "Lord Yarkan",
+      "killer": "Relium",
+      "killer_url": "/ranking/character-49074.html",
+      "time_ago": "27 mins ago"
+    },
+    {
+      "monster": "Demon Shaitan",
+      "killer": "MAGlC",
+      "killer_url": "/ranking/character-48961.html",
+      "time_ago": "29 mins ago"
+    },
+    {
+      "monster": "Cerberus",
+      "killer": "Mr_Cheddar",
+      "killer_url": "/ranking/character-47330.html",
+      "time_ago": "47 mins ago"
+    },
+    {
+      "monster": "Desert Scorpion",
+      "killer": "xARLEKINGx",
+      "killer_url": "/ranking/character-46920.html",
+      "time_ago": "1 hour ago"
+    },
+    {
+      "monster": "Isyutaru",
+      "killer": "Relium",
+      "killer_url": "/ranking/character-49074.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Taishan",
+      "killer": "Ascendant",
+      "killer_url": "/ranking/character-49073.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Tiger Girl",
+      "killer": "Legionario",
+      "killer_url": "/ranking/character-49285.html",
+      "time_ago": "2 hours ago"
+    },
+    {
+      "monster": "Goria",
+      "killer": "EzShooter",
+      "killer_url": "/ranking/character-49201.html",
+      "time_ago": "3 hours ago"
+    },
+    {
+      "monster": "Mangyang",
+      "killer": "Fik",
+      "killer_url": "/ranking/character-49121.html",
+      "time_ago": "3 hours ago"
+    },
+    {
+      "monster": "Captain Ivy",
+      "killer": "Colombia",
+      "killer_url": "/ranking/character-45365.html",
+      "time_ago": "3 hours ago"
+    },
     {
       "monster": "Tai-Sui",
       "killer": "l_Malenia_l",
       "killer_url": "/ranking/character-49039.html",
-      "time_ago": "3 mins ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Cerberus",
       "killer": "Colombia",
       "killer_url": "/ranking/character-45365.html",
-      "time_ago": "20 mins ago"
+      "time_ago": "4 hours ago"
     },
     {
       "monster": "Tai-Sui",
       "killer": "Bowel",
       "killer_url": "/ranking/character-48931.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "6 hours ago"
     },
     {
       "monster": "Fire Demon",
       "killer": "Miru",
       "killer_url": "/ranking/character-34032.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "6 hours ago"
     },
     {
       "monster": "SoSo The Black Viper",
       "killer": "RocknRose",
       "killer_url": "/ranking/character-33888.html",
-      "time_ago": "2 hours ago"
+      "time_ago": "6 hours ago"
     },
     {
       "monster": "Captain Ivy",
       "killer": "Moxa",
       "killer_url": "/ranking/character-49009.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Desert Beast [STR]",
-      "killer": "CaptainBlack",
-      "killer_url": "/ranking/character-23013.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Salt Desert Demon",
-      "killer": "Miru",
-      "killer_url": "/ranking/character-34032.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Tomb General Jin",
-      "killer": "MagicKerz",
-      "killer_url": "/ranking/character-43223.html",
-      "time_ago": "2 hours ago"
-    },
-    {
-      "monster": "Tomb General Bi",
-      "killer": "wizlotus",
-      "killer_url": "/ranking/character-46967.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Goria",
-      "killer": "Theya",
-      "killer_url": "/ranking/character-48893.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Bone Roc [STR]",
-      "killer": "Tytan",
-      "killer_url": "/ranking/character-45700.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Cerberus",
-      "killer": "Moxa",
-      "killer_url": "/ranking/character-49009.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Salamander Fire Element [STR]",
-      "killer": "CaptainBlack",
-      "killer_url": "/ranking/character-23013.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Taishan",
-      "killer": "Vesphyra",
-      "killer_url": "/ranking/character-48566.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Fire Cerberus",
-      "killer": "Jekku",
-      "killer_url": "/ranking/character-34313.html",
-      "time_ago": "3 hours ago"
-    },
-    {
-      "monster": "Roc",
-      "killer": "Miru",
-      "killer_url": "/ranking/character-34032.html",
-      "time_ago": "4 hours ago"
-    },
-    {
-      "monster": "Desert Scorpion",
-      "killer": "mrkntrci",
-      "killer_url": "/ranking/character-43365.html",
-      "time_ago": "4 hours ago"
-    },
-    {
-      "monster": "Devil Shaitan",
-      "killer": "Miru",
-      "killer_url": "/ranking/character-34032.html",
-      "time_ago": "4 hours ago"
-    },
-    {
-      "monster": "Sand Monster [STR]",
-      "killer": "CaptainBlack",
-      "killer_url": "/ranking/character-23013.html",
-      "time_ago": "5 hours ago"
+      "time_ago": "6 hours ago"
     }
   ]
 }
