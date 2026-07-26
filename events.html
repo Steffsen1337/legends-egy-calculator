@@ -348,7 +348,7 @@
     </script>
     <script>
         // ============================================================
-        //  EVENTS DATA  — UPDATED with new times + Summer Unique Party
+        //  EVENTS DATA  — UPDATED with skip rules and new time
         // ============================================================
         const EVENTS = [{
             name: 'Capture The Flag',
@@ -373,6 +373,8 @@
             icon: '🏟️',
             times: ['22:00', '10:00'],
             days: [0, 1, 2, 3, 4, 5, 6],
+            // Disable the 22:00 slot on Sundays (day 0)
+            skipTimesOnDays: { 0: ['22:00'] },
             note: ''
         }, {
             name: 'Special Goods Time',
@@ -383,14 +385,17 @@
         }, {
             name: 'Thief Special Goods Time',
             icon: '💰',
-            times: ['23:00'],
+            // Added 15:00 to existing 23:00
+            times: ['15:00', '23:00'],
             days: [0, 1, 2, 3, 4, 5, 6],
             note: ''
         }, {
             name: 'Last Man Standing',
             icon: '👑',
-            times: ['10:30', '22:30'],
+            times: ['22:30', '10:30'],
             days: [0, 1, 2, 3, 4, 5, 6],
+            // Disable the 22:30 slot on Sundays (day 0)
+            skipTimesOnDays: { 0: ['22:30'] },
             note: ''
         }, {
             name: 'War of Leagues',
@@ -449,7 +454,6 @@
             days: [0],
             note: ''
         }, {
-            // NEW EVENT: Summer Unique Party Event – daily at 19:30
             name: 'Summer Unique Party Event',
             icon: '🎉',
             times: ['19:30'],
